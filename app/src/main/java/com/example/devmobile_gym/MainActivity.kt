@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.ui.theme.DevMobilegymTheme
+import com.example.devmobile_gym.ui.theme.components.CustomCard
 import com.example.devmobile_gym.ui.theme.components.CustomTextField
 
 class MainActivity : ComponentActivity() {
@@ -51,6 +52,10 @@ class MainActivity : ComponentActivity() {
                         } else {
                             Text("Você digitou: $displayText")
                         }
+                        Spacer(modifier = Modifier.height(16.dp))
+                        CustomCard("Quadríceps e panturrilha", listOf("Panturrilha em pé (máquina)", "Cadeira Extensora (máquina)", "Agachamento Livre", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {})
+                        CustomCard("Bíceps e Costas", listOf("Rosca Direta (Halteres)", "Rosca Scott (Halteres)", "Rosca Concentrada (Halteres)", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {})
+
                     }
                 }
             }

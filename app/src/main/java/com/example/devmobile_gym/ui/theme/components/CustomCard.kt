@@ -24,7 +24,7 @@ fun CustomCard(
     onButtonClick: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var desc = ""
+    var desc: String
     if (expanded && description.isNotEmpty()) {
         if (description.size <= 3) {
             desc = description.joinToString(", ")

@@ -23,7 +23,9 @@ import androidx.compose.ui.unit.dp
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.ui.theme.DevMobilegymTheme
 import com.example.devmobile_gym.ui.theme.components.CustomCard
+import com.example.devmobile_gym.ui.theme.components.CustomCheckbox
 import com.example.devmobile_gym.ui.theme.components.CustomTextField
+import com.example.devmobile_gym.ui.theme.components.ExerciseCard
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,7 @@ class MainActivity : ComponentActivity() {
             DevMobilegymTheme {
                 var text by remember { mutableStateOf("") }
                 var displayText by remember { mutableStateOf("") }
+                var isChecked by remember { mutableStateOf(false) }
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column (modifier = Modifier.padding(innerPadding)){
 
@@ -56,6 +59,8 @@ class MainActivity : ComponentActivity() {
                         CustomCard("Quadríceps e panturrilha", listOf("Panturrilha em pé (máquina)", "Cadeira Extensora (máquina)", "Agachamento Livre", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {})
                         CustomCard("Bíceps e Costas", listOf("Rosca Direta (Halteres)", "Rosca Scott (Halteres)", "Rosca Concentrada (Halteres)", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {})
 
+                        CustomCheckbox(checked = isChecked, onCheckedChange = { isChecked = it })
+                        ExerciseCard("Rosca Scott (Halteres)")
                     }
                 }
             }

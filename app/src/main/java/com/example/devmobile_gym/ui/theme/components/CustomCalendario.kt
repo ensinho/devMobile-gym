@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,90 +41,78 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import org.w3c.dom.Text
 
 
 val dias: MutableList<String> = mutableListOf("SEG", "TER", "QUA", "QUI", "QUI", "SEX", "SAB", "DOM")
 @Composable
 fun CustomCalendario() {
-
-        Card(
-            modifier = Modifier
-                .animateContentSize(),
-            shape = RoundedCornerShape(9.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF3B3B3B))
-        ) {
-
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                diasSemanas(dias)
-                Spacer(Modifier.height(9.dp))
-                bolinha()
-
-            }
-        }
-    }
-
-
-@Composable
-fun diasSemanas(List: MutableList<String>) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.background(Color(0xFF3B3B3B)),
+    Card(
+        modifier = Modifier
+            .animateContentSize(),
+        shape = RoundedCornerShape(9.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF3B3B3B))
     ) {
-
-        for (i in 0..List.size - 1) {
-            if (i == List.size - 1) {
-                Text(List[i],
-                    fontWeight = FontWeight.Medium,
-                    color = Color.White
-                     )
-                break
-            }
-            Text(List[i],
-                    fontWeight = FontWeight.Medium,
-                    color = Color.White
-                )
-            
-            Spacer(Modifier.width(10.dp))
-        }
-    }
-}
-
-@Composable
-fun bolinha() {
-    val List =  dias
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-
-        modifier = Modifier
-            .background(Color(0xFF3B3B3B))
-            .fillMaxWidth()
-
+        Column(
+            modifier = Modifier.padding(10.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-        for(i in 0..List.size-1){
-            if(i==List.size-1){
-                IconeBola(true)
-                break
-            }
-            IconeBola(true)
-
+            diasSemanas(dias)
+            Spacer(modifier = Modifier.height(8.dp))
+            bolinha(dias.size)
         }
     }
 }
 
 @Composable
-fun IconeBola(checked: Boolean = false){
-    val backgroundColor = null
-    Box(
+fun diasSemanas(dias: List<String>) {
+    Row(
         modifier = Modifier
-            .size(21.dp)
-            .clip(CircleShape)
-            .background(if(checked) Color(0xFF267FE7) else Color(0xFFEDEFF1))
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        dias.forEach {
+            Text(
+                text = it,
+                fontWeight = FontWeight.Medium,
+                color = Color.White,
+                fontSize = 14.sp,
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
 
+@Composable
+fun bolinha(qtd: Int) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        repeat(qtd) {
+            IconeBola(
+                checked = true,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+fun IconeBola(checked: Boolean = false, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .aspectRatio(1f)
+            .padding(8.dp)
+            .size(8.dp)
+            .clip(CircleShape)
+            .background(if (checked) Color(0xFF267FE7) else Color(0xFFEDEFF1)),
     )
 }
 

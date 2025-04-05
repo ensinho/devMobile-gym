@@ -21,7 +21,8 @@ fun CustomCard(
     treino: String,
     description: List<String>,
     buttonText: String,
-    onButtonClick: () -> Unit
+    onButtonClick: () -> Unit,
+    needButton: Boolean = true,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var desc: String
@@ -77,8 +78,10 @@ fun CustomCard(
                 color = Color(0xFFAAAEB6),
                 fontSize = 15.sp
                 )
-            Spacer(modifier = Modifier.height(3.dp))
-            CustomButton(buttonText, onClick = { onButtonClick() })
+            if (needButton) {
+                Spacer(modifier = Modifier.height(3.dp))
+                CustomButton(buttonText, onClick = { onButtonClick() })
+            }
 
         }
     }
@@ -87,5 +90,5 @@ fun CustomCard(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewCard() {
-    CustomCard("Treino A", listOf("Panturrilha em pé (máquina)", "Cadeira Extensora (máquina)", "Agachamento Livre", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {})
+    CustomCard("Treino A", listOf("Panturrilha em pé (máquina)", "Cadeira Extensora (máquina)", "Agachamento Livre", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {}, false)
 }

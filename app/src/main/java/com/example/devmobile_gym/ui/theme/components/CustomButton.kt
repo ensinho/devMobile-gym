@@ -18,7 +18,7 @@ fun CustomButton(
     onClick: () -> Unit,
     backgroundColor: Color = Color(0xFF5D98DD)
 ) {
-    Button(
+     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
         shape = RoundedCornerShape(8.dp), // Bordas arredondadas

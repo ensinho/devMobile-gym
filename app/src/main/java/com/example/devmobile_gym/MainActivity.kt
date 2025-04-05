@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
                         CustomCard("Bíceps e Costas", listOf("Rosca Direta (Halteres)", "Rosca Scott (Halteres)", "Rosca Concentrada (Halteres)", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {})
 
                         CustomCheckbox(checked = isChecked, onCheckedChange = { isChecked = it })
-                        ExerciseCard("Rosca Scott (Halteres)")
+                        ExerciseCard("Rosca Scott (Halteres)", 3, 12, 15)
                     }
                 }
             }

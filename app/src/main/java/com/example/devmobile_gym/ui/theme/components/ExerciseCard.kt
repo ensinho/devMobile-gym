@@ -38,7 +38,7 @@ private val thead: MutableList<String> = mutableListOf("SÉRIE", "ANTERIOR", "KG
 
 
 @Composable
-fun ExerciseCard(title: String) {
+fun ExerciseCard(title: String, quantSeries: Int = 3, quantReps: Int = 12, peso: Int) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,19 +51,22 @@ fun ExerciseCard(title: String) {
         ){
             ExerciseTitle(title)
             ExerciseTHead()
-            TRowCell(mutableListOf("1", "10", "12", "6"))
+            for (i in 0..<quantSeries) {
+
+                TRowCell(mutableListOf((i+1), quantReps, quantReps, peso))
+            }
         }
     }
 }
 
 @Composable
-private fun TRowCell(trowInfo: MutableList<String>) {
+private fun TRowCell(trowInfo: MutableList<Int>) {
     var isChecked by remember { mutableStateOf(false) }
     Row (
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 0.dp, end = 0.dp)
-            .background(Color(0xFF414141)),
+            .background( if (isChecked) Color(0xFF2C6111) else Color(0xFF414141)),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ){
@@ -76,7 +79,7 @@ private fun TRowCell(trowInfo: MutableList<String>) {
                 if (i < thead.size) {
                     
                     Text(
-                        text = trowInfo[i],
+                        text = trowInfo[i].toString(),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF8F9092),
@@ -160,5 +163,5 @@ private data class EditableRow(val serie: String, val kg: String, val reps: Stri
 @Preview (showBackground = true)
 @Composable
 private fun PreviewExerciseCard() {
-    ExerciseCard("Rosca Scott (Halteres)")
+    ExerciseCard("Rosca Scott (Halteres)", 3, 12, 15)
 }

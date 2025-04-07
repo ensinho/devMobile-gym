@@ -1,9 +1,8 @@
 package com.example.devmobile_gym.ui.theme.components
 
+import android.media.Image
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,18 +18,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.devmobile_gym.R
 
+val icone = R.drawable.fire_svgrepo_com
+val texto = ""
+val texto1 = ""
 
 @Composable
-fun BoxDayStreak() {
+fun BoxDayStreak(texto: String, icone: Int) {
     Card(
         modifier = Modifier
             .padding(9.dp)
+            .width(70.dp)
             .border(
                 width =0.5.dp,
                 color = Color(0xFF000000),
@@ -48,17 +50,18 @@ fun BoxDayStreak() {
         ) {
 
             Image(
-                painter = painterResource(id = R.drawable.fire_svgrepo_com),
+                painter = painterResource(id = icone),
                 contentDescription = "Fogo",
-                modifier = Modifier.size(12.dp)
+                modifier = Modifier.size(9.dp)
             )
+
 
             Spacer(modifier = Modifier.width(2.dp))
 
 
             Column {
-                Text(text = "0", fontSize = 9.sp)
-                Text(text = "Day Streak", fontSize = 9.sp, color = Color.White)
+                Text(text = texto, fontSize = 6.sp, color = Color(0xFFFFFFFF))
+                Text(text = texto1, fontSize = 6.sp, color = Color.White)
             }
         }
     }
@@ -67,6 +70,6 @@ fun BoxDayStreak() {
 @Preview
 @Composable
 fun PreviewBoxDayStreak() {
-    BoxDayStreak()
+    BoxDayStreak(texto,icone)
 }
 

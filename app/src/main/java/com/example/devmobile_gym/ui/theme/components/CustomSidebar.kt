@@ -20,8 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 fun SidebarMenu(onMenuItemClick: (String) -> Unit) {
     val menuItems = listOf(
         MenuItem("Página inicial", Icons.Default.Home),
-        MenuItem("Agendar aulas", Icons.Default.CalendarToday),
-        MenuItem("Chatbot", Icons.Default.Chat),
+        //MenuItem("Agendar aulas", Icons.Default.CalendarToday),
+        //MenuItem("Chatbot", Icons.Default.Chat),
         MenuItem("Gerenciar", Icons.Default.Build),
         MenuItem("Perfil", Icons.Default.Person)
     )

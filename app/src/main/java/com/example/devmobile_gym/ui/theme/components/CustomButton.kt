@@ -2,6 +2,7 @@ package com.example.components.ui.theme.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun CustomButton(
+
     text: String,
     onClick: () -> Unit,
     backgroundColor: Color = Color(0xFF5D98DD)

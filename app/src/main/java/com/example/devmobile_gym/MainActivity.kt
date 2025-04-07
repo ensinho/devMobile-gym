@@ -4,11 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,8 +22,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.components.ui.theme.components.CustomButton
@@ -30,35 +40,59 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            DevMobilegymTheme {
-                var text by remember { mutableStateOf("") }
-                var displayText by remember { mutableStateOf("") }
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column (modifier = Modifier.padding(innerPadding)){
 
-                        CustomTextField(label = "Texto", value = text, onValueChange = { text = it })
-                        CustomButton("Enviar", onClick = {
-                            if (text.isNotEmpty()) {
-                                displayText = text
-                                text = ""
-                            }
-                        })
-                        CustomButton("Limpar Text()", onClick = {
-                            displayText = ""
-                        }, backgroundColor = Color.Red)
-                        Spacer(modifier = Modifier.height(16.dp))
-                        if (displayText == "") {
-                            Text("")
-                        } else {
-                            Text("Você digitou: $displayText")
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
-                        CustomCard("Quadríceps e panturrilha", listOf("Panturrilha em pé (máquina)", "Cadeira Extensora (máquina)", "Agachamento Livre", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {})
-                        CustomCard("Bíceps e Costas", listOf("Rosca Direta (Halteres)", "Rosca Scott (Halteres)", "Rosca Concentrada (Halteres)", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {})
+                Column(
 
-                    }
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = Color(0xFF1E1E1E))
+
+                ) {
+                    Image(
+
+                        painter = painterResource(id = R.drawable.print),
+                        contentDescription = "Descrição da imagem",
+                        modifier = Modifier.size(150.dp),
+                    )
+                    Text(
+                        text = "Acessar sua conta",
+                        color = Color.White
+                    )
+                    Text(
+                        text = "Insira suas informações e acesse sua conta" ,
+                        color = Color.White
+                    )
+                    var text1 by remember { mutableStateOf("") }
+                    CustomTextField(
+                        label = "Email",
+                        value = text1,
+                        onValueChange = { text1 = it } ,
+                        padding = 10
+
+                    )
+                    var text2 by remember { mutableStateOf("") }
+                    CustomTextField(
+                        label = "Senha",
+                        value = text2,
+                        onValueChange = { text2 = it },
+                        padding = 10
+
+                    )
+
+                    CustomButton(
+                        text = "Acessar",
+                        onClick = {}
+
+                            )
+
+                    Text(
+                        textAlign = TextAlign.Center,
+                        text = " By clicking continue, you agree to our Terms of service and Privacy Policy" ,
+                        color = Color.White
+                    )
                 }
-            }
         }
     }
 }
@@ -77,4 +111,15 @@ fun GreetingPreview() {
     DevMobilegymTheme {
         Greeting("Android")
     }
+}
+@Composable
+fun CustomTextField(label: String, value: String, onValueChange: (String) -> Unit) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        modifier = Modifier.fillMaxWidth(),
+        singleLine = true,
+        visualTransformation = VisualTransformation.None
+    )
 }

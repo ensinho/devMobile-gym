@@ -1,6 +1,7 @@
 package com.example.devmobile_gym.ui.theme.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
@@ -18,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 fun SidebarMenu(onMenuItemClick: (String) -> Unit) {
     val menuItems = listOf(
         MenuItem("Página inicial", Icons.Default.Home),
-        MenuItem("Aulas", Icons.Default.CalendarToday),
+        MenuItem("Agendar aulas", Icons.Default.CalendarToday),
         MenuItem("Chatbot", Icons.Default.Chat),
         MenuItem("Gerenciar", Icons.Default.Build),
         MenuItem("Perfil", Icons.Default.Person)

@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
                         title = "Unifor GYM",
                         onBackClick = { /* PASSAR A FUNCAO COM A ROTA DA PAG */ },
                         onMenuClick = { /* PASSAR A FUNCAO COM A ROTA DA PAG */ },
-                        needToGoBack = true,
+                        needToGoBack = false,
 
 
                     ) { innerModifier ->
@@ -75,13 +75,13 @@ class MainActivity : ComponentActivity() {
                                 .verticalScroll(scrollState)){
 
                             CustomTextField(label = "Texto", value = text, onValueChange = { text = it })
-                            CustomButton("Enviar", onClick = {
+                            CustomButton(text ="Enviar", onClick = {
                                 if (text.isNotEmpty()) {
                                     displayText = text
                                     text = ""
                                 }
                             })
-                            CustomButton("Limpar Text()", onClick = {
+                            CustomButton(text ="Limpar Text()", onClick = {
                                 displayText = ""
                             }, backgroundColor = Color.Red)
                             Spacer(modifier = Modifier.height(16.dp))
@@ -91,8 +91,9 @@ class MainActivity : ComponentActivity() {
                                 Text("Você digitou: $displayText")
                             }
                             Spacer(modifier = Modifier.height(16.dp))
-                            CustomCard("Quadríceps e panturrilha", listOf("Panturrilha em pé (máquina)", "Cadeira Extensora (máquina)", "Agachamento Livre", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {})
-                            CustomCard("Bíceps e Costas", listOf("Rosca Direta (Halteres)", "Rosca Scott (Halteres)", "Rosca Concentrada (Halteres)", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {})
+                            CustomCard(isAdm = true, treino ="Quadríceps e panturrilha", description = listOf("Panturrilha em pé (máquina)", "Cadeira Extensora (máquina)", "Agachamento Livre", "Exercício 4", "Exercício 5", "Exercício 6"), buttonText ="Iniciar Treino", onButtonClick ={})
+                            CustomCard(needButton = false, treino ="Bíceps e Costas", description = listOf("Rosca Direta (Halteres)", "Rosca Scott (Halteres)", "Rosca Concentrada (Halteres)", "Exercício 4", "Exercício 5", "Exercício 6"), buttonText ="Iniciar Treino", onButtonClick ={})
+
 
                             ExerciseCard("Rosca Scott (Halteres)", 3, 12, 15)
                             CustomCheckbox(checked = isChecked, onCheckedChange = { isChecked = it })

@@ -38,6 +38,7 @@ import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.ui.theme.DevMobilegymTheme
 import com.example.devmobile_gym.ui.theme.components.CustomCard
 import com.example.devmobile_gym.ui.theme.components.CustomCheckbox
+import com.example.devmobile_gym.ui.theme.components.CustomExerciseItem
 import com.example.devmobile_gym.ui.theme.components.CustomTextField
 import com.example.devmobile_gym.ui.theme.components.ExerciseCard
 import com.example.devmobile_gym.ui.theme.components.ScreenScaffold
@@ -97,6 +98,7 @@ class MainActivity : ComponentActivity() {
 
                             ExerciseCard("Rosca Scott (Halteres)", 3, 12, 15)
                             CustomCheckbox(checked = isChecked, onCheckedChange = { isChecked = it })
+                            CustomExerciseItem("Agachamento Livre", "Quadríceps e posterior")
 
                             for (i in 1..99) {
                                 Text("valor $i")

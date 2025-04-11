@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -47,16 +48,19 @@ fun CardCalendario() {
         colors = CardDefaults.cardColors(containerColor = Color(0xFF2E3238)),
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(10.dp)
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Text(text = "Janeiro", fontSize = 22.sp, color = Color.White)
-
             }
+            Spacer(modifier = Modifier.height(5.dp))
             Box(
             ){
-                Divider(color = Color(0xFF5D98DD), thickness = 0.3.dp, modifier =  Modifier.width(242.dp))
+                Divider(color = Color(0xFF5D98DD), thickness = 0.8.dp, modifier =  Modifier.width(242.dp))
             }
+            Spacer(modifier = Modifier.height(5.dp))
 
             diasdaSemana(semana)
             bolinhas()

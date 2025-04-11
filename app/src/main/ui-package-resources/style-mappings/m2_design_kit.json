@@ -1,0 +1,84 @@
+{
+  "figma": {
+    "colors": {
+      "01. Primary/500": "md2.sys.color.primary",
+      "01. Primary/700": "md2.sys.color.primary-variant",
+      "02. Secondary/200": "md2.sys.color.secondary",
+      "02. Secondary/700": "md2.sys.color.secondary-variant",
+      "surface": "md2.sys.color.surface",
+      "Error": "md2.sys.color.error",
+      "On Primary / High Emphasis": "md2.sys.color.on-primary",
+      "00. On Surface / High Emphasis": "md2.sys.color.on-surface",
+      "00. On Surface/High Emphasis": "md2.sys.color.on-surface"
+    },
+    "typography": {
+      "symbols": {
+        "Headline 1": "md2.sys.typescale.headline1",
+        "Headline 2": "md2.sys.typescale.headline2",
+        "Headline 3": "md2.sys.typescale.headline3",
+        "Headline 4": "md2.sys.typescale.headline4",
+        "Headline 5": "md2.sys.typescale.headline5",
+        "Headline 6": "md2.sys.typescale.headline6",
+        "Subtitle 1": "md2.sys.typescale.subtitle1",
+        "Subtitle 2": "md2.sys.typescale.subtitle2",
+        "Body 1": "md2.sys.typescale.body1",
+        "Body 2": "md2.sys.typescale.body2",
+        "Button": "md2.sys.typescale.button",
+        "Caption": "md2.sys.typescale.caption",
+        "Overline": "md2.sys.typescale.overline"
+      },
+      "subproperties": {
+        "fontFamily": "font",
+        "fontWeight": "weight",
+        "fontSize": "size",
+        "letterSpacing": "tracking",
+        "lineHeightPx": "line-height"
+      }
+    }
+  },
+  "compose": {
+    "colors": {
+      "md2.sys.color.primary": "MaterialTheme.colors.primary",
+      "md2.sys.color.primary-variant": "MaterialTheme.colors.primaryVariant",
+      "md2.sys.color.secondary": "MaterialTheme.colors.secondary",
+      "md2.sys.color.secondary-variant": "MaterialTheme.colors.secondaryVariant",
+      "md2.sys.color.background": "MaterialTheme.colors.background",
+      "md2.sys.color.surface": "MaterialTheme.colors.surface",
+      "md2.sys.color.error": "MaterialTheme.colors.error",
+      "md2.sys.color.on-primary": "MaterialTheme.colors.onPrimary",
+      "md2.sys.color.on-secondary": "MaterialTheme.colors.onSecondary",
+      "md2.sys.color.on-background": "MaterialTheme.colors.onBackground",
+      "md2.sys.color.on-surface": "MaterialTheme.colors.onSurface",
+      "md2.sys.color.on-error": "MaterialTheme.colors.onError"
+    },
+    "typography": {
+      "symbols": {
+        "md2.sys.typescale.headline1": "MaterialTheme.typography.h1",
+        "md2.sys.typescale.headline2": "MaterialTheme.typography.h2",
+        "md2.sys.typescale.headline3": "MaterialTheme.typography.h3",
+        "md2.sys.typescale.headline4": "MaterialTheme.typography.h4",
+        "md2.sys.typescale.headline5": "MaterialTheme.typography.h5",
+        "md2.sys.typescale.headline6": "MaterialTheme.typography.h6",
+        "md2.sys.typescale.subtitle1": "MaterialTheme.typography.subtitle1",
+        "md2.sys.typescale.subtitle2": "MaterialTheme.typography.subtitle2",
+        "md2.sys.typescale.body1": "MaterialTheme.typography.body1",
+        "md2.sys.typescale.body2": "MaterialTheme.typography.body2",
+        "md2.sys.typescale.button": "MaterialTheme.typography.button",
+        "md2.sys.typescale.caption": "MaterialTheme.typography.caption",
+        "md2.sys.typescale.overline": "MaterialTheme.typography.overline"
+      },
+      "subproperties": {
+        "font": "fontFamily",
+        "weight": "fontWeight",
+        "size": "fontSize",
+        "tracking": "letterSpacing",
+        "line-height": "lineHeight"
+      }
+    },
+    "options": {
+      "packages": {
+        "MaterialTheme": "androidx.compose.material"
+      }
+    }
+  }
+}

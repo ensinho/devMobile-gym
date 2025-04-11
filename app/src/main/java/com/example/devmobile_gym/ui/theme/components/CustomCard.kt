@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -18,6 +19,7 @@ import com.example.components.ui.theme.components.CustomButton
 
 @Composable
 fun CustomCard(
+    isAdm: Boolean = false,
     treino: String,
     description: List<String>,
     buttonText: String,
@@ -44,12 +46,13 @@ fun CustomCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(2.dp)
             .animateContentSize(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF2E3238))
     ) {
-        Column (modifier = Modifier.padding(20.dp)) {
+        Column (modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp)) {
+
             Row (
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -78,9 +81,27 @@ fun CustomCard(
                 color = Color(0xFFAAAEB6),
                 fontSize = 15.sp
                 )
-            if (needButton) {
+            Spacer(Modifier.height(10.dp))
+
+            if (needButton && !isAdm) {
                 Spacer(modifier = Modifier.height(3.dp))
-                CustomButton(buttonText, onClick = { onButtonClick() })
+                CustomButton(text = buttonText, onClick = { onButtonClick() })
+            }
+
+            if (isAdm) {
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ){
+
+                    CustomButton(modifier = Modifier.weight(1f),"Excluir", onClick = { /* Lógica para excluir */ }, backgroundColor = Color.Red, fillWidth = false)
+                    Spacer(modifier = Modifier.width(10.dp))
+                    CustomButton(modifier = Modifier.weight(1f),"Editar", onClick = { /* Lógica para editar */ }, fillWidth = false)
+
+
+                }
+
             }
 
         }
@@ -90,5 +111,5 @@ fun CustomCard(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewCard() {
-    CustomCard("Treino A", listOf("Panturrilha em pé (máquina)", "Cadeira Extensora (máquina)", "Agachamento Livre", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {}, false)
+    CustomCard(true,"Treino A", listOf("Panturrilha em pé (máquina)", "Cadeira Extensora (máquina)", "Agachamento Livre", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {}, false)
 }

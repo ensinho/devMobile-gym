@@ -1,12 +1,12 @@
 package com.example.devmobile_gym.navigation
 
-import RegisterScreen
+import com.example.devmobile_gym.presentation.screens.register.RegisterScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.devmobile_gym.ui.theme.screens.LoginScreen
-import com.example.devmobile_gym.ui.theme.screens.RegisterScreen2
+import com.example.devmobile_gym.presentation.screens.login.LoginScreen
+import com.example.devmobile_gym.presentation.screens.register.RegisterScreen2
 
 
 @Composable

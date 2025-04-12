@@ -1,5 +1,3 @@
-package com.example.devmobile_gym.ui.theme.screens
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,10 +17,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.R
+import com.example.devmobile_gym.presentation.components.CustomTextField
 
 @Composable
-fun RegisterScreen2(onBack: ()-> Unit) {
+fun RegisterScreen(onNavigateToRegister2: () -> Unit) {
     Column(
 
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -44,30 +44,22 @@ fun RegisterScreen2(onBack: ()-> Unit) {
             fontSize = 20.sp
         )
         Text(
-            text = "Digite o sua senha para se registrar" ,
+            text = "Digite o seu email para se registrar." ,
             color = Color.White
         )
         var text1 by remember { mutableStateOf("") }
-        com.example.devmobile_gym.ui.theme.components.CustomTextField(
-            label = "Senha",
+        CustomTextField(
+            label = "Email@domain.com",
             value = text1,
             onValueChange = { text1 = it },
             padding = 10
 
         )
-        var text2 by remember { mutableStateOf("") }
-        com.example.devmobile_gym.ui.theme.components.CustomTextField(
-            label = "Confirme sua senha",
-            value = text2,
-            onValueChange = { text2 = it },
-            padding = 10
+        CustomButton(
+            text = "Continuar",
+            onClick =  onNavigateToRegister2
 
-        )
-        com.example.components.ui.theme.components.CustomButton(
-            text = "Registrar",
-            onClick = { onBack
 
-            }
 
         )
         Text(
@@ -75,7 +67,6 @@ fun RegisterScreen2(onBack: ()-> Unit) {
             text = " By clicking continue, you agree to our Terms of service and Privacy Policy" ,
             color = Color.White
         )
-
     }
 
 

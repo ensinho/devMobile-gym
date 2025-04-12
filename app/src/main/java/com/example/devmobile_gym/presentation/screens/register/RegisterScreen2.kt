@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens
+package com.example.devmobile_gym.presentation.screens.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

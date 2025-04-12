@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.ui.theme.components
+package com.example.devmobile_gym.presentation.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*

@@ -1,4 +1,4 @@
-package com.example.devmobile_gym
+package com.example.devmobile_gym.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

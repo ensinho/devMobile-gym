@@ -66,7 +66,7 @@ fun RegisterScreen2(onBack: ()-> Unit) {
         )
         com.example.components.ui.theme.components.CustomButton(
             text = "Registrar",
-            onClick = { onBack
+            onClick = { onBack()
 
             }
 

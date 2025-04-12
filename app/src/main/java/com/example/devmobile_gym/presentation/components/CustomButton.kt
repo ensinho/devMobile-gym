@@ -25,9 +25,7 @@ fun CustomButton(
     fillWidth: Boolean = true
 ) {
     val buttonModifier = Modifier
-        .height(34.dp)
-        .padding(0.dp)
-        .then(if (fillWidth) Modifier.fillMaxWidth() else modifier)
+        .then(if (fillWidth) Modifier.fillMaxWidth().padding(8.dp) else modifier)
 
     Button(
         onClick = onClick,

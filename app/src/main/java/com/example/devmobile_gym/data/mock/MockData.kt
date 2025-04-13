@@ -43,7 +43,7 @@ object MockData {
         fun createRotina(
             id: Int = 1,
             nome: String = "Rotina Semana A",
-            treinos: List<Treino> = listOf(createTreinoA(), createTreinoB(), createTreinoC())
+            treinos: MutableList<Treino> = listOf(createTreinoA(), createTreinoB(), createTreinoC()).toMutableList()
         ): Rotina {
             return Rotina(
                 id = id,
@@ -55,11 +55,11 @@ object MockData {
         fun createTreinoA(
             id: Int = 1,
             nome: String = "Lower A - Quadríceps",
-            exercicios: List<Exercicio> = listOf(
+            exercicios: MutableList<Exercicio> = listOf(
                 createExercicio(1, "Panturrilha em pé (máquina)"),
                 createExercicio(2, "Cadeira extensora (máquina)"),
                 createExercicio(3, "Agachamento livre")
-            )
+            ).toMutableList()
         ): Treino {
             return Treino(
                 id = id,
@@ -71,11 +71,11 @@ object MockData {
         fun createTreinoB(
             id: Int = 2,
             nome: String = "Lower B - Posterior de Coxa",
-            exercicios: List<Exercicio> = listOf(
+            exercicios: MutableList<Exercicio> = listOf(
                 createExercicio(4, "Panturrilha sentada (máquina)"),
                 createExercicio(5, "Cadeira flexora (máquina)"),
                 createExercicio(6, "Agachamento sumô")
-            )
+            ).toMutableList()
         ): Treino {
             return Treino(
                 id = id,
@@ -87,11 +87,11 @@ object MockData {
         fun createTreinoC(
             id: Int = 3,
             nome: String = "Upper A - Peito e Ombro",
-            exercicios: List<Exercicio> = listOf(
+            exercicios: MutableList<Exercicio> = listOf(
                 createExercicio(7, "Supino inclinado (halteres)"),
                 createExercicio(8, "Peck Deck"),
                 createExercicio(9, "Tríceps polia")
-            )
+            ).toMutableList()
         ): Treino {
             return Treino(
                 id = id,

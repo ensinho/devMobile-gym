@@ -5,22 +5,20 @@ import com.example.devmobile_gym.domain.model.Aluno
 import com.example.devmobile_gym.domain.repository.AlunoRepository
 
 class AlunoRepositoryMock : AlunoRepository {
-    override fun logar(email: String, senha: String): String {
+    override fun logar(email: String, senha: String): Aluno? {
         if (email == MockData.alunoMock.email && senha == MockData.alunoMock.senha) {
-            return "Aluno logado com sucesso."
+            return MockData.alunoMock
         } else {
-            return "Credenciais inválidas."
+            return null
         }
     }
 
-    override fun registrar(email: String, senha: String, confirmSenha: String): String {
+    override fun registrar(email: String, senha: String, confirmSenha: String): Aluno? {
         if (email == MockData.alunoMock.email && senha == confirmSenha) {
             MockData.alunoMock.senha = senha
-            return "Aluno registrado com sucesso."
-        } else if (email == MockData.alunoMock.email && !senha.equals(confirmSenha)) {
-            return "As senhas não coincidem."
+            return MockData.alunoMock
         } else {
-            return "Erro ao registrar o aluno."
+            return null
         }
     }
 

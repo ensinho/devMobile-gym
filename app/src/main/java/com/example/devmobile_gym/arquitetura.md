@@ -7,39 +7,41 @@ com.example.devmobile_gym
 │   ├── remote              # Fontes de dados remotas (APIs, Retrofit)
 │   ├── local               # Fontes de dados locais (Room, SharedPrefs)
 │   ├── dto                 # Data Transfer Objects usados na rede
-│   └── repository          # Implementações concretas dos repositórios
+│   ├── repository          # Implementações concretas dos repositórios
+│   └── mock                # Dados mockados para simulação do app sem backend
+│       └── MockData.kt     # Lista de usuários, professores, rotinas, treinos e exercícios simulados
 |
 ├── domain
 │   ├── model               # Modelos puros usados no core da aplicação
+│   │   ├── Pessoa.kt
+│   │   ├── Professor.kt
+│   │   ├── Rotina.kt
+│   │   ├── Treino.kt
+│   │   └── Exercicio.kt
 │   ├── usecase             # Casos de uso (regras de negócio)
 │   └── repository          # Interfaces dos repositórios usados na domain
 |
 ├── presentation
 │   ├── components          # Componentes reutilizáveis com Compose
-│   ├── navigation          # Controle de rotas com NavHost e definição de rotas
-│   │   ├── AppNavHost.kt       # Composable central de navegação
-│   │   └── Screen.kt           # Sealed class com as rotas da aplicação
+│   ├── navigation          # Controle de rotas com NavHost
 │   ├── screens             # Telas separadas por funcionalidade
 │   │   ├── login
 │   │   │   ├── LoginScreen.kt
 │   │   │   ├── LoginViewModel.kt
 │   │   │   └── LoginState.kt
-│   │   ├── cadastro
-│   │   │   ├── CadastroScreen.kt
-│   │   │   ├── CadastroViewModel.kt
-│   │   │   └── CadastroState.kt
 │   │   ├── home
 │   │   │   ├── HomeScreen.kt
-│   │   │   ├── HomeViewModel.kt
-│   │   │   └── HomeState.kt
-│   │   ├── perfil
-│   │   │   ├── PerfilScreen.kt
-│   │   │   ├── PerfilViewModel.kt
-│   │   │   └── PerfilState.kt
-│   └── MainActivity.kt  # Entry point do app
+│   │   │   └── HomeViewModel.kt
+│   │   ├── register
+│   │   │   ├── RegisterScreen.kt
+│   │   │   └── RegisterViewModel.kt
+│   │   └── dashboard_professor
+│   │       ├── DashboardProfessorScreen.kt
+│   │       └── DashboardProfessorViewModel.kt
+│   └── MainActivity.kt     # Entry point do app
 |
 ├── di
-│   └── AppModule.kt     # Configuração do Hilt (injeção de dependência)
+│   └── AppModule.kt        # Configuração do Hilt (injeção de dependência)
 |
 └── ui.theme
     ├── Color.kt

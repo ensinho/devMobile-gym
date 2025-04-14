@@ -47,7 +47,9 @@ fun CustomButton(
 @Preview(showBackground = true)
 @Composable
 fun PreviewCustomButton() {
-    CustomButton( text = "Registrar", onClick = {
-        // Lógica para o clique do botão
-    }) // pode passar qualquer cor depois do onClick
+    CustomButton(
+        text = "Aulas & Funcionais",
+        onClick = { /* Handle button click */ },
+
+        )
 }

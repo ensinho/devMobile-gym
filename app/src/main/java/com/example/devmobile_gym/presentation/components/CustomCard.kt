@@ -51,7 +51,7 @@ fun CustomCard(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF2E3238))
     ) {
-        Column (modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp)) {
+        Column (modifier = Modifier.padding(top = 15.dp, bottom = 10.dp, start = 13.dp, end = 18.dp)) {
 
             Row (
                 modifier = Modifier.fillMaxWidth(),
@@ -59,7 +59,7 @@ fun CustomCard(
             ){
                 Text(
                     text = treino,
-                    fontSize = 22.sp,
+                    fontSize = 25.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )

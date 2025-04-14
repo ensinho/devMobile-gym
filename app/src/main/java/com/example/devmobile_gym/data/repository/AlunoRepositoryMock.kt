@@ -22,4 +22,8 @@ class AlunoRepositoryMock : AlunoRepository {
         }
     }
 
+    override fun getAlunoLogado(): Aluno {
+        return MockData.alunoMock
+    }
+
 }

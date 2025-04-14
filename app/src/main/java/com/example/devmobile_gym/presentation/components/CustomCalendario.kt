@@ -50,7 +50,8 @@ val dias: MutableList<String> = mutableListOf("SEG", "TER", "QUA", "QUI", "QUI",
 fun CustomCalendario() {
     Card(
         modifier = Modifier
-            .animateContentSize(),
+            .animateContentSize()
+            .padding(5.dp),
         shape = RoundedCornerShape(9.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF3B3B3B))
     ) {

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.devmobile_gym.presentation.screens.home.HomeScreen
 import com.example.devmobile_gym.presentation.screens.login.LoginScreen
 import com.example.devmobile_gym.presentation.screens.register.RegisterScreen2
 
@@ -30,6 +31,10 @@ fun AppNavHost() {
                 navController.popBackStack()
             })
         }
+        composable("Home") {
+            HomeScreen()
+        }
+        // Adicionar as novas telas
 
     }
 }

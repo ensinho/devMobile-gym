@@ -16,8 +16,12 @@ fun AppNavHost() {
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
-            LoginScreen(onNavigateToRegister = {
+            LoginScreen(
+                onNavigateToRegister = {
                 navController.navigate("register")
+            },
+                onNavigateToHome = {
+                navController.navigate("Home")
             })
         }
 

@@ -117,6 +117,7 @@ object MockData {
 
     // Use the factory methods to generate the mock objects
     val alunoMock: Aluno = Factory.createAluno()
+    var usuarios: MutableList<Aluno> = mutableListOf(alunoMock)
     val professorMock: Professor = Factory.createProfessor()
     val rotinaMock: Rotina = Factory.createRotina()
     val treinoA: Treino = Factory.createTreinoA()

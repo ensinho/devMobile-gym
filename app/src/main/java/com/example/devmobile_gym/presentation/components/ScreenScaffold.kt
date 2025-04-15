@@ -2,8 +2,12 @@ package com.example.devmobile_gym.presentation.components
 
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -31,9 +35,13 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.devmobile_gym.R
 
 // classe que representa cada item da navbar
@@ -57,7 +65,7 @@ sealed class NavIcon {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenScaffold(
+fun CustomScreenScaffold(
     title: String,
     needToGoBack: Boolean = false,
     onBackClick: () -> Unit,
@@ -73,8 +81,8 @@ fun ScreenScaffold(
         /* HOME */
         BottomNavigationItem(
             title = "Home",
-            selectedIcon = NavIcon.VectorIcon(Icons.Filled.Home),
-            unselectedIcon = NavIcon.VectorIcon(Icons.Outlined.Home),
+            selectedIcon = NavIcon.DrawableIcon(R.drawable.home_icon),
+            unselectedIcon = NavIcon.DrawableIcon(R.drawable.home_icon),
             hasNews = false
             /* badgeCount = null (valor padrão)*/
         ),
@@ -88,6 +96,7 @@ fun ScreenScaffold(
         ),
         /* SCAN QR CODE */
         BottomNavigationItem(
+
             title = "QR Code",
             selectedIcon = NavIcon.DrawableIcon(R.drawable.qr_code_icon),
             unselectedIcon = NavIcon.DrawableIcon(R.drawable.qr_code_icon),
@@ -104,7 +113,7 @@ fun ScreenScaffold(
         ),
         /* PROFILE */
         BottomNavigationItem(
-            title = "ChatBot",
+            title = "Profile",
             selectedIcon = NavIcon.VectorIcon(Icons.Filled.Person),
             unselectedIcon = NavIcon.VectorIcon(Icons.Outlined.Person),
             hasNews = false
@@ -158,57 +167,81 @@ fun ScreenScaffold(
             }
         },
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                containerColor = Color(0xFF2B2B2B),
+                tonalElevation = 6.dp,
+                modifier = Modifier
+                    .height(72.dp)
+                    .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
+            ) {
                 itemsUser.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        selected = selectedItemIndex == index,
-                        onClick = {
-                            selectedItemIndex = index
-                            // navController.navigate(item.title)
-                        },
-                        label = {
-                            Text(item.title)
-                        },
-                        alwaysShowLabel = true,
-                        icon = {
-                            BadgedBox(
-                                badge = {
-                                    when {
-                                        item.badgeCount != null -> {
-                                            Badge {
-                                                Text(text = item.badgeCount.toString())
+                    if (index == 2) {
+                        // Botão central customizado
+                        IconButton(
+                            onClick = { selectedItemIndex = index },
+                            modifier = Modifier
+                                .padding(top = 0.dp)
+                                .background(Color.White, shape = CircleShape)
+                                .padding(3.dp) // Borda branca
+                                .background(Color(0xFF1E88E5), shape = CircleShape) // Fundo azul
+                                .padding(12.dp) // Espaçamento interno
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.qr_code_icon),
+                                contentDescription = item.title,
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .height(24.dp)
+                            )
+                        }
+                    } else {
+                        NavigationBarItem(
+                            selected = selectedItemIndex == index,
+                            onClick = {
+                                selectedItemIndex = index
+                            },
+                            label = {
+                                Text(item.title,color = Color.White)
+                            },
+                            alwaysShowLabel = true,
+                            icon = {
+                                BadgedBox(
+                                    badge = {
+                                        when {
+                                            item.badgeCount != null -> {
+                                                Badge {
+                                                    Text(text = item.badgeCount.toString())
+                                                }
+                                            }
+                                            item.hasNews -> {
+                                                Badge()
                                             }
                                         }
-                                        item.hasNews -> {
-                                            Badge()
+                                    }
+                                ) {
+                                    val iconToShow = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon
+
+                                    when (iconToShow) {
+                                        is NavIcon.VectorIcon -> {
+                                            Icon(
+                                                imageVector = iconToShow.icon,
+                                                contentDescription = item.title
+                                            )
                                         }
-                                    }
-                                }
-                            ) {
-                                val iconToShow = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon
 
-                                when (iconToShow) {
-                                    is NavIcon.VectorIcon -> {
-                                        Icon(
-                                            imageVector = iconToShow.icon,
-                                            contentDescription = item.title
-                                        )
-                                    }
-
-                                    is NavIcon.DrawableIcon -> {
-                                        Icon(
-                                            painter = painterResource(id = iconToShow.resId),
-                                            contentDescription = item.title
-                                        )
+                                        is NavIcon.DrawableIcon -> {
+                                            Icon(
+                                                painter = painterResource(id = iconToShow.resId),
+                                                contentDescription = item.title
+                                            )
+                                        }
                                     }
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
-
-
         }
 
 
@@ -216,4 +249,15 @@ fun ScreenScaffold(
         content(Modifier.padding(innerPadding))
     }
 }
-//asdasda
+
+@Preview(showBackground = true)
+@Composable
+fun ScreenScaffoldPreview() {
+    CustomScreenScaffold(
+        title = "Título",
+        needToGoBack = true,
+        onBackClick = {},
+        onMenuClick = {},
+        content = { modifier -> Text("Conteúdo aqui", modifier = modifier.padding(16.dp)) }
+    )
+}

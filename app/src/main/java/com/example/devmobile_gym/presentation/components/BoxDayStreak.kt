@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.ui.theme.components
+package com.example.devmobile_gym.presentation.components
 
 import android.media.Image
 import androidx.compose.foundation.Image
@@ -70,6 +70,6 @@ fun BoxDayStreak(texto: String, icone: Int) {
 @Preview
 @Composable
 fun PreviewBoxDayStreak() {
-    BoxDayStreak(texto,icone)
+    BoxDayStreak(texto, icone)
 }
 

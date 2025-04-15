@@ -13,7 +13,7 @@
         android:theme="@style/Theme.DevMobilegym"
         tools:targetApi="31" >
         <activity
-            android:name=".ui.theme.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.DevMobilegym" >
             <intent-filter>

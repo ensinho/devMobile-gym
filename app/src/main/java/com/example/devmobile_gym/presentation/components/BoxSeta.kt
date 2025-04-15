@@ -1,4 +1,4 @@
- package com.example.devmobile_gym.ui.theme.components
+ package com.example.devmobile_gym.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -44,7 +44,7 @@ import com.example.devmobile_gym.R
 fun BoxSeta() {
     var expanded by remember { mutableStateOf(false) }
     Card(
-        shape = RoundedCornerShape(6.dp),
+        shape = RoundedCornerShape(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF343434)),
         modifier = Modifier
     ) {

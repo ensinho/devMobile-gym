@@ -1,10 +1,11 @@
-package com.example.devmobile_gym.ui.theme.screens
+package com.example.devmobile_gym.presentation.screens.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,12 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
+import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.R
+import com.example.devmobile_gym.presentation.components.CustomTextField
 
 @Composable
-fun RegisterScreen2(onBack: ()-> Unit) {
+fun RegisterScreen(onNavigateToRegister2: () -> Unit) {
     Column(
 
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -44,41 +49,36 @@ fun RegisterScreen2(onBack: ()-> Unit) {
             fontSize = 20.sp
         )
         Text(
-            text = "Digite o sua senha para se registrar" ,
+            text = "Digite o seu email para se registrar." ,
             color = Color.White
         )
         var text1 by remember { mutableStateOf("") }
-        com.example.devmobile_gym.ui.theme.components.CustomTextField(
-            label = "Senha",
+        CustomTextField(
+            label = "Email@domain.com",
             value = text1,
             onValueChange = { text1 = it },
             padding = 10
 
         )
-        var text2 by remember { mutableStateOf("") }
-        com.example.devmobile_gym.ui.theme.components.CustomTextField(
-            label = "Confirme sua senha",
-            value = text2,
-            onValueChange = { text2 = it },
-            padding = 10
-
-        )
-        com.example.components.ui.theme.components.CustomButton(
-            text = "Registrar",
-            onClick = { onBack
-
-            }
-
+        CustomButton(
+            text = "Continuar",
+            onClick =  onNavigateToRegister2
         )
         Text(
             textAlign = TextAlign.Center,
             text = " By clicking continue, you agree to our Terms of service and Privacy Policy" ,
             color = Color.White
         )
-
     }
 
 
 
 
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    val navController = rememberNavController()
+    RegisterScreen(onNavigateToRegister2 = {navController.navigate("register2")})
 }

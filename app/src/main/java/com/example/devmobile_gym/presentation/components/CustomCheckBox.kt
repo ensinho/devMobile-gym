@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.ui.theme.components
+package com.example.devmobile_gym.presentation.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Checkbox

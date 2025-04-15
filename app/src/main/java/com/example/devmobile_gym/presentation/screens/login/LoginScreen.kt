@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.ui.theme.screens
+package com.example.devmobile_gym.presentation.screens.login
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.devmobile_gym.R
-import com.example.devmobile_gym.ui.theme.components.CustomTextField
+import com.example.devmobile_gym.presentation.components.CustomTextField
 
 @Composable
 fun LoginScreen(onNavigateToRegister: () -> Unit) {

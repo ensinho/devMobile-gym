@@ -15,13 +15,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.CustomTextField
 
 @Composable
-fun LoginScreen(onNavigateToRegister: () -> Unit) {
-    var email by remember { mutableStateOf("") }
-    var senha by remember { mutableStateOf("") }
+fun LoginScreen(viewModel: LoginViewModel = viewModel(), onNavigateToRegister: () -> Unit, onNavigateToHome: () -> Unit) {
+    var email = viewModel.email.value
+    var senha = viewModel.senha.value
+    val errorMessage = viewModel.errorMessage
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -38,10 +40,27 @@ fun LoginScreen(onNavigateToRegister: () -> Unit) {
         Text(text = "Acessar sua conta", color = Color.White)
         Text(text = "Insira suas informações e acesse sua conta", color = Color.White)
 
-        CustomTextField("Email", email, { email = it }, padding = 10)
-        CustomTextField("Senha", senha, { senha = it }, padding = 10)
+        CustomTextField(label = "Email", value = email, onValueChange = viewModel::onEmailChange, padding = 10)
+        CustomTextField(label = "Senha", value = senha, onValueChange = viewModel::onSenhaChange, padding = 10)
 
-        CustomButton("Acessar", onClick = { /* lógica de login */ })
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (!errorMessage.isNullOrEmpty()) {
+
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                fontSize = 16.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.height(5.dp))
+
+        CustomButton("Acessar", onClick = {
+            viewModel.login {
+                onNavigateToHome()
+            }
+        })
         Text(
             text = "Registrar-se na plataforma",
             color = Color.Blue,

@@ -1,0 +1,48 @@
+package com.example.devmobile_gym.presentation.screens.login
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import com.example.devmobile_gym.data.mock.MockData
+import com.example.devmobile_gym.data.repository.AlunoRepositoryMock
+import com.example.devmobile_gym.domain.repository.AlunoRepository
+
+class LoginViewModel(
+    private val alunoRepository: AlunoRepository = AlunoRepositoryMock()
+) : ViewModel() {
+
+    var email = mutableStateOf("")
+        private set
+
+    var senha = mutableStateOf("")
+        private set
+
+    var errorMessage by mutableStateOf<String?>(null)
+        private set
+
+    fun onEmailChange(newEmail: String) {
+        email.value = newEmail
+    }
+
+    fun onSenhaChange(newSenha: String) {
+        senha.value = newSenha
+    }
+
+    fun login(onSuccess: () -> Unit) {
+        val aluno = alunoRepository
+        if (email.value.isNotEmpty() && senha.value.isNotEmpty()) {
+           val success =aluno.logar(email.value, senha.value)
+            if (success) {
+                errorMessage = null
+                onSuccess()
+            } else {
+                errorMessage = "Credenciais inválidas."
+            }
+
+        } else {
+            errorMessage = "Preencha todos os campos"
+        }
+
+    }
+}

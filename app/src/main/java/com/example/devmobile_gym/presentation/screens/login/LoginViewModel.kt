@@ -32,7 +32,7 @@ class LoginViewModel(
     fun login(onSuccess: () -> Unit) {
         val aluno = alunoRepository
         if (email.value.isNotEmpty() && senha.value.isNotEmpty()) {
-           val success =aluno.logar(email.value, senha.value)
+           val success = aluno.logar(email.value, senha.value)
             if (success) {
                 errorMessage = null
                 onSuccess()

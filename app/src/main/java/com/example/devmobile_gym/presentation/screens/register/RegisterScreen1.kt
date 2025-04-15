@@ -4,7 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -21,13 +23,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.CustomTextField
 
 @Composable
-fun RegisterScreen(onNavigateToRegister2: () -> Unit) {
+fun RegisterScreen(viewModel: RegisterViewModel = viewModel(), onNavigateToRegister2: () -> Unit) {
+
+    var email = viewModel.email.value
+    var errorMessage = viewModel.errorMessage
+
     Column(
 
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -52,17 +59,37 @@ fun RegisterScreen(onNavigateToRegister2: () -> Unit) {
             text = "Digite o seu email para se registrar." ,
             color = Color.White
         )
-        var text1 by remember { mutableStateOf("") }
+
         CustomTextField(
             label = "Email@domain.com",
-            value = text1,
-            onValueChange = { text1 = it },
+            value = email,
+            onValueChange = viewModel::onEmailChange,
             padding = 10
 
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (!errorMessage.isNullOrEmpty()) {
+
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                fontSize = 16.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.height(5.dp))
+
         CustomButton(
             text = "Continuar",
-            onClick =  onNavigateToRegister2
+            onClick = {
+                viewModel.validaEmail(viewModel.email.value) {
+                    // lambda para navegar para a próxima tela
+                    onNavigateToRegister2()
+                }
+            }
+
         )
         Text(
             textAlign = TextAlign.Center,

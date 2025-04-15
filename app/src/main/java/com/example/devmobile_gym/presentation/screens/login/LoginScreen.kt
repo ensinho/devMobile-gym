@@ -58,6 +58,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onNavigateToRegister: (
 
         CustomButton("Acessar", onClick = {
             viewModel.login {
+                // lambda para navegar para a próxima tela
                 onNavigateToHome()
             }
         })

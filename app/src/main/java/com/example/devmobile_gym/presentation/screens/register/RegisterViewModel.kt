@@ -35,14 +35,18 @@ class RegisterViewModel(
         senha.value = newSenha
     }
 
+    fun onConfirmaSenhaChange(newConfirmSenha: String) {
+        confirmSenha.value = newConfirmSenha
+    }
+
     // por enquanto é basicamente um login com confirmação de senha.
     fun registrar(onSuccess: () -> Unit) {
         val user = alunoRepository
-        if (email.value.isNotEmpty() && senha.value.isNotEmpty()) {
+        if (confirmSenha.value.isNotEmpty() && senha.value.isNotEmpty()) {
             if (senha.value == confirmSenha.value) {
 
-                val success = user.logar(email.value, senha.value)
-                if (success) {
+                val success = user.registrar(email.value, senha.value, confirmSenha.value)
+                if (success != null) {
                     errorMessage = null
                     onSuccess()
                 } else {
@@ -54,6 +58,19 @@ class RegisterViewModel(
 
         } else {
             errorMessage = "Preencha todos os campos"
+        }
+
+    }
+
+    fun validaEmail(email: String, onSuccess: () -> Unit) {
+        val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
+        val isValido = emailRegex.matches(email)
+
+        if (!isValido) {
+            errorMessage = "Email inválido"
+        } else {
+            errorMessage = null
+            onSuccess()
         }
 
     }

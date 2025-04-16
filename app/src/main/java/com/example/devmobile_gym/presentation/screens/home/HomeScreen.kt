@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = viewModel(), modifier: Modifier = Modifier) {
+fun HomeScreen(viewModel: HomeViewModel = viewModel(), onNavigateToTreino: (Int) -> Unit) {
     val treinos by viewModel.treinos
 
     CustomScreenScaffold (
@@ -68,7 +68,7 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel(), modifier: Modifier = Modi
                         treino = treino.nome,
                         description = treino.exercicios.map { it.nome },
                         buttonText = "Iniciar Treino",
-                        onButtonClick = { /*...*/ }
+                        onButtonClick = { onNavigateToTreino(treino.id) }
                     )
                     Spacer(Modifier.height(8.dp))
                 }
@@ -80,12 +80,4 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel(), modifier: Modifier = Modi
         }
     )
 
-}
-
-
-
-@Preview
-@Composable
-private fun HomePreview() {
-    HomeScreen()
 }

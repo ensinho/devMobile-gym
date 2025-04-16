@@ -135,7 +135,7 @@ private fun ExerciseTHead() {
                 fontSize = 18.sp,
                 textAlign = TextAlign.Center, // Centraliza o texto dentro do espaço
                 modifier = Modifier
-                    .weight(if (item == "ANTERIOR") 1.1f else if (item == "KG") 0.8f else if (item == "REPS") 1f else 1f)
+                    .weight(if (item == "ANTERIOR") 1.2f else if (item == "KG") 0.8f else if (item == "REPS") 1f else 1f)
                     .fillMaxWidth() // Garante que o Text ocupe todo o espaço do weight()
             )
         }

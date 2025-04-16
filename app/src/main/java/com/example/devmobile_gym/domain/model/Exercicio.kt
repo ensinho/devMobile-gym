@@ -5,4 +5,5 @@ data class Exercicio(
     var nome: String,
     var series: Int,
     var repeticoes: Int,
+    var peso: Int
 )

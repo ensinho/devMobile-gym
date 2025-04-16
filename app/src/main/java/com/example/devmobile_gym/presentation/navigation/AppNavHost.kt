@@ -49,9 +49,8 @@ fun AppNavHost() {
             arguments = listOf(
                 navArgument("treinoId") { type = NavType.IntType }
             )
-        ) { backStackEntry ->
-            val treinoId = backStackEntry.arguments?.getInt("treinoId")
-            DetalhesTreinoScreen(treinoId)
+        ) {
+            DetalhesTreinoScreen()
         }
         // Adicionar as novas telas
 

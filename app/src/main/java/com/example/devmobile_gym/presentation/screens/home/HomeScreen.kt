@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.components.CustomCalendario
+import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomCard
-import com.example.devmobile_gym.presentation.components.ScreenScaffold
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.ui.graphics.Color
@@ -31,7 +31,7 @@ import com.example.devmobile_gym.ui.theme.White
 fun HomeScreen(viewModel: HomeViewModel = viewModel(), modifier: Modifier = Modifier) {
     val treinos by viewModel.treinos
 
-    ScreenScaffold(
+    CustomScreenScaffold (
         title = "Home",
         onBackClick = { /* Handle back click */ },
         onMenuClick = { /* Handle menu click */ },

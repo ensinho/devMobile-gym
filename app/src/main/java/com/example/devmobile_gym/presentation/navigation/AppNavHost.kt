@@ -41,7 +41,9 @@ fun AppNavHost() {
         }
 
         composable("Home") {
-            HomeScreen()
+            HomeScreen(onNavigateToTreino = {
+                navController.navigate("detalhesTreino/$it")
+            })
         }
 
         composable(
@@ -49,9 +51,12 @@ fun AppNavHost() {
             arguments = listOf(
                 navArgument("treinoId") { type = NavType.IntType }
             )
-        ) {
-            DetalhesTreinoScreen()
+        ) { backStackEntry ->
+            DetalhesTreinoScreen(backStackEntry = backStackEntry, onBack = {
+                navController.popBackStack()
+            })
         }
+
         // Adicionar as novas telas
 
     }

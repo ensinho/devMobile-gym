@@ -45,13 +45,13 @@ fun AppNavHost() {
         }
 
         composable(
-            route = "detalhesTreino/{rotinaId}",
+            route = "detalhesTreino/{treinoId}",
             arguments = listOf(
-                navArgument("rotinaId") { type = NavType.IntType }
+                navArgument("treinoId") { type = NavType.IntType }
             )
         ) { backStackEntry ->
-            val rotinaId = backStackEntry.arguments?.getInt("rotinaId")
-            DetalhesTreinoScreen(rotinaId)
+            val treinoId = backStackEntry.arguments?.getInt("treinoId")
+            DetalhesTreinoScreen(treinoId)
         }
         // Adicionar as novas telas
 

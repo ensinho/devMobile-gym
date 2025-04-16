@@ -56,9 +56,9 @@ object MockData {
             id: Int = 1,
             nome: String = "Lower A - Quadríceps",
             exercicios: MutableList<Exercicio> = listOf(
-                createExercicio(1, "Panturrilha em pé (máquina)"),
-                createExercicio(2, "Cadeira extensora (máquina)"),
-                createExercicio(3, "Agachamento livre")
+                createExercicio(id = 1, nome = "Panturrilha em pé (máquina)", peso = 180, series = 3, repeticoes = 12),
+                createExercicio(id = 2, nome = "Cadeira extensora (máquina)", peso = 125, series = 3, repeticoes = 12),
+                createExercicio(id = 3, nome = "Agachamento livre", peso = 55, series = 3, repeticoes = 12)
             ).toMutableList()
         ): Treino {
             return Treino(
@@ -72,9 +72,9 @@ object MockData {
             id: Int = 2,
             nome: String = "Lower B - Posterior de Coxa",
             exercicios: MutableList<Exercicio> = listOf(
-                createExercicio(4, "Panturrilha sentada (máquina)"),
-                createExercicio(5, "Cadeira flexora (máquina)"),
-                createExercicio(6, "Agachamento sumô")
+                createExercicio(id = 4, nome = "Panturrilha sentada (máquina)", peso = 80, series = 3, repeticoes = 12),
+                createExercicio(id = 5, nome = "Cadeira flexora (máquina)", peso = 100, series = 3, repeticoes = 12),
+                createExercicio(id = 6, nome = "Agachamento sumô", peso = 120, series = 3, repeticoes = 12)
             ).toMutableList()
         ): Treino {
             return Treino(
@@ -88,9 +88,9 @@ object MockData {
             id: Int = 3,
             nome: String = "Upper A - Peito e Ombro",
             exercicios: MutableList<Exercicio> = listOf(
-                createExercicio(7, "Supino inclinado (halteres)"),
-                createExercicio(8, "Peck Deck"),
-                createExercicio(9, "Tríceps polia")
+                createExercicio(id = 7, nome = "Supino inclinado (halteres)", peso = 25, series = 3, repeticoes = 12),
+                createExercicio(id = 8, nome = "Peck Deck", peso = 60, series = 3, repeticoes = 12),
+                createExercicio(id = 9, nome = "Tríceps polia", peso = 60, series = 3, repeticoes = 12)
             ).toMutableList()
         ): Treino {
             return Treino(
@@ -103,14 +103,16 @@ object MockData {
         fun createExercicio(
             id: Int,
             nome: String,
-            series: Int = 3,
-            repeticoes: Int = 12
+            series: Int,
+            repeticoes: Int,
+            peso: Int
         ): Exercicio {
             return Exercicio(
                 id = id,
                 nome = nome,
                 series = series,
-                repeticoes = repeticoes
+                repeticoes = repeticoes,
+                peso = peso
             )
         }
     }

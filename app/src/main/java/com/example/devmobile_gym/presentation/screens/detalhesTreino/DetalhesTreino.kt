@@ -49,8 +49,10 @@ fun DetalhesTreinoScreen(backStackEntry: NavBackStackEntry, onBack: () -> Unit) 
         onMenuClick = { /* Handle menu click */ },
         onBackClick = { onBack() },
         content = { innerModifier ->
+            val combinedModifier = innerModifier.padding(1.dp)
+
             LazyColumn(
-                modifier = innerModifier.padding(16.dp)
+                modifier = combinedModifier
             ) {
                 items(treino.exercicios) { exercicio ->
                     ExerciseCard(

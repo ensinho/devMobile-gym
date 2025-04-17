@@ -115,6 +115,22 @@ object MockData {
                 peso = peso
             )
         }
+
+        fun createAulas(
+            quantidade: Int = 5,
+            aluno: Aluno = createAluno(),
+            professor: Professor = createProfessor(),
+            treinos: List<Treino> = listOf(createTreinoA(), createTreinoB(), createTreinoC())
+        ): List<Aula> {
+            return (1..quantidade).map { index ->
+                Aula(
+                    id = index,
+                    professor = professor,
+                    data = "13/04", // datas fictícias no mês de abril
+                    alocacaoMaxima = 15
+                )
+            }
+        }
     }
 
     // Use the factory methods to generate the mock objects

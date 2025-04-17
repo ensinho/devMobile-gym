@@ -12,13 +12,14 @@ import com.example.devmobile_gym.presentation.screens.detalhesTreino.DetalhesTre
 import com.example.devmobile_gym.presentation.screens.home.HomeScreen
 import com.example.devmobile_gym.presentation.screens.login.LoginScreen
 import com.example.devmobile_gym.presentation.screens.register.RegisterScreen2
+import com.example.devmobile_gym.presentation.screens.searchScreen.SearchScreen
 
 
 @Composable
 fun AppNavHost() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = "Search") {
         composable("login") {
             LoginScreen(
                 onNavigateToRegister = {
@@ -80,6 +81,10 @@ fun AppNavHost() {
                     navController.navigate("Home")
                 }
             )
+        }
+
+        composable("Search") {
+            SearchScreen()
         }
 
         // Adicionar as novas telas

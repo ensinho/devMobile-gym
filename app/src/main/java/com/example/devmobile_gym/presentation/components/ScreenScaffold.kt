@@ -171,7 +171,6 @@ fun CustomScreenScaffold(
                 containerColor = Color(0xFF2B2B2B),
                 tonalElevation = 6.dp,
                 modifier = Modifier
-                    .height(72.dp)
                     .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
             ) {
                 itemsUser.forEachIndexed { index, item ->
@@ -184,7 +183,7 @@ fun CustomScreenScaffold(
                                 .background(Color.White, shape = CircleShape)
                                 .padding(3.dp) // Borda branca
                                 .background(Color(0xFF1E88E5), shape = CircleShape) // Fundo azul
-                                .padding(12.dp) // Espaçamento interno
+                                .padding(6.dp) // Espaçamento interno
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.qr_code_icon),

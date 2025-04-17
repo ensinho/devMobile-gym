@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.devmobile_gym.presentation.screens.concluiTreino.ConcluiTreino
 import com.example.devmobile_gym.presentation.screens.detalhesTreino.DetalhesTreinoScreen
 import com.example.devmobile_gym.presentation.screens.home.HomeScreen
 import com.example.devmobile_gym.presentation.screens.login.LoginScreen
@@ -55,6 +56,23 @@ fun AppNavHost() {
             DetalhesTreinoScreen(backStackEntry = backStackEntry, onBack = {
                 navController.popBackStack()
             })
+        }
+
+        composable(
+            route = "concluirTreino/{treinoSelecionadoId}",
+            arguments = listOf(
+                navArgument("treinoSelecionadoId") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            ConcluiTreino(
+                backStackEntry = backStackEntry,
+                onBack = {
+                navController.popBackStack()
+                },
+                onConclude = {
+                    navController.navigate("Home")
+                }
+            )
         }
 
         // Adicionar as novas telas

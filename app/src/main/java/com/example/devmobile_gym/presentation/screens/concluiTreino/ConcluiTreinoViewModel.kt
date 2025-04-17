@@ -19,7 +19,7 @@ class ConcluiTreinoViewModel(
     private val repository: AlunoRepository = AlunoRepositoryMock()
 ) : ViewModel() {
 
-    private val treinoSelecionadoId: Int = savedStateHandle.get<Int>("treinoSelecionadoId") ?: -1
+    private val treinoId: Int = savedStateHandle.get<Int>("treinoId") ?: -1
 
     var treinoSelecionado by mutableStateOf<Treino?>(null)
         private set
@@ -30,7 +30,7 @@ class ConcluiTreinoViewModel(
 
     private fun carregarTreino() {
         val aluno = repository.getAlunoLogado()
-        treinoSelecionado = aluno.rotina?.treinos?.find { it.id == treinoSelecionadoId }
+        treinoSelecionado = aluno.rotina?.treinos?.find { it.id == treinoId }
     }
 
     companion object {
@@ -41,7 +41,7 @@ class ConcluiTreinoViewModel(
                 extras: CreationExtras
             ): T {
                 val savedStateHandle = extras.createSavedStateHandle()
-                return DetalhesTreinoViewModel(
+                return ConcluiTreinoViewModel(
                     savedStateHandle = savedStateHandle,
                     repository = AlunoRepositoryMock()
                 ) as T

@@ -1,16 +1,20 @@
 package com.example.devmobile_gym.presentation.screens.concluiTreino
 
+import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
@@ -25,10 +29,11 @@ import com.example.devmobile_gym.ui.theme.White
 // futuramente, o view model desse componente vai chamar uma função que adiciona o treino finalizado
 // na lista de treinos finalizados do histórico do aluno.
 @Composable
-fun ConcluiTreino(backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConclude: () -> Unit) {
+fun ConcluiTreino(backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConclude: () -> Unit
+) {
     val viewModel: ConcluiTreinoViewModel = viewModel(
         viewModelStoreOwner = backStackEntry,
-        factory = DetalhesTreinoViewModel.Factory
+        factory = ConcluiTreinoViewModel.Factory
     )
     val treinoFinalizado = viewModel.treinoSelecionado
 
@@ -60,25 +65,31 @@ fun ConcluiTreino(backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConcl
         ){
             Row (
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(0.3f)
             ){
-                Column {
+                Column (
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+
+                ) {
                     Text(
                         text = "$quantidadeExercicios",
-                        fontSize = 20.sp,
+                        fontSize = 30.sp,
                         color = White
                     )
                     Text(
-                        text = "Exercícios Realizados.",
+                        text = "Exercícios",
                         fontSize = 15.sp,
                         color = White
                     )
                 }
+                Spacer(modifier = Modifier.width(50.dp))
 
                 Column {
                     Text(
                         text = "1h 20min",
-                        fontSize = 20.sp,
+                        fontSize = 30.sp,
                         color = White
                     )
                     Text(
@@ -88,11 +99,18 @@ fun ConcluiTreino(backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConcl
                     )
                 }
             }
+//            Spacer(Modifier.fillMaxSize(0.3f))
 
-            CustomButton(
-                text = "Concluir Treino",
-                onClick = { onConclude() }
-            )
+            Row (
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(0.09f)) {
+
+                CustomButton(
+                    text = "Concluir Treino",
+                    onClick = { onConclude() }
+                )
+            }
         }
     }
 }

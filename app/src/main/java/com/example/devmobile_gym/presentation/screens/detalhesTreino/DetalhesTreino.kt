@@ -3,10 +3,15 @@ package com.example.devmobile_gym.presentation.screens.detalhesTreino
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,15 +25,18 @@ import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.ExerciseCard
 import com.example.devmobile_gym.ui.theme.LightGray
 import androidx.navigation.NavBackStackEntry
+import com.example.components.ui.theme.components.CustomButton
 
 
 @Composable
-fun DetalhesTreinoScreen(backStackEntry: NavBackStackEntry, onBack: () -> Unit) {
+fun DetalhesTreinoScreen(backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConclude: (Int) -> Unit
+) {
     val viewModel: DetalhesTreinoViewModel = viewModel(
         viewModelStoreOwner = backStackEntry,
         factory = DetalhesTreinoViewModel.Factory
     )
     val treino = viewModel.treinoSelecionado
+    val quantidadeExercicios = treino?.exercicios?.size ?: 0
 
     if (treino == null) {
         Column(
@@ -49,18 +57,71 @@ fun DetalhesTreinoScreen(backStackEntry: NavBackStackEntry, onBack: () -> Unit) 
         onMenuClick = { /* Handle menu click */ },
         onBackClick = { onBack() },
         content = { innerModifier ->
-            val combinedModifier = innerModifier.padding(1.dp)
+            val combinedModifier = innerModifier.padding(0.5.dp)
 
-            LazyColumn(
-                modifier = combinedModifier
-            ) {
-                items(treino.exercicios) { exercicio ->
-                    ExerciseCard(
-                        title = exercicio.nome,
-                        peso = exercicio.peso
+            Column(modifier = combinedModifier.fillMaxSize()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFF1E1E1E))
+                        .padding(start = 15.dp, end = 15.dp, top = 5.dp, bottom = 5.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+
+                ) {
+                    Column (
+                        modifier = Modifier.padding(end = 15.dp)
+                    ){
+                        Text(
+                            text = "Duração",
+                            fontSize = 13.sp,
+                            color = LightGray,
+                        )
+                        Text(
+                            text = "1h 30min",
+                            fontSize = 15.sp,
+                            color = LightGray,
+                        )
+                    }
+
+                    Column (
+                        modifier = Modifier.padding(end = 15.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        Text(
+                            text = "Exercícios",
+                            fontSize = 13.sp,
+                            color = LightGray,
+                        )
+                        Text(
+                            text = "$quantidadeExercicios",
+                            fontSize = 15.sp,
+                            color = LightGray,
+                        )
+                    }
+
+                    CustomButton(
+                        text = "Concluir",
+                        onClick = { onConclude(treino.id) }
                     )
                 }
+
+                Spacer(modifier = Modifier.height(5.dp))
+
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                ) {
+                    items(treino.exercicios) { exercicio ->
+                        ExerciseCard(
+                            title = exercicio.nome,
+                            peso = exercicio.peso
+                        )
+                    }
+                }
             }
+
         }
     )
 }

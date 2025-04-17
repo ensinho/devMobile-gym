@@ -53,15 +53,22 @@ fun AppNavHost() {
                 navArgument("treinoId") { type = NavType.IntType }
             )
         ) { backStackEntry ->
-            DetalhesTreinoScreen(backStackEntry = backStackEntry, onBack = {
+            DetalhesTreinoScreen(
+                backStackEntry = backStackEntry,
+                onBack = {
                 navController.popBackStack()
-            })
+                },
+                onConclude = { treinoId ->
+                    navController.navigate("concluirTreino/$treinoId")
+                }
+
+            )
         }
 
         composable(
-            route = "concluirTreino/{treinoSelecionadoId}",
+            route = "concluirTreino/{treinoId}",
             arguments = listOf(
-                navArgument("treinoSelecionadoId") { type = NavType.IntType }
+                navArgument("treinoId") { type = NavType.IntType }
             )
         ) { backStackEntry ->
             ConcluiTreino(

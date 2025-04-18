@@ -40,8 +40,8 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onNavigateToRegister: (
         Text(text = "Acessar sua conta", color = Color.White)
         Text(text = "Insira suas informações e acesse sua conta", color = Color.White)
 
-        CustomTextField(label = "Email", value = email, onValueChange = viewModel::onEmailChange, padding = 10)
-        CustomTextField(label = "Senha", value = senha, onValueChange = viewModel::onSenhaChange, padding = 10)
+        CustomTextField(label = "Email", value = email, onValueChange = viewModel::onEmailChange, padding = 10, modifier = Modifier)
+        CustomTextField(label = "Senha", value = senha, onValueChange = viewModel::onSenhaChange, padding = 10, modifier = Modifier)
 
         Spacer(modifier = Modifier.height(8.dp))
 

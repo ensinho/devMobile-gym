@@ -46,7 +46,8 @@ fun SearchScreen(viewModel: SearchScreenViewModel = viewModel()) {
                         label = "Busque máquinas ou exercícios",
                         value = search,
                         onValueChange = viewModel::onSearchChange,
-                        padding = 10
+                        padding = 10,
+                        modifier = Modifier
                     )
 
                     BoxSeta()

@@ -61,14 +61,16 @@ fun RegisterScreen2(viewModel: RegisterViewModel = viewModel(),  onBack: ()-> Un
             label = "Senha",
             value = senha,
             onValueChange = viewModel::onSenhaChange,
-            padding = 10
+            padding = 10,
+            modifier = Modifier
         )
 
         CustomTextField(
             label = "Confirme sua senha",
             value = confirmarSenha,
             onValueChange = viewModel::onConfirmaSenhaChange,
-            padding = 10
+            padding = 10,
+            modifier = Modifier
         )
 
         Spacer(modifier = Modifier.height(8.dp))

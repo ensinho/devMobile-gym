@@ -64,7 +64,8 @@ fun RegisterScreen(viewModel: RegisterViewModel = viewModel(), onNavigateToRegis
             label = "Email@domain.com",
             value = email,
             onValueChange = viewModel::onEmailChange,
-            padding = 10
+            padding = 10,
+            modifier = Modifier
 
         )
 

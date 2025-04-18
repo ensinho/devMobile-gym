@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.devmobile_gym.presentation.screens.chatBot.ChatBotScreen
 import com.example.devmobile_gym.presentation.screens.concluiTreino.ConcluiTreino
 import com.example.devmobile_gym.presentation.screens.detalhesTreino.DetalhesTreinoScreen
 import com.example.devmobile_gym.presentation.screens.home.HomeScreen
@@ -19,7 +20,7 @@ import com.example.devmobile_gym.presentation.screens.searchScreen.SearchScreen
 fun AppNavHost() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "Search") {
+    NavHost(navController = navController, startDestination = "ChatBot") {
         composable("login") {
             LoginScreen(
                 onNavigateToRegister = {
@@ -85,6 +86,11 @@ fun AppNavHost() {
 
         composable("Search") {
             SearchScreen()
+        }
+        composable("ChatBot") {
+            ChatBotScreen(onBack = {
+                navController.navigate("Home")
+            })
         }
 
         // Adicionar as novas telas

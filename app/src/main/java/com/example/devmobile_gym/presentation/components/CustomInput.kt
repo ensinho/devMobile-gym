@@ -15,12 +15,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun CustomTextField(label: String, value: String, onValueChange: (String) -> Unit, padding : Int) {
+fun CustomTextField(modifier: Modifier, label: String, value: String, onValueChange: (String) -> Unit, padding : Int) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
             .padding(padding.dp),
         singleLine = true,
         visualTransformation = VisualTransformation.None,
@@ -39,5 +39,5 @@ fun CustomTextField(label: String, value: String, onValueChange: (String) -> Uni
 @Composable
 fun PreviewCustomTextField() {
     var text by remember { mutableStateOf("") }
-    CustomTextField(label = "A", value = text, onValueChange = { text = it }, padding = 40)
+//    CustomTextField(label = "A", value = text, onValueChange = { text = it }, padding = 40)
 }

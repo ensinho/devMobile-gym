@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.components.ui.theme.components.CustomButton
+import com.example.devmobile_gym.presentation.components.CardMessage
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomTextField
 
@@ -41,11 +42,7 @@ fun ChatBotScreen(viewModel: ChatBotViewModel = viewModel(), onBack: () -> Unit)
                     modifier = Modifier.weight(1.5f)
                 ){
                     items(messages) { message ->
-                        Text(
-                            text = message.text,
-                            fontSize = 16.sp,
-                            modifier = Modifier.align(if (message.isUser) Alignment.End else Alignment.Start)
-                        )
+                        CardMessage(message)
                     }
                 }
 

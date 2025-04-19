@@ -25,11 +25,12 @@ import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.ExerciseCard
 import com.example.devmobile_gym.ui.theme.LightGray
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import com.example.components.ui.theme.components.CustomButton
 
 
 @Composable
-fun DetalhesTreinoScreen(backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConclude: (Int) -> Unit
+fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConclude: (Int) -> Unit
 ) {
     val viewModel: DetalhesTreinoViewModel = viewModel(
         viewModelStoreOwner = backStackEntry,
@@ -52,6 +53,7 @@ fun DetalhesTreinoScreen(backStackEntry: NavBackStackEntry, onBack: () -> Unit, 
     }
 
     CustomScreenScaffold(
+        navController = navController,
         title = treino.nome,
         needToGoBack = true,
         onMenuClick = { /* Handle menu click */ },

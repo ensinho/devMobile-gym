@@ -25,13 +25,16 @@ import androidx.compose.material3.Divider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = viewModel(), onNavigateToTreino: (Int) -> Unit) {
+fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = viewModel(), onNavigateToTreino: (Int) -> Unit) {
     val treinos by viewModel.treinos
 
     CustomScreenScaffold (
+        navController = navController,
         title = "Home",
         onBackClick = { /* Handle back click */ },
         onMenuClick = { /* Handle menu click */ },

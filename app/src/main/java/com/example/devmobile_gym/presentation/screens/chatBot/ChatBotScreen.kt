@@ -15,19 +15,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.components.CardMessage
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomTextField
 
 @Composable
-fun ChatBotScreen(viewModel: ChatBotViewModel = viewModel(), onBack: () -> Unit) {
+fun ChatBotScreen(navController: NavHostController, viewModel: ChatBotViewModel = viewModel(), onBack: () -> Unit) {
 //    lista de mensagens do chat
     val messages = viewModel.message
 //    input do usuario
     val userInput = viewModel.userInputs
 
     CustomScreenScaffold(
+        navController = navController,
         title = "ChatBot",
         onBackClick = { onBack() },
         onMenuClick = { /* Handle menu click */ },

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.devmobile_gym.presentation.components.BoxSeta
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomTextField
@@ -19,10 +20,11 @@ import com.example.devmobile_gym.presentation.components.ScreenScaffoldPreview
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
-fun SearchScreen(viewModel: SearchScreenViewModel = viewModel()) {
+fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewModel = viewModel()) {
     var search = viewModel.search.value
 
     CustomScreenScaffold(
+        navController = navController,
         title = "Search",
         needToGoBack = false,
         onBackClick = { /*TODO*/ },

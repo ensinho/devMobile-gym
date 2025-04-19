@@ -42,6 +42,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.devmobile_gym.R
 
 // classe que representa cada item da navbar
@@ -66,6 +68,7 @@ sealed class NavIcon {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomScreenScaffold(
+    navController: NavHostController,
     title: String,
     needToGoBack: Boolean = false,
     onBackClick: () -> Unit,
@@ -128,6 +131,7 @@ fun CustomScreenScaffold(
     }
 
 
+
     Scaffold (
 
         modifier = Modifier
@@ -177,7 +181,9 @@ fun CustomScreenScaffold(
                     if (index == 2) {
                         // Botão central customizado
                         IconButton(
-                            onClick = { selectedItemIndex = index },
+                            onClick = {
+                                selectedItemIndex = index
+                                      },
                             modifier = Modifier
                                 .padding(top = 0.dp)
                                 .background(Color.White, shape = CircleShape)
@@ -198,6 +204,12 @@ fun CustomScreenScaffold(
                             selected = selectedItemIndex == index,
                             onClick = {
                                 selectedItemIndex = index
+                                when(index) {
+                                    0 -> navController.navigate("home")
+                                    1 -> navController.navigate("search")
+                                    3 -> navController.navigate("chatbot")
+                                    4 -> navController.navigate("profile")
+                                }
                             },
                             label = {
                                 Text(item.title,color = Color.White)
@@ -252,11 +264,11 @@ fun CustomScreenScaffold(
 @Preview(showBackground = true)
 @Composable
 fun ScreenScaffoldPreview() {
-    CustomScreenScaffold(
-        title = "Título",
-        needToGoBack = true,
-        onBackClick = {},
-        onMenuClick = {},
-        content = { modifier -> Text("Conteúdo aqui", modifier = modifier.padding(16.dp)) }
-    )
+//    CustomScreenScaffold(
+//        title = "Título",
+//        needToGoBack = true,
+//        onBackClick = {},
+//        onMenuClick = {},
+//        content = { modifier -> Text("Conteúdo aqui", modifier = modifier.padding(16.dp)) }
+//    )
 }

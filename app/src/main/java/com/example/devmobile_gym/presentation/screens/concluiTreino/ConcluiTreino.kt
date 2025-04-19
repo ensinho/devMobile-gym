@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.screens.detalhesTreino.ConcluiTreinoViewModel
@@ -29,7 +30,7 @@ import com.example.devmobile_gym.ui.theme.White
 // futuramente, o view model desse componente vai chamar uma função que adiciona o treino finalizado
 // na lista de treinos finalizados do histórico do aluno.
 @Composable
-fun ConcluiTreino(backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConclude: () -> Unit
+fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConclude: () -> Unit
 ) {
     val viewModel: ConcluiTreinoViewModel = viewModel(
         viewModelStoreOwner = backStackEntry,
@@ -57,6 +58,7 @@ fun ConcluiTreino(backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConcl
         needToGoBack = true,
         onMenuClick = { /* Handle menu click */ },
         onBackClick = { onBack() },
+        navController = navController
     ) { innerModifier ->
         Column (
             verticalArrangement = Arrangement.Center,

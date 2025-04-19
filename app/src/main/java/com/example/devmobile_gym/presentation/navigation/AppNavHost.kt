@@ -20,14 +20,14 @@ import com.example.devmobile_gym.presentation.screens.searchScreen.SearchScreen
 fun AppNavHost() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "ChatBot") {
+    NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             LoginScreen(
                 onNavigateToRegister = {
                 navController.navigate("register")
             },
                 onNavigateToHome = {
-                navController.navigate("Home")
+                navController.navigate("home")
             })
         }
 
@@ -43,10 +43,12 @@ fun AppNavHost() {
             })
         }
 
-        composable("Home") {
-            HomeScreen(onNavigateToTreino = {
+        composable("home") {
+            HomeScreen(
+                onNavigateToTreino = {
                 navController.navigate("detalhesTreino/$it")
-            })
+                },
+                navController = navController)
         }
 
         composable(
@@ -62,7 +64,8 @@ fun AppNavHost() {
                 },
                 onConclude = { treinoId ->
                     navController.navigate("concluirTreino/$treinoId")
-                }
+                },
+                navController = navController
 
             )
         }
@@ -79,18 +82,21 @@ fun AppNavHost() {
                 navController.popBackStack()
                 },
                 onConclude = {
-                    navController.navigate("Home")
-                }
+                    navController.navigate("home")
+                },
+                navController = navController
             )
         }
 
-        composable("Search") {
-            SearchScreen()
+        composable("search") {
+            SearchScreen(navController = navController)
         }
-        composable("ChatBot") {
-            ChatBotScreen(onBack = {
-                navController.navigate("Home")
-            })
+        composable("chatbot") {
+            ChatBotScreen(
+                onBack = {
+                navController.navigate("home")
+                         },
+                navController = navController)
         }
 
         // Adicionar as novas telas

@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.example.devmobile_gym.presentation.screens.chatBot.ChatBotScreen
 import com.example.devmobile_gym.presentation.screens.concluiTreino.ConcluiTreino
 import com.example.devmobile_gym.presentation.screens.detalhesTreino.DetalhesTreinoScreen
+import com.example.devmobile_gym.presentation.screens.historico.HistoricoScreen
 import com.example.devmobile_gym.presentation.screens.home.HomeScreen
 import com.example.devmobile_gym.presentation.screens.login.LoginScreen
 import com.example.devmobile_gym.presentation.screens.register.RegisterScreen2
@@ -20,7 +21,7 @@ import com.example.devmobile_gym.presentation.screens.searchScreen.SearchScreen
 fun AppNavHost() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = "historico") {
         composable("login") {
             LoginScreen(
                 onNavigateToRegister = {
@@ -97,6 +98,15 @@ fun AppNavHost() {
                 navController.navigate("home")
                          },
                 navController = navController)
+        }
+
+        composable("historico") {
+            HistoricoScreen(
+                onBack = {
+                navController.navigate("home")
+                         },
+                navController = navController
+            )
         }
 
         // Adicionar as novas telas

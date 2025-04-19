@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.devmobile_gym.presentation.components.BoxSeta
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomTextField
@@ -22,6 +24,17 @@ import com.example.devmobile_gym.ui.theme.White
 @Composable
 fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewModel = viewModel()) {
     var search = viewModel.search.value
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val selectedItemIndex = when (currentRoute) {
+        "home" -> 0
+        "search" -> 1
+        "qrcode" -> 2
+        "chatbot" -> 3
+        "profile" -> 4
+        else -> 0 // default
+    }
 
     CustomScreenScaffold(
         navController = navController,
@@ -29,6 +42,7 @@ fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewMo
         needToGoBack = false,
         onBackClick = { /*TODO*/ },
         onMenuClick = { /*TODO*/ },
+        selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
 
             val combinedModifier = innerModifier.padding(0.5.dp)

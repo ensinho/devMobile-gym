@@ -73,6 +73,7 @@ fun CustomScreenScaffold(
     needToGoBack: Boolean = false,
     onBackClick: () -> Unit,
     onMenuClick: () -> Unit,
+    selectedItemIndex: Int,
     content: @Composable (Modifier) -> Unit
 ) {
 //    forma que a topbar funciona (nesse caso ela some se scrollar pra baixo e volta se scrollar um pouco pra cima)
@@ -124,11 +125,6 @@ fun CustomScreenScaffold(
         )
     )
 
-    // os itens da navbar aparecem selecionados de acordo com o seu index
-    // ex: Cliquei na home, o index atual é 0
-    var selectedItemIndex by rememberSaveable {
-        mutableIntStateOf(0) // index da tela inicial da navbar (HOME)
-    }
 
 
 
@@ -182,7 +178,7 @@ fun CustomScreenScaffold(
                         // Botão central customizado
                         IconButton(
                             onClick = {
-                                selectedItemIndex = index
+                                navController.navigate("qrcode")
                                       },
                             modifier = Modifier
                                 .padding(top = 0.dp)
@@ -203,7 +199,6 @@ fun CustomScreenScaffold(
                         NavigationBarItem(
                             selected = selectedItemIndex == index,
                             onClick = {
-                                selectedItemIndex = index
                                 when(index) {
                                     0 -> navController.navigate("home")
                                     1 -> navController.navigate("search")

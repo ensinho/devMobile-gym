@@ -10,12 +10,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.components.CardMessage
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
@@ -27,6 +29,17 @@ fun ChatBotScreen(navController: NavHostController, viewModel: ChatBotViewModel 
     val messages = viewModel.message
 //    input do usuario
     val userInput = viewModel.userInputs
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val selectedItemIndex = when (currentRoute) {
+        "home" -> 0
+        "search" -> 1
+        "qrcode" -> 2
+        "chatbot" -> 3
+        "profile" -> 4
+        else -> 0 // default
+    }
 
     CustomScreenScaffold(
         navController = navController,
@@ -34,6 +47,7 @@ fun ChatBotScreen(navController: NavHostController, viewModel: ChatBotViewModel 
         onBackClick = { onBack() },
         onMenuClick = { /* Handle menu click */ },
         needToGoBack = true,
+        selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(0.5.dp)
 

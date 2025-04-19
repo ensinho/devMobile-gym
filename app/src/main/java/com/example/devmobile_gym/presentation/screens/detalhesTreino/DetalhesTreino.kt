@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +27,7 @@ import com.example.devmobile_gym.presentation.components.ExerciseCard
 import com.example.devmobile_gym.ui.theme.LightGray
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.components.ui.theme.components.CustomButton
 
 
@@ -38,6 +40,17 @@ fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBa
     )
     val treino = viewModel.treinoSelecionado
     val quantidadeExercicios = treino?.exercicios?.size ?: 0
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val selectedItemIndex = when (currentRoute) {
+        "home" -> 0
+        "search" -> 1
+        "qrcode" -> 2
+        "chatbot" -> 3
+        "profile" -> 4
+        else -> 0 // default
+    }
 
     if (treino == null) {
         Column(
@@ -58,6 +71,7 @@ fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBa
         needToGoBack = true,
         onMenuClick = { /* Handle menu click */ },
         onBackClick = { onBack() },
+        selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(0.5.dp)
 

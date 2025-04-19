@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.screens.detalhesTreino.ConcluiTreinoViewModel
@@ -37,6 +39,17 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
         factory = ConcluiTreinoViewModel.Factory
     )
     val treinoFinalizado = viewModel.treinoSelecionado
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val selectedItemIndex = when (currentRoute) {
+        "home" -> 0
+        "search" -> 1
+        "qrcode" -> 2
+        "chatbot" -> 3
+        "profile" -> 4
+        else -> 0 // default
+    }
 
     if (treinoFinalizado == null) {
         Column(
@@ -58,7 +71,8 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
         needToGoBack = true,
         onMenuClick = { /* Handle menu click */ },
         onBackClick = { onBack() },
-        navController = navController
+        navController = navController,
+        selectedItemIndex = selectedItemIndex
     ) { innerModifier ->
         Column (
             verticalArrangement = Arrangement.Center,

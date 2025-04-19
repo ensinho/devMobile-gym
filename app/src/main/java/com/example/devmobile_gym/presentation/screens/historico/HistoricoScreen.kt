@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.components.CustomCalendario
 import com.example.devmobile_gym.presentation.components.CustomCard
@@ -28,6 +29,17 @@ import com.example.devmobile_gym.ui.theme.White
 fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewModel: HistoricoScreenViewModel = viewModel()) {
 
     val treinos by viewModel.treinos
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val selectedItemIndex = when (currentRoute) {
+        "home" -> 0
+        "search" -> 1
+        "qrcode" -> 2
+        "chatbot" -> 3
+        "profile" -> 4
+        else -> 0 // default
+    }
 
     CustomScreenScaffold(
         navController = navController,
@@ -35,6 +47,7 @@ fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewMo
         onBackClick = { onBack() },
         onMenuClick = { /* Handle menu click */ },
         needToGoBack = true,
+        selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(1.dp)
 

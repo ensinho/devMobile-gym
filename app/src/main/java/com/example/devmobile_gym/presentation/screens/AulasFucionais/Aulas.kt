@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.components.ui.theme.components.CustomButton
+import com.example.devmobile_gym.presentation.components.ClassCardAluno
 import com.example.devmobile_gym.presentation.components.CustomCalendario
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.ui.theme.White
@@ -75,7 +76,7 @@ fun ShowAulas(navController: NavHostController, selectedItemIndex: Int) {
                 }
 
                 itemsIndexed(aulas) { index, aula ->
-                    ClassCard(
+                    ClassCardAluno(
                         data = aula?.data.toString(),
                         aula = "Jiu-Jitsu",
                         professor = aula?.professor?.nome.toString(),

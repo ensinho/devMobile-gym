@@ -2,7 +2,6 @@ package com.example.devmobile_gym.presentation.components
 
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -18,7 +17,7 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun CustomButton(
+fun ButtonPersonalizado(
     modifier: Modifier = Modifier,
     text: String,
     onClick: () -> Unit,
@@ -26,12 +25,12 @@ fun CustomButton(
     fillWidth: Boolean = true
 ) {
     val buttonModifier = Modifier
-        .then(if (fillWidth) Modifier.fillMaxWidth().padding(8.dp) else modifier)
+        .then(if (fillWidth) Modifier.padding(8.dp) else modifier)
 
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
-        shape = RoundedCornerShape(30.dp),
+        shape = RoundedCornerShape(60.dp),
         modifier = buttonModifier
     ) {
         Text(
@@ -39,7 +38,7 @@ fun CustomButton(
             textAlign = TextAlign.Center,
             color = Color.White,
             fontWeight = FontWeight.Bold,
-            fontSize = 16.sp
+            fontSize = 9.sp
         )
     }
 }
@@ -48,7 +47,7 @@ fun CustomButton(
 @Preview(showBackground = true)
 @Composable
 fun PreviewCustomButton() {
-    CustomButton(
+    ButtonPersonalizado(
         text = "Aulas & Funcionais",
         onClick = { /* Handle button click */ },
 

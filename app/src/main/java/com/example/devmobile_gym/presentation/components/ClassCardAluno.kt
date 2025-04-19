@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.example.components.ui.theme.components.CustomButton
 
 @Composable
-fun ClassCard(data: String, aula: String, professor: String, hora: String) {
+fun ClassCardAluno(data: String, aula: String, professor: String, hora: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -63,8 +63,8 @@ fun ClassCard(data: String, aula: String, professor: String, hora: String) {
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
 
-                CustomButton(
-                    text = "Excluir",
+                ButtonPersonalizado(
+                    text = "Tenho interresse",
                     onClick = { /* ação aqui */ },
                     backgroundColor = Color(0xFFDE4343),
                     fillWidth = false,
@@ -78,7 +78,7 @@ fun ClassCard(data: String, aula: String, professor: String, hora: String) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewClassCard() {
-    ClassCard(
+    ClassCardAluno(
         data = "31/01/2003",
         aula = "Jiu-jitsu",
         professor = "Ítalo",

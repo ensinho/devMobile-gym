@@ -24,6 +24,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.BoxDayStreak
 import com.example.devmobile_gym.presentation.components.CardCalendario
@@ -32,12 +34,27 @@ import com.example.devmobile_gym.presentation.components.ProfileCard
 
 
 @Composable
-fun profileScrenn(viewModel:ProfileViewModel = viewModel()) {
+fun profileScrenn(navController: NavHostController, viewModel:ProfileViewModel = viewModel(), onNavigateToHistorico: () -> Unit) {
     val aluno by viewModel.aluno
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val selectedItemIndex = when (currentRoute) {
+        "home" -> 0
+        "search" -> 1
+        "qrcode" -> 2
+        "chatbot" -> 3
+        "profile" -> 4
+        else -> 0 // default
+    }
+
     CustomScreenScaffold(
         title = "Perfil",
         onBackClick = {},
         onMenuClick = {},
+        navController = navController,
+        selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(0.dp)
                 .background(Color(0xFF1E1E1E))
@@ -54,13 +71,18 @@ fun profileScrenn(viewModel:ProfileViewModel = viewModel()) {
                             .padding(end = 16.dp, top = 16.dp),
                         contentAlignment = Alignment.CenterEnd
                     ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.clickable {
+                                onNavigateToHistorico()
+                            }
+                        ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.relogio_ic),
                                 contentDescription = "Ícone exemplo",
-                                modifier = Modifier.height(40.dp)
-                                    .size(27.dp)
-                                    .clickable {  },
+                                modifier = Modifier
+                                    .height(40.dp)
+                                    .size(27.dp),
                                 tint = Color.Unspecified
                             )
                             Spacer(modifier = Modifier.height(4.dp))
@@ -70,6 +92,7 @@ fun profileScrenn(viewModel:ProfileViewModel = viewModel()) {
                             )
                         }
                     }
+
                 }
 
                 item{
@@ -128,9 +151,4 @@ fun profileScrenn(viewModel:ProfileViewModel = viewModel()) {
         }
     )
 
-}
-@Preview
-@Composable
-fun ProfileScrennPreview(){
-    profileScrenn()
 }

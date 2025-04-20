@@ -7,12 +7,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.devmobile_gym.presentation.screens.AulasFucionais.ShowAulas
 import com.example.devmobile_gym.presentation.screens.chatBot.ChatBotScreen
 import com.example.devmobile_gym.presentation.screens.concluiTreino.ConcluiTreino
 import com.example.devmobile_gym.presentation.screens.detalhesTreino.DetalhesTreinoScreen
 import com.example.devmobile_gym.presentation.screens.historico.HistoricoScreen
 import com.example.devmobile_gym.presentation.screens.home.HomeScreen
 import com.example.devmobile_gym.presentation.screens.login.LoginScreen
+import com.example.devmobile_gym.presentation.screens.profile.profileScrenn
 import com.example.devmobile_gym.presentation.screens.register.RegisterScreen2
 import com.example.devmobile_gym.presentation.screens.searchScreen.SearchScreen
 
@@ -21,7 +23,7 @@ import com.example.devmobile_gym.presentation.screens.searchScreen.SearchScreen
 fun AppNavHost() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "historico") {
+    NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             LoginScreen(
                 onNavigateToRegister = {
@@ -49,7 +51,11 @@ fun AppNavHost() {
                 onNavigateToTreino = {
                 navController.navigate("detalhesTreino/$it")
                 },
-                navController = navController)
+                navController = navController,
+                onNavigateToAulas = {
+                    navController.navigate("aulas")
+                }
+            )
         }
 
         composable(
@@ -95,7 +101,7 @@ fun AppNavHost() {
         composable("chatbot") {
             ChatBotScreen(
                 onBack = {
-                navController.navigate("home")
+                    navController.popBackStack()
                          },
                 navController = navController)
         }
@@ -103,9 +109,27 @@ fun AppNavHost() {
         composable("historico") {
             HistoricoScreen(
                 onBack = {
-                navController.navigate("home")
+                    navController.popBackStack()
                          },
                 navController = navController
+            )
+        }
+
+        composable("aulas") {
+            ShowAulas(
+                onBack = {
+                    navController.popBackStack()
+                         },
+                navController = navController
+            )
+        }
+
+        composable("profile") {
+            profileScrenn(
+                navController = navController,
+                onNavigateToHistorico = {
+                    navController.navigate("historico")
+                }
             )
         }
 

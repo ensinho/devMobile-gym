@@ -34,7 +34,7 @@ import kotlin.time.Duration.Companion.days
 
 
 @Composable
-fun ShowAulas(navController: NavHostController, selectedItemIndex: Int) {
+fun ShowAulas(onBack: () -> Unit, navController: NavHostController) {
 
     val viewmodel: AulasViewModel = viewModel()
     val aulas by viewmodel.aulas
@@ -54,10 +54,11 @@ fun ShowAulas(navController: NavHostController, selectedItemIndex: Int) {
 
     CustomScreenScaffold(
         navController = navController,
-        title = "Home",
-        onBackClick = { /* Handle back click */ },
+        title = "Aulas & Funcionais",
+        onBackClick = { onBack() },
         onMenuClick = { /* Handle menu click */ },
         selectedItemIndex = selectedItemIndex,
+        needToGoBack = true,
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(1.dp)
 
@@ -91,5 +92,4 @@ fun ShowAulas(navController: NavHostController, selectedItemIndex: Int) {
 @Preview
 @Composable
 fun ShowAulasPreview() {
-    ShowAulas(navController = NavHostController(LocalContext.current), selectedItemIndex = 0)
 }

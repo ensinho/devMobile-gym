@@ -31,7 +31,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
-fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = viewModel(), onNavigateToTreino: (Int) -> Unit) {
+fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = viewModel(), onNavigateToTreino: (Int) -> Unit, onNavigateToAulas: () -> Unit) {
     val treinos by viewModel.treinos
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -63,7 +63,7 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = view
                     Spacer(Modifier.height(16.dp))
                     CustomButton(
                         text = "Aulas & Funcionais",
-                        onClick = { /*...*/ }
+                        onClick = { onNavigateToAulas() }
                     )
                     Box(
                     ){

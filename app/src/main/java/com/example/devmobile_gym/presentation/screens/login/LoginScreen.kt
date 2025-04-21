@@ -20,7 +20,7 @@ import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.CustomTextField
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = viewModel(), onNavigateToRegister: () -> Unit, onNavigateToHome: () -> Unit) {
+fun LoginScreen(viewModel: LoginViewModel = viewModel(), onNavigateToRegister: () -> Unit, onNavigateToHomeAluno: () -> Unit, onNavigateToHomeProfessor: () -> Unit) {
     var email = viewModel.email.value
     var senha = viewModel.senha.value
     val errorMessage = viewModel.errorMessage
@@ -57,10 +57,11 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onNavigateToRegister: (
         Spacer(modifier = Modifier.height(5.dp))
 
         CustomButton("Acessar", onClick = {
-            viewModel.login {
-                // lambda para navegar para a próxima tela
-                onNavigateToHome()
-            }
+            viewModel.login(onSuccessAluno = {
+                onNavigateToHomeAluno()
+            }, onSuccessProfessor = {
+                onNavigateToHomeProfessor()
+            })
         })
         Text(
             text = "Registrar-se na plataforma",

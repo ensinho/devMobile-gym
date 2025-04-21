@@ -6,10 +6,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.devmobile_gym.data.mock.MockData
 import com.example.devmobile_gym.data.repository.AlunoRepositoryMock
+import com.example.devmobile_gym.data.repository.ProfessorRepositoryMock
 import com.example.devmobile_gym.domain.repository.AlunoRepository
+import com.example.devmobile_gym.domain.repository.ProfessorRepository
 
 class LoginViewModel(
-    private val alunoRepository: AlunoRepository = AlunoRepositoryMock()
+    private val alunoRepository: AlunoRepository = AlunoRepositoryMock(),
+    private val professorRepository: ProfessorRepository = ProfessorRepositoryMock()
 ) : ViewModel() {
 
     var email = mutableStateOf("")
@@ -29,20 +32,28 @@ class LoginViewModel(
         senha.value = newSenha
     }
 
-    fun login(onSuccess: () -> Unit) {
-        val aluno = alunoRepository
-        if (email.value.isNotEmpty() && senha.value.isNotEmpty()) {
-           val success = aluno.logar(email.value, senha.value)
-            if (success) {
-                errorMessage = null
-                onSuccess()
-            } else {
-                errorMessage = "Credenciais inválidas."
-            }
+    fun login(onSuccessAluno: () -> Unit, onSuccessProfessor: () -> Unit) {
 
-        } else {
+        if (email.value.isBlank() || senha.value.isBlank()) {
             errorMessage = "Preencha todos os campos"
+            return
         }
 
+        when {
+            alunoRepository.logar(email.value, senha.value) -> {
+                errorMessage = null
+                onSuccessAluno()
+            }
+
+            professorRepository.logar(email.value, senha.value) -> {
+                errorMessage = null
+                onSuccessProfessor()
+            }
+
+            else -> {
+                errorMessage = "Credenciais inválidas."
+            }
+        }
     }
+
 }

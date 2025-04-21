@@ -28,10 +28,14 @@ fun AppNavHost() {
             LoginScreen(
                 onNavigateToRegister = {
                 navController.navigate("register")
-            },
-                onNavigateToHome = {
+                                       },
+                onNavigateToHomeAluno = {
                 navController.navigate("home")
-            })
+                                        },
+                onNavigateToHomeProfessor = {
+                navController.navigate("homeProfessor")
+                }
+            )
         }
 
         composable("register") {
@@ -56,6 +60,14 @@ fun AppNavHost() {
                     navController.navigate("aulas")
                 }
             )
+        }
+
+        composable("homeProfessor") {
+            ChatBotScreen(
+                onBack = {
+                    navController.popBackStack()
+                },
+                navController = navController)
         }
 
         composable(

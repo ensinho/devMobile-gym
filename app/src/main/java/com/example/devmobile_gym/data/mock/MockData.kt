@@ -139,6 +139,7 @@ object MockData {
     val alunoMock: Aluno = Factory.createAluno()
     var usuarios: MutableList<Aluno> = mutableListOf(alunoMock)
     val professorMock: Professor = Factory.createProfessor()
+    val professores: MutableList<Professor> = mutableListOf(professorMock)
     val rotinaMock: Rotina = Factory.createRotina()
     val treinoA: Treino = Factory.createTreinoA()
     val treinoB: Treino = Factory.createTreinoB()

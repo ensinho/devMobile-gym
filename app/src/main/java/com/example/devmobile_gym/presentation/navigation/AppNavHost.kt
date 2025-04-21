@@ -13,6 +13,7 @@ import com.example.devmobile_gym.presentation.screens.concluiTreino.ConcluiTrein
 import com.example.devmobile_gym.presentation.screens.detalhesTreino.DetalhesTreinoScreen
 import com.example.devmobile_gym.presentation.screens.historico.HistoricoScreen
 import com.example.devmobile_gym.presentation.screens.home.HomeScreen
+import com.example.devmobile_gym.presentation.screens.home.ProfessorHomeScreen
 import com.example.devmobile_gym.presentation.screens.login.LoginScreen
 import com.example.devmobile_gym.presentation.screens.profile.profileScrenn
 import com.example.devmobile_gym.presentation.screens.register.RegisterScreen2
@@ -63,11 +64,15 @@ fun AppNavHost() {
         }
 
         composable("homeProfessor") {
-            ChatBotScreen(
-                onBack = {
-                    navController.popBackStack()
+            ProfessorHomeScreen(
+                navController = navController,
+                onNavigateToAluno = {
+                    navController.navigate("detalhesAluno/$it")
                 },
-                navController = navController)
+                onNavigateToAulas = {
+                    navController.navigate("aulas")
+                }
+            )
         }
 
         composable(

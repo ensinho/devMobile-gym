@@ -127,7 +127,9 @@ object MockData {
                     id = index,
                     professor = professor,
                     data = "13/04", // datas fictícias no mês de abril
-                    alocacaoMaxima = 15
+                    alocacaoMaxima = 15,
+                    hora = "19h",
+                    tipoAula = "Boxe"
                 )
             }
         }

@@ -128,7 +128,7 @@ fun CustomScreenScaffoldProfessor(
             if (needToGoBack) {
 
                 CenterAlignedTopAppBar(
-                    title = { Text(title) }
+                    title = { TitleScaffold() }
                     ,
                     navigationIcon = {
                         IconButton(onClick = { onBackClick() }) {
@@ -145,7 +145,7 @@ fun CustomScreenScaffoldProfessor(
                 )
             } else {
                 TopAppBar(
-                    title = { Text(title) }
+                    title = { TitleScaffold()  }
                     ,
                     actions = {
                         IconButton(onClick = { onMenuClick() }) {

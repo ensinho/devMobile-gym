@@ -4,5 +4,8 @@ data class Aula(
     val id: Int,
     val professor: Professor,
     val alocacaoMaxima: Int,
-    val data: String // ou LocalDate, se preferir
+    val data: String, // ou LocalDate, se preferir
+    val hora : String,
+    val tipoAula : String
+
 )

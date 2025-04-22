@@ -263,14 +263,3 @@ fun CustomScreenScaffold(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ScreenScaffoldPreview() {
-//    CustomScreenScaffold(
-//        title = "Título",
-//        needToGoBack = true,
-//        onBackClick = {},
-//        onMenuClick = {},
-//        content = { modifier -> Text("Conteúdo aqui", modifier = modifier.padding(16.dp)) }
-//    )
-}

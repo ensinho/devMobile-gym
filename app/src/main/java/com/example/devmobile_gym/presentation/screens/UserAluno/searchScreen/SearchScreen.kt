@@ -18,7 +18,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.devmobile_gym.presentation.components.BoxSeta
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomTextField
-import com.example.devmobile_gym.presentation.components.ScreenScaffoldPreview
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.ui.theme.White
 

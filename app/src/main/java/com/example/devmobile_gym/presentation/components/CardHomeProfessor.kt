@@ -23,25 +23,27 @@ import androidx.compose.ui.unit.dp
 import com.example.devmobile_gym.R
 
 @Composable
-fun CardHomeProfessor(texto: String, icone: Int){
+fun CardHomeProfessor(
+    texto: String,
+    icone: Int,
+    onClick: () -> Unit // ação de clique no card inteiro
+) {
     Card(
         modifier = Modifier
             .padding(27.dp)
             .fillMaxWidth()
+            .clickable { onClick() } // Card inteiro clicável
             .border(
-                width =0.5.dp,
+                width = 0.5.dp,
                 color = Color(0xFF343434),
                 shape = RoundedCornerShape(7.dp)
             ),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF343434)),
         shape = RoundedCornerShape(7.dp),
-
-
-        ) {
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(15.dp)
-
         ) {
             Text(
                 text = texto,
@@ -52,18 +54,17 @@ fun CardHomeProfessor(texto: String, icone: Int){
 
             Image(
                 painter = painterResource(id = icone),
-                contentDescription = "caneta",
-                modifier = Modifier
-                    .clickable {  }
-                    .size(27.dp),
-                contentScale = ContentScale.Fit)
-
+                contentDescription = "ícone",
+                modifier = Modifier.size(27.dp),
+                contentScale = ContentScale.Fit
+            )
         }
     }
 }
 
-@Preview
-@Composable
-fun PreviewPainel(){
-    CardHomeProfessor("User", icone = R.drawable.ic_caneta)
-}
+
+//@Preview
+//@Composable
+//fun PreviewPainel(){
+//    CardHomeProfessor("User", icone = R.drawable.ic_caneta)
+//}

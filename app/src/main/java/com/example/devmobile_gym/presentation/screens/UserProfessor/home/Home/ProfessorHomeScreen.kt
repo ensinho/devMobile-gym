@@ -15,6 +15,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.CardHomeProfessor
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldProfessor
+import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 
 @Composable
 fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHomeViewModel = viewModel(), onNavigateToAluno: (Int) -> Unit) {
@@ -24,13 +25,14 @@ fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHo
     val currentRoute = navBackStackEntry?.destination?.route
 
     val selectedItemIndex = when (currentRoute) {
-        "homeProfessor" -> 0
-        "aulas" -> 1
-        "adicionarRotina" -> 2
-        "chatbot" -> 3
-        "gerenciar" -> 4
+        ProfessorRoutes.Home -> 0
+        ProfessorRoutes.Aulas -> 1
+        ProfessorRoutes.AdicionarRotina -> 2
+        ProfessorRoutes.Chatbot -> 3
+        ProfessorRoutes.Gerenciar -> 4
         else -> 0 // default
     }
+
 
     CustomScreenScaffoldProfessor  (
         navController = navController,

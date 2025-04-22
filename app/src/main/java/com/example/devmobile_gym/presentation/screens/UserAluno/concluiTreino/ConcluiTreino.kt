@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.concluiTreino
+package com.example.devmobile_gym.presentation.screens.UserAluno.concluiTreino
 
 import android.widget.Space
 import androidx.compose.foundation.background
@@ -24,7 +24,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.screens.detalhesTreino.ConcluiTreinoViewModel
-import com.example.devmobile_gym.presentation.screens.detalhesTreino.DetalhesTreinoViewModel
+import com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino.DetalhesTreinoViewModel
 import com.example.devmobile_gym.ui.theme.LightGray
 import com.example.devmobile_gym.ui.theme.White
 

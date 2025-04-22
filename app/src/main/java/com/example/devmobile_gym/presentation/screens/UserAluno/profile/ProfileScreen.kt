@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.profile
+package com.example.devmobile_gym.presentation.screens.UserAluno.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,7 +34,7 @@ import com.example.devmobile_gym.presentation.components.ProfileCard
 
 
 @Composable
-fun profileScrenn(navController: NavHostController, viewModel:ProfileViewModel = viewModel(), onNavigateToHistorico: () -> Unit) {
+fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel = viewModel(), onNavigateToHistorico: () -> Unit) {
     val aluno by viewModel.aluno
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()

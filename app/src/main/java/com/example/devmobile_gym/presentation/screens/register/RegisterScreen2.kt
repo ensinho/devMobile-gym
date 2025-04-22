@@ -27,7 +27,7 @@ import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.screens.login.CustomButton
 
 @Composable
-fun RegisterScreen2(viewModel: RegisterViewModel = viewModel(),  onBack: ()-> Unit) {
+fun RegisterScreen2(viewModel: RegisterViewModel = viewModel(), onBack: ()-> Unit) {
     var senha = viewModel.senha.value
     var confirmarSenha = viewModel.confirmSenha.value
     var errorMessage = viewModel.errorMessage

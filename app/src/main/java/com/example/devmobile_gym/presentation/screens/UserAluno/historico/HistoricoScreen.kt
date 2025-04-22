@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.historico
+package com.example.devmobile_gym.presentation.screens.UserAluno.historico
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer

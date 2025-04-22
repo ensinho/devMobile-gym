@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.home
+package com.example.devmobile_gym.presentation.screens.UserAluno.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

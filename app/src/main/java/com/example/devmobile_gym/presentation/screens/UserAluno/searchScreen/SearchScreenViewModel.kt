@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.searchScreen
+package com.example.devmobile_gym.presentation.screens.UserAluno.searchScreen
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

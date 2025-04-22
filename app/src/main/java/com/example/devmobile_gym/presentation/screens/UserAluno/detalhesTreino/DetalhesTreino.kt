@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.detalhesTreino
+package com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

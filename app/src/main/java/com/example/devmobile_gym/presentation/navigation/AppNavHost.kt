@@ -7,17 +7,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.devmobile_gym.presentation.screens.AulasFucionais.ShowAulas
-import com.example.devmobile_gym.presentation.screens.chatBot.ChatBotScreen
-import com.example.devmobile_gym.presentation.screens.concluiTreino.ConcluiTreino
-import com.example.devmobile_gym.presentation.screens.detalhesTreino.DetalhesTreinoScreen
-import com.example.devmobile_gym.presentation.screens.historico.HistoricoScreen
-import com.example.devmobile_gym.presentation.screens.home.HomeScreen
-import com.example.devmobile_gym.presentation.screens.home.ProfessorHomeScreen
+import com.example.devmobile_gym.presentation.screens.UserAluno.AulasFucionais.ShowAulas
+import com.example.devmobile_gym.presentation.screens.UserAluno.chatBot.ChatBotScreen
+import com.example.devmobile_gym.presentation.screens.UserAluno.concluiTreino.ConcluiTreino
+import com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino.DetalhesTreinoScreen
+import com.example.devmobile_gym.presentation.screens.UserAluno.historico.HistoricoScreen
+import com.example.devmobile_gym.presentation.screens.UserAluno.home.HomeScreen
+import com.example.devmobile_gym.presentation.screens.UserProfessor.home.ProfessorHomeScreen
 import com.example.devmobile_gym.presentation.screens.login.LoginScreen
-import com.example.devmobile_gym.presentation.screens.profile.profileScrenn
+import com.example.devmobile_gym.presentation.screens.UserAluno.profile.profileScrenn
 import com.example.devmobile_gym.presentation.screens.register.RegisterScreen2
-import com.example.devmobile_gym.presentation.screens.searchScreen.SearchScreen
+import com.example.devmobile_gym.presentation.screens.UserAluno.searchScreen.SearchScreen
 
 
 @Composable

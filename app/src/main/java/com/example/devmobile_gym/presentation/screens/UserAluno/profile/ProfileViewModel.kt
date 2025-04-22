@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.profile
+package com.example.devmobile_gym.presentation.screens.UserAluno.profile
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

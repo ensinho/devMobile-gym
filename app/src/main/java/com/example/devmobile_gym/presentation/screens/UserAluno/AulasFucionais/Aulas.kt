@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.AulasFucionais
+package com.example.devmobile_gym.presentation.screens.UserAluno.AulasFucionais
 
 import ClassCard
 import androidx.compose.foundation.layout.Arrangement

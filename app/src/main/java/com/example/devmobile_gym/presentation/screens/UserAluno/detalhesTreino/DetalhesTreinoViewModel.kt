@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.detalhesTreino
+package com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue

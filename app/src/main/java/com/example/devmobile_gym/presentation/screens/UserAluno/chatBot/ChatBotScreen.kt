@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.chatBot
+package com.example.devmobile_gym.presentation.screens.UserAluno.chatBot
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

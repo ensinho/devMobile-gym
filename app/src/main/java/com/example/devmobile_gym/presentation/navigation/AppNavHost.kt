@@ -69,9 +69,9 @@ fun AppNavHost() {
                 onNavigateToAluno = {
                     navController.navigate("detalhesAluno/$it")
                 },
-                onNavigateToAulas = {
-                    navController.navigate("aulas")
-                }
+//                onNavigateToAulas = {
+//                    navController.navigate("aulas")
+//                }
             )
         }
 

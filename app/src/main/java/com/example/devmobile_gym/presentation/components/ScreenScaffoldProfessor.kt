@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.devmobile_gym.R
+import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 
 // classe que representa cada item da navbar
 data class BottomNavigationItemProfessor(
@@ -190,7 +191,7 @@ fun CustomScreenScaffoldProfessor(
                             selected = selectedItemIndex == index,
                             onClick = {
                                 when(index) {
-                                    0 -> navController.navigate("homeProfessor")
+                                    0 -> navController.navigate(ProfessorRoutes.Home)
                                     1 -> navController.navigate("aulas")
                                     3 -> navController.navigate("chatbot")
                                     4 -> navController.navigate("gerenciar")

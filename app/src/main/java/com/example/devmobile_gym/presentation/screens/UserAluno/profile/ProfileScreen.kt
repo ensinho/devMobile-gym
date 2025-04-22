@@ -31,6 +31,7 @@ import com.example.devmobile_gym.presentation.components.BoxDayStreak
 import com.example.devmobile_gym.presentation.components.CardCalendario
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.ProfileCard
+import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 
 
 @Composable
@@ -41,11 +42,11 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
     val currentRoute = navBackStackEntry?.destination?.route
 
     val selectedItemIndex = when (currentRoute) {
-        "home" -> 0
-        "search" -> 1
-        "qrcode" -> 2
-        "chatbot" -> 3
-        "profile" -> 4
+        AlunoRoutes.Home -> 0
+        AlunoRoutes.Search -> 1
+        AlunoRoutes.QrCode -> 2
+        AlunoRoutes.Chatbot -> 3
+        AlunoRoutes.Profile -> 4
         else -> 0 // default
     }
 

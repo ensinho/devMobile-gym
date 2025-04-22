@@ -19,6 +19,7 @@ import com.example.devmobile_gym.presentation.components.BoxSeta
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.components.ScreenScaffoldPreview
+import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
@@ -28,13 +29,14 @@ fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewMo
     val currentRoute = navBackStackEntry?.destination?.route
 
     val selectedItemIndex = when (currentRoute) {
-        "home" -> 0
-        "search" -> 1
-        "qrcode" -> 2
-        "chatbot" -> 3
-        "profile" -> 4
+        AlunoRoutes.Home -> 0
+        AlunoRoutes.Search -> 1
+        AlunoRoutes.QrCode -> 2
+        AlunoRoutes.Chatbot -> 3
+        AlunoRoutes.Profile -> 4
         else -> 0 // default
     }
+
 
     CustomScreenScaffold(
         navController = navController,

@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.devmobile_gym.R
+import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 
 // classe que representa cada item da navbar
 data class BottomNavigationItem(
@@ -178,7 +179,7 @@ fun CustomScreenScaffold(
                         // Botão central customizado
                         IconButton(
                             onClick = {
-                                navController.navigate("qrcode")
+                                navController.navigate(AlunoRoutes.QrCode) // adicionar depois
                                       },
                             modifier = Modifier
                                 .padding(top = 0.dp)
@@ -199,13 +200,14 @@ fun CustomScreenScaffold(
                         NavigationBarItem(
                             selected = selectedItemIndex == index,
                             onClick = {
-                                when(index) {
-                                    0 -> navController.navigate("home")
-                                    1 -> navController.navigate("search")
-                                    3 -> navController.navigate("chatbot")
-                                    4 -> navController.navigate("profile")
+                                when (index) {
+                                    0 -> navController.navigate(AlunoRoutes.Home)
+                                    1 -> navController.navigate(AlunoRoutes.Search)
+                                    3 -> navController.navigate(AlunoRoutes.Chatbot)
+                                    4 -> navController.navigate(AlunoRoutes.Profile)
                                 }
-                            },
+                            }
+                            ,
                             label = {
                                 Text(item.title,color = Color.White)
                             },

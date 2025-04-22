@@ -29,6 +29,7 @@ import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.components.ClassCardAluno
 import com.example.devmobile_gym.presentation.components.CustomCalendario
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
+import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.ui.theme.White
 import kotlin.time.Duration.Companion.days
 
@@ -44,11 +45,11 @@ fun ShowAulas(onBack: () -> Unit, navController: NavHostController) {
 
 
     val selectedItemIndex = when (currentRoute) {
-        "home" -> 0
-        "search" -> 1
-        "qrcode" -> 2
-        "chatbot" -> 3
-        "profile" -> 4
+        AlunoRoutes.Home -> 0
+        AlunoRoutes.Search -> 1
+        AlunoRoutes.QrCode -> 2
+        AlunoRoutes.Chatbot -> 3
+        AlunoRoutes.Profile -> 4
         else -> 0 // default
     }
 

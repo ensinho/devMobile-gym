@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
@@ -38,11 +39,11 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = view
     val currentRoute = navBackStackEntry?.destination?.route
 
     val selectedItemIndex = when (currentRoute) {
-        "home" -> 0
-        "search" -> 1
-        "qrcode" -> 2
-        "chatbot" -> 3
-        "profile" -> 4
+        AlunoRoutes.Home -> 0
+        AlunoRoutes.Search -> 1
+        AlunoRoutes.QrCode -> 2
+        AlunoRoutes.Chatbot -> 3
+        AlunoRoutes.Profile -> 4
         else -> 0 // default
     }
 

@@ -7,6 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
+import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 import com.example.devmobile_gym.presentation.screens.UserAluno.AulasFucionais.ShowAulas
 import com.example.devmobile_gym.presentation.screens.UserAluno.chatBot.ChatBotScreen
 import com.example.devmobile_gym.presentation.screens.UserAluno.concluiTreino.ConcluiTreino
@@ -24,59 +27,53 @@ import com.example.devmobile_gym.presentation.screens.UserAluno.searchScreen.Sea
 fun AppNavHost() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "login") {
-        composable("login") {
+    NavHost(navController = navController, startDestination = AuthRoutes.Login) {
+
+        // Auth Route (Login e Register)
+        composable(AuthRoutes.Login) {
             LoginScreen(
                 onNavigateToRegister = {
-                navController.navigate("register")
+                navController.navigate(AuthRoutes.Register)
                                        },
                 onNavigateToHomeAluno = {
-                navController.navigate("home")
+                navController.navigate(AlunoRoutes.Home)
                                         },
                 onNavigateToHomeProfessor = {
-                navController.navigate("homeProfessor")
+                navController.navigate(ProfessorRoutes.Home)
                 }
             )
         }
 
-        composable("register") {
+        composable(AuthRoutes.Register) {
             RegisterScreen(onNavigateToRegister2 = {
-                navController.navigate("register2")
+                navController.navigate(AuthRoutes.Register2)
             })
         }
 
-        composable("register2") {
+        composable(AuthRoutes.Register2) {
             RegisterScreen2(onBack = {
                 navController.popBackStack()
             })
         }
 
-        composable("home") {
+        // TODO(vvvvvvROTAS DO ALUNOvvvvvv)
+
+        // HOME Aluno
+        composable(AlunoRoutes.Home) {
             HomeScreen(
                 onNavigateToTreino = {
-                navController.navigate("detalhesTreino/$it")
+                navController.navigate("aluno/detalhesTreino/$it")
                 },
                 navController = navController,
                 onNavigateToAulas = {
-                    navController.navigate("aulas")
+                    navController.navigate(AlunoRoutes.Aulas)
                 }
             )
         }
 
-        composable("homeProfessor") {
-            ProfessorHomeScreen(
-                navController = navController,
-                onNavigateToAluno = {
-                    navController.navigate("detalhesAluno/$it")
-                },
-//                onNavigateToAulas = {
-//                    navController.navigate("aulas")
-//                }
-            )
-        }
-
+        // ALUNO detalhes treino
         composable(
-            route = "detalhesTreino/{treinoId}",
+            route = AlunoRoutes.DetalhesTreino,
             arguments = listOf(
                 navArgument("treinoId") { type = NavType.IntType }
             )
@@ -87,15 +84,16 @@ fun AppNavHost() {
                 navController.popBackStack()
                 },
                 onConclude = { treinoId ->
-                    navController.navigate("concluirTreino/$treinoId")
+                    navController.navigate("aluno/concluirTreino/$treinoId")
                 },
                 navController = navController
 
             )
         }
 
+        // ALUNO concluir treino
         composable(
-            route = "concluirTreino/{treinoId}",
+            route = AlunoRoutes.ConcluirTreino,
             arguments = listOf(
                 navArgument("treinoId") { type = NavType.IntType }
             )
@@ -106,16 +104,19 @@ fun AppNavHost() {
                 navController.popBackStack()
                 },
                 onConclude = {
-                    navController.navigate("home")
+                    navController.navigate(AlunoRoutes.Home)
                 },
                 navController = navController
             )
         }
 
-        composable("search") {
+        // ALUNO BUSCA
+        composable(AlunoRoutes.Search) {
             SearchScreen(navController = navController)
         }
-        composable("chatbot") {
+
+        // ALUNO chatbot
+        composable(AlunoRoutes.Chatbot) {
             ChatBotScreen(
                 onBack = {
                     navController.popBackStack()
@@ -123,7 +124,8 @@ fun AppNavHost() {
                 navController = navController)
         }
 
-        composable("historico") {
+        // ALUNO HISTORICO DE TREINOS
+        composable(AlunoRoutes.Historico) {
             HistoricoScreen(
                 onBack = {
                     navController.popBackStack()
@@ -132,7 +134,8 @@ fun AppNavHost() {
             )
         }
 
-        composable("aulas") {
+        // ALUNO TELA DE AULAS
+        composable(AlunoRoutes.Aulas) {
             ShowAulas(
                 onBack = {
                     navController.popBackStack()
@@ -141,16 +144,31 @@ fun AppNavHost() {
             )
         }
 
-        composable("profile") {
+        // ALUNO PERFIL
+        composable(AlunoRoutes.Profile) {
             profileScrenn(
                 navController = navController,
                 onNavigateToHistorico = {
-                    navController.navigate("historico")
+                    navController.navigate(AlunoRoutes.Historico)
                 }
             )
         }
+        // TODO(^^^^^^^^ ROTAS DO ALUNO ^^^^^^^^)
 
-        // Adicionar as novas telas
+
+        // TODO(vvvvvv ROTAS DO PROFESSOR vvvvvv)
+        // HOME Professor
+        composable(ProfessorRoutes.Home) {
+            ProfessorHomeScreen(
+                navController = navController,
+                onNavigateToAluno = {
+                    navController.navigate("professor/detalhesAluno/$it")
+                },
+//                onNavigateToAulas = {
+//                    navController.navigate("aulas")
+//                }
+            )
+        }
 
     }
 }

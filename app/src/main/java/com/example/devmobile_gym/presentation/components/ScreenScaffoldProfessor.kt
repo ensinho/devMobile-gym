@@ -82,7 +82,7 @@ fun CustomScreenScaffoldProfessor(
         ),
         /* SEARCH */
         BottomNavigationItemProfessor(
-            title = "Aulas  ",
+            title = "Aulas",
             selectedIcon = NavIconProfessor.DrawableIcon(R.drawable.ic_treinos),
             unselectedIcon = NavIconProfessor.DrawableIcon(R.drawable.ic_treinos),
             hasNews = false
@@ -91,7 +91,7 @@ fun CustomScreenScaffoldProfessor(
         /* SCAN QR CODE */
         BottomNavigationItemProfessor(
 
-            title = "QR Code",
+            title = "Adicionar Rotina",
             selectedIcon = NavIconProfessor.DrawableIcon(R.drawable.ic_centroprofessor),
             unselectedIcon = NavIconProfessor.DrawableIcon(R.drawable.ic_centroprofessor),
             hasNews = false
@@ -190,7 +190,7 @@ fun CustomScreenScaffoldProfessor(
                             selected = selectedItemIndex == index,
                             onClick = {
                                 when(index) {
-                                    0 -> navController.navigate("home")
+                                    0 -> navController.navigate("homeProfessor")
                                     1 -> navController.navigate("aulas")
                                     3 -> navController.navigate("chatbot")
                                     4 -> navController.navigate("gerenciar")

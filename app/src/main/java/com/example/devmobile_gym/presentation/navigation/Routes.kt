@@ -15,6 +15,11 @@ object AlunoRoutes {
 object ProfessorRoutes {
     const val Home = "professor/home"
     const val DetalhesAluno = "professor/detalhesAluno/{alunoId}"
+    const val Aulas = "professor/aulas"
+    const val Chatbot = "professor/chatbot"
+    const val Gerenciar = "professor/gerenciar"
+    const val AdicionarRotina = "professor/adicionarRotina"
+
 }
 
 object AuthRoutes {

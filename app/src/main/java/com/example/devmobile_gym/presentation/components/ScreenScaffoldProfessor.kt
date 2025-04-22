@@ -168,7 +168,7 @@ fun CustomScreenScaffoldProfessor(
                         // Botão central customizado
                         IconButton(
                             onClick = {
-                                navController.navigate("qrcode")
+                                navController.navigate("adicionarRotina")
                             },
                             modifier = Modifier
                                 .padding(top = 0.dp)
@@ -191,9 +191,9 @@ fun CustomScreenScaffoldProfessor(
                             onClick = {
                                 when(index) {
                                     0 -> navController.navigate("home")
-                                    1 -> navController.navigate("search")
+                                    1 -> navController.navigate("aulas")
                                     3 -> navController.navigate("chatbot")
-                                    4 -> navController.navigate("profile")
+                                    4 -> navController.navigate("gerenciar")
                                 }
                             },
                             label = {
@@ -247,14 +247,14 @@ fun CustomScreenScaffoldProfessor(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ScreenScaffoldPreview() {
-//    CustomScreenScaffold(
-//        title = "Título",
-//        needToGoBack = true,
-//        onBackClick = {},
-//        onMenuClick = {},
-//        content = { modifier -> Text("Conteúdo aqui", modifier = modifier.padding(16.dp)) }
-//    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ScreenScaffoldPreview() {
+////    CustomScreenScaffold(
+////        title = "Título",
+////        needToGoBack = true,
+////        onBackClick = {},
+////        onMenuClick = {},
+////        content = { modifier -> Text("Conteúdo aqui", modifier = modifier.padding(16.dp)) }
+////    )
+//}

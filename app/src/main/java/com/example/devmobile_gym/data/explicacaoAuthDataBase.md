@@ -3,8 +3,8 @@ https://firebase.google.com/docs/auth/android/password-auth?hl=pt-br
 
 ### Exemplo de autenticação com email e senha:
 
-import com.google.firebase.auth.FirebaseAuth
 ```
+import com.google.firebase.auth.FirebaseAuth
 val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
 fun registerUser(email: String, password: String, onComplete: (Boolean, String?) -> Unit) {

@@ -21,6 +21,7 @@ import com.example.devmobile_gym.presentation.screens.login.LoginScreen
 import com.example.devmobile_gym.presentation.screens.UserAluno.profile.profileScrenn
 import com.example.devmobile_gym.presentation.screens.register.RegisterScreen2
 import com.example.devmobile_gym.presentation.screens.UserAluno.searchScreen.SearchScreen
+import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciaAluno.GerenciaAlunoScreen
 
 
 @Composable
@@ -167,6 +168,23 @@ fun AppNavHost() {
 //                onNavigateToAulas = {
 //                    navController.navigate("aulas")
 //                }
+            )
+        }
+
+        // HOME do ALUNO (visão Professor)
+        composable(
+            route = ProfessorRoutes.DetalhesAluno,
+            arguments = listOf(
+                navArgument("alunoId") { type = NavType.IntType }
+            )
+
+        ) { BackStackEntry ->
+            GerenciaAlunoScreen(
+                backStackEntry = BackStackEntry,
+                navController = navController,
+                onBack = {
+                    navController.popBackStack()
+                },
             )
         }
 

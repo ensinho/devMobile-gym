@@ -29,7 +29,7 @@ fun CustomCard(
     var expanded by remember { mutableStateOf(false) }
     var desc: String
     if (expanded && description.isNotEmpty()) {
-        if (description.size <= 3) {
+        if (description.size <= 2) {
             desc = description.joinToString(", ")
         } else {
             desc = description.joinToString(", ")
@@ -37,7 +37,7 @@ fun CustomCard(
     } else if (description.isEmpty() && expanded) {
         desc = "Nenhum exercício adicionado."
     } else {
-        if (description.size <= 3) {
+        if (description.size <= 2) {
             desc = description.joinToString(", ")
         } else {
             desc = description.take(3).joinToString(", ") + ", ..."

@@ -58,7 +58,8 @@ object MockData {
             exercicios: MutableList<Exercicio> = listOf(
                 createExercicio(id = 1, nome = "Panturrilha em pé (máquina)", peso = 180, series = 3, repeticoes = 12),
                 createExercicio(id = 2, nome = "Cadeira extensora (máquina)", peso = 125, series = 3, repeticoes = 12),
-                createExercicio(id = 3, nome = "Agachamento livre", peso = 55, series = 3, repeticoes = 12)
+                createExercicio(id = 3, nome = "Agachamento livre", peso = 55, series = 3, repeticoes = 12),
+                createExercicio(id = 10, nome = "Agachamento Smith", peso = 55, series = 3, repeticoes = 12)
             ).toMutableList()
         ): Treino {
             return Treino(

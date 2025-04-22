@@ -241,6 +241,11 @@ fun CustomScreenScaffold(
                                                 contentDescription = item.title
                                             )
                                         }
+
+                                        else -> {
+
+                                        }
+
                                     }
                                 }
                             }

@@ -16,12 +16,14 @@ import com.example.devmobile_gym.presentation.screens.UserAluno.concluiTreino.Co
 import com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino.DetalhesTreinoScreen
 import com.example.devmobile_gym.presentation.screens.UserAluno.historico.HistoricoScreen
 import com.example.devmobile_gym.presentation.screens.UserAluno.home.HomeScreen
-import com.example.devmobile_gym.presentation.screens.UserProfessor.home.ProfessorHomeScreen
+
 import com.example.devmobile_gym.presentation.screens.login.LoginScreen
 import com.example.devmobile_gym.presentation.screens.UserAluno.profile.profileScrenn
 import com.example.devmobile_gym.presentation.screens.register.RegisterScreen2
 import com.example.devmobile_gym.presentation.screens.UserAluno.searchScreen.SearchScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciaAluno.GerenciaAlunoScreen
+import com.example.devmobile_gym.presentation.screens.UserProfessor.home.AulasFuncionais.AulasProfessorScreen
+import com.example.devmobile_gym.presentation.screens.UserProfessor.home.Home.ProfessorHomeScreen
 
 
 @Composable
@@ -165,16 +167,35 @@ fun AppNavHost() {
                 onNavigateToAluno = {
                     navController.navigate("professor/detalhesAluno/$it")
                 },
-
-
+//                onNavigateToAulas = {
+//                    navController.navigate("aulas")
+//                }
             )
         }
+
         composable(ProfessorRoutes.Aulas){
             AulasProfessorScreen(
                 navController = navController,
                 onNavigateToAulas = {
                     navController.navigate(ProfessorRoutes.Aulas)
                 }
+            )
+        }
+
+        // HOME do ALUNO (visão Professor)
+        composable(
+            route = ProfessorRoutes.DetalhesAluno,
+            arguments = listOf(
+                navArgument("alunoId") { type = NavType.IntType }
+            )
+
+        ) { BackStackEntry ->
+            GerenciaAlunoScreen(
+                backStackEntry = BackStackEntry,
+                navController = navController,
+                onBack = {
+                    navController.popBackStack()
+                },
             )
         }
 

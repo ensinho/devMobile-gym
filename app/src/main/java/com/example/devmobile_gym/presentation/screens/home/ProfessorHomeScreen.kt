@@ -33,26 +33,27 @@ import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldPro
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
-fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHomeViewModel = viewModel()) {
+fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHomeViewModel = viewModel(), onNavigateToAluno: (Int) -> Unit) {
     val alunos by viewModel.alunos
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
     val selectedItemIndex = when (currentRoute) {
-        "home" -> 0
-        "search" -> 1
-        "qrcode" -> 2
+        "homeProfessor" -> 0
+        "aulas" -> 1
+        "adicionarRotina" -> 2
         "chatbot" -> 3
-        "profile" -> 4
+        "gerenciar" -> 4
         else -> 0 // default
     }
 
     CustomScreenScaffoldProfessor  (
         navController = navController,
-        title = "Home",
+        title = "Painel Professor",
         onBackClick = { /* Handle back click */ },
         onMenuClick = { /* Handle menu click */ },
+        needToGoBack = false,
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(1.dp)
@@ -60,10 +61,12 @@ fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHo
             LazyColumn(
                 modifier = combinedModifier
             ) {
-                items(alunos) { alunos ->
+//                Text
+                items(alunos) { aluno ->
                     CardHomeProfessor(
-                        texto = alunos.nome,
-                        icone = R.drawable.ic_caneta
+                        texto = aluno.nome,
+                        icone = R.drawable.ic_caneta,
+                        onClick = { onNavigateToAluno(aluno.userId)}
                     )
                     Spacer(Modifier.height(8.dp))
 
@@ -75,45 +78,45 @@ fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHo
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ProfessorHomePreview() {
-    val fakeNavController = rememberNavController()
-    val fakeAlunos = listOf(
-        Aluno(1,"renan","","",),
-        Aluno(2,"joao","","",),
-        Aluno(3,"Lucas","","",)
-    )
-
-    // Recria o conteúdo da tela usando dados mockados
-    CustomScreenScaffoldProfessor(
-        navController = fakeNavController,
-        title = "Home",
-        onBackClick = {},
-        onMenuClick = {},
-        selectedItemIndex = 0,
-        content = { innerModifier ->
-            val combinedModifier = innerModifier.padding(0.dp)
-                .background(Color(0xFF1E1E1E))
-            LazyColumn(modifier = combinedModifier
-                .fillMaxSize()) {
-
-                item {
-                    Text(modifier = Modifier
-                        .padding(10.dp),
-                        color = White,
-                        text = "Painel de Alunos",
-                        fontSize = 35.sp
-                    )
-                }
-                items(fakeAlunos) { aluno ->
-                    CardHomeProfessor(
-                        texto = aluno.nome,
-                        icone = R.drawable.ic_caneta
-                    )
-                    Spacer(Modifier.height(4.dp))
-                }
-            }
-        }
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ProfessorHomePreview() {
+//    val fakeNavController = rememberNavController()
+//    val fakeAlunos = listOf(
+//        Aluno(1,"renan","","",),
+//        Aluno(2,"joao","","",),
+//        Aluno(3,"Lucas","","",)
+//    )
+//
+//    // Recria o conteúdo da tela usando dados mockados
+//    CustomScreenScaffoldProfessor(
+//        navController = fakeNavController,
+//        title = "Home",
+//        onBackClick = {},
+//        onMenuClick = {},
+//        selectedItemIndex = 0,
+//        content = { innerModifier ->
+//            val combinedModifier = innerModifier.padding(0.dp)
+//                .background(Color(0xFF1E1E1E))
+//            LazyColumn(modifier = combinedModifier
+//                .fillMaxSize()) {
+//
+//                item {
+//                    Text(modifier = Modifier
+//                        .padding(10.dp),
+//                        color = White,
+//                        text = "Painel de Alunos",
+//                        fontSize = 35.sp
+//                    )
+//                }
+//                items(fakeAlunos) { aluno ->
+//                    CardHomeProfessor(
+//                        texto = aluno.nome,
+//                        icone = R.drawable.ic_caneta
+//                    )
+//                    Spacer(Modifier.height(4.dp))
+//                }
+//            }
+//        }
+//    )
+//}

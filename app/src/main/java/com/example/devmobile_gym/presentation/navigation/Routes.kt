@@ -19,7 +19,7 @@ object ProfessorRoutes {
     const val Chatbot = "professor/chatbot"
     const val Gerenciar = "professor/gerenciar"
     const val AdicionarRotina = "professor/adicionarRotina"
-
+    const val CriarTreino = "professor/criarTreino"
 }
 
 object AuthRoutes {

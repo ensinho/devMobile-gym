@@ -112,7 +112,9 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
                         }
 
                         IconButton(
-                            onClick = {},
+                            onClick = {
+                                navController.navigate(ProfessorRoutes.CriarTreino)
+                            },
                             modifier = Modifier.size(35.dp)
                         ) {
                             Icon(

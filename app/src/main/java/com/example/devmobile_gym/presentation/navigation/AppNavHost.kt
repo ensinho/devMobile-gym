@@ -24,7 +24,7 @@ import com.example.devmobile_gym.presentation.screens.UserAluno.searchScreen.Sea
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciaAluno.GerenciaAlunoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.home.AulasFuncionais.AulasProfessorScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.home.Home.ProfessorHomeScreen
-
+import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.CriarTreinoScreen
 
 @Composable
 fun AppNavHost() {
@@ -179,6 +179,15 @@ fun AppNavHost() {
                 onNavigateToAulas = {
                     navController.navigate(ProfessorRoutes.Aulas)
                 }
+            )
+        }
+
+        // CRIAR TREINO ( visao professor )
+        composable(route = ProfessorRoutes.CriarTreino) { backStackEntry ->
+            CriarTreinoScreen(
+                navController = navController,
+                backStackEntry = backStackEntry,
+                onBack = { navController.popBackStack() }
             )
         }
 

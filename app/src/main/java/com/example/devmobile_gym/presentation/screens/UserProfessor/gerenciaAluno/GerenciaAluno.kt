@@ -37,7 +37,7 @@ import com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino.D
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
-fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBackStackEntry, onBack: () -> Unit) {
+fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBackStackEntry, onBack: () -> Unit, NavigateToEdit: () -> Unit) {
     // factory para o viewmodel receber os parametros da rota
     val viewModel: GerenciaAlunoViewModel = viewModel(
         viewModelStoreOwner = backStackEntry,
@@ -136,7 +136,7 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
                         /* Implementar a logica de Editar e Remover treino*/
                         // obs -> vai precisar modificar o componente CustomCard
                         onButtonClick = {  },
-                        editButton = {}
+                        editButton = { NavigateToEdit() }
                     )
                     Spacer(Modifier.height(8.dp))
                 }

@@ -28,6 +28,7 @@ import com.example.devmobile_gym.presentation.screens.UserProfessor.adicionaEdit
 import com.example.devmobile_gym.presentation.screens.UserProfessor.adicionaMaquinaExercicio.AdicionaMaquinaScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.home.ProfessorHomeScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.CriarTreinoScreen
+import com.example.devmobile_gym.presentation.screens.UserProfessor.editarTreino.EditarTreinoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciarMaquinasExercicios.GerenciarMaquinasExerciciosScreen
 
 @Composable
@@ -231,6 +232,7 @@ fun AppNavHost() {
                 onBack = {
                     navController.popBackStack()
                 },
+                NavigateToEdit = {navController.navigate(ProfessorRoutes.EditarTreino)}
             )
         }
 
@@ -267,6 +269,14 @@ fun AppNavHost() {
             AdicionaEditaAula(
                 navController = navController,
                 onBack = {navController.popBackStack()}
+            )
+        }
+
+        composable(route = ProfessorRoutes.EditarTreino) { backStackEntry ->
+            EditarTreinoScreen(
+                navController = navController,
+                backStackEntry = backStackEntry,
+                onBack = { navController.popBackStack() }
             )
         }
 

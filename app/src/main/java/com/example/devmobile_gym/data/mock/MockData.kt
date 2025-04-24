@@ -29,7 +29,7 @@ object MockData {
         fun createProfessor(
             id: Int = 1,
             nome: String = "Ana Paula",
-            email: String = "ana.paula@academia.com",
+            email: String = "adm",
             senha: String = "prof123"
         ): Professor {
             return Professor(

@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -53,7 +55,9 @@ fun TelaGerenciamento(navController: NavHostController, onBack: () -> Unit){
                     BoxSeta2("Professor")
                     BoxSeta2("Alocação max")
                     //CustomTextField(Modifier.weight(1f), "Horário","customfield",,12)
-                    Button()
+                    Button( onClick = { /*TODO*/ }) {
+                        Text(text = "Concluir", fontSize = 12.sp)
+                    }
                 }
         }
     })

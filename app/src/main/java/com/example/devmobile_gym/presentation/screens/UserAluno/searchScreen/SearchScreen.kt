@@ -39,7 +39,6 @@ fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewMo
 
     CustomScreenScaffold(
         navController = navController,
-        title = "Search",
         onBackClick = { /*TODO*/ },
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->

@@ -53,7 +53,6 @@ fun AdicionaMaquinaScreen(navController: NavHostController, onBack: () -> Unit, 
     val isIncluded by viewmodel.isIncluded
 
     CustomScreenScaffoldProfessor (
-        title = "Concluir Treino",
         needToGoBack = true,
         onBackClick = { onBack() },
         navController = navController,

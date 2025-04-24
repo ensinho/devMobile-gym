@@ -51,7 +51,6 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
 
     CustomScreenScaffold(
         navController = navController,
-        title = "Perfil",
         onBackClick = {},
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->

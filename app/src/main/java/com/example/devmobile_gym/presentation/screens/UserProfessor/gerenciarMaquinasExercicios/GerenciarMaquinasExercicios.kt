@@ -58,7 +58,6 @@ fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewMode
 
     CustomScreenScaffoldProfessor(
         navController = navController,
-        title = "Search",
         needToGoBack = false,
         onBackClick = { onBack() },
         selectedItemIndex = selectedItemIndex,
@@ -126,7 +125,8 @@ fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewMode
                             treino = MaqExerc.nome,
                             description = grupoMuscular,
                             buttonText = "",
-                            onButtonClick = {}
+                            onButtonClick = {},
+                            editButton = { navController.navigate(ProfessorRoutes.AdicionarNovaMaquina)}
                         )
                     }
 

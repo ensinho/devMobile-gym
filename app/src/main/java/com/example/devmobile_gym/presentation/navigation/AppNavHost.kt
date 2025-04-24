@@ -24,6 +24,7 @@ import com.example.devmobile_gym.presentation.screens.UserAluno.searchScreen.Sea
 import com.example.devmobile_gym.presentation.screens.UserProfessor.chatbot.ProfessorChatBotScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciaAluno.GerenciaAlunoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.AulasFuncionais.AulasProfessorScreen
+import com.example.devmobile_gym.presentation.screens.UserProfessor.adicionaEditaAula.AdicionaEditaAula
 import com.example.devmobile_gym.presentation.screens.UserProfessor.adicionaMaquinaExercicio.AdicionaMaquinaScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.home.ProfessorHomeScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.CriarTreinoScreen
@@ -194,6 +195,15 @@ fun AppNavHost() {
             )
         }
 
+        // CRIAR TREINO ( visao professor )
+        composable(route = ProfessorRoutes.AdicionarRotina) { backStackEntry ->
+            CriarTreinoScreen(
+                navController = navController,
+                backStackEntry = backStackEntry,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
         //composable(
         //    route = "${ProfessorRoutes.CriarTreino}/{alunoId}",
         //    arguments = listOf(navArgument("alunoId") { type = NavType.StringType })
@@ -250,6 +260,13 @@ fun AppNavHost() {
                 },
                 navController = navController,
                 onConclude = { navController.popBackStack() }
+            )
+        }
+
+        composable(ProfessorRoutes.AdicionaEditaAula) {
+            AdicionaEditaAula(
+                navController = navController,
+                onBack = {navController.popBackStack()}
             )
         }
 

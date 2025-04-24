@@ -46,7 +46,6 @@ fun CriarTreinoScreen(navController: NavHostController, backStackEntry: NavBackS
     CustomScreenScaffoldProfessor(
         navController = navController,
         needToGoBack = true,
-        title = "Exercícios",
         onBackClick = { onBack() },
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->

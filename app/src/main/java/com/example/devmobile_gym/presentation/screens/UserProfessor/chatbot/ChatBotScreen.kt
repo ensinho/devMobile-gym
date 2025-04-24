@@ -46,7 +46,6 @@ fun ProfessorChatBotScreen(navController: NavHostController, viewModel: ChatBotV
 
     CustomScreenScaffoldProfessor(
         navController = navController,
-        title = "ChatBot",
         onBackClick = { onBack() },
         needToGoBack = true,
         selectedItemIndex = selectedItemIndex,

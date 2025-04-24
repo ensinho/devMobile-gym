@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.components.ui.theme.components.CustomButton
 
 @Composable
-fun ClassCardProfessor(data: String, aula: String, professor: String, hora: String) {
+fun ClassCardProfessor(data: String, aula: String, professor: String, hora: String, onEditClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -62,7 +62,7 @@ fun ClassCardProfessor(data: String, aula: String, professor: String, hora: Stri
             ) {
                 CustomButton(
                     text = "Editar",
-                    onClick = { /* ação aqui */ },
+                    onClick = { onEditClick() },
                     backgroundColor = Color(0xFF5D98DD),
                     fillWidth = false,
                     modifier = Modifier.width(130.dp)
@@ -80,13 +80,3 @@ fun ClassCardProfessor(data: String, aula: String, professor: String, hora: Stri
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewClassCard() {
-    ClassCardProfessor(
-        data = "31/01/2003",
-        aula = "Jiu-jitsu",
-        professor = "Ítalo",
-        hora = "19h30"
-    )
-}

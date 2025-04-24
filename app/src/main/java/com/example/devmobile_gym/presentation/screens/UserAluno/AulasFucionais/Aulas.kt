@@ -40,7 +40,6 @@ fun ShowAulas(onBack: () -> Unit, navController: NavHostController) {
 
     CustomScreenScaffold(
         navController = navController,
-        title = "Aulas & Funcionais",
         needToGoBack = true,
         onBackClick = { onBack() },
         selectedItemIndex = selectedItemIndex,

@@ -41,7 +41,6 @@ fun ChatBotScreen(navController: NavHostController, viewModel: ChatBotViewModel 
 
     CustomScreenScaffold(
         navController = navController,
-        title = "ChatBot",
         needToGoBack = true,
         onBackClick = { onBack() },
         selectedItemIndex = selectedItemIndex,

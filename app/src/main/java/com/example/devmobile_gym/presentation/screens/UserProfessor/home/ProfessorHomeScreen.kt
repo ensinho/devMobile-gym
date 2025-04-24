@@ -36,7 +36,6 @@ fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHo
 
     CustomScreenScaffoldProfessor  (
         navController = navController,
-        title = "Painel Professor",
         onBackClick = { /* Handle back click */ },
         needToGoBack = false,
         selectedItemIndex = selectedItemIndex,

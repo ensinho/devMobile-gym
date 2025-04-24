@@ -34,7 +34,6 @@ fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewMo
 
     CustomScreenScaffold(
         navController = navController,
-        title = "Histórico",
         needToGoBack = true,
         onBackClick = { onBack() },
         selectedItemIndex = selectedItemIndex,
@@ -51,7 +50,8 @@ fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewMo
                         description = treino.exercicios.map { it.nome },
                         buttonText = "Iniciar Treino",
                         needButton = false,
-                        onButtonClick = { /* nao precisa de botao */ }
+                        onButtonClick = { /* nao precisa de botao */ },
+                        editButton = {}
                     )
                     Spacer(Modifier.height(8.dp))
                 }

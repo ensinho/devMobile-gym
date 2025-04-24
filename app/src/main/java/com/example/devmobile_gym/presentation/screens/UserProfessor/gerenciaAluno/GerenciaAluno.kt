@@ -62,7 +62,6 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
     CustomScreenScaffoldProfessor(
         navController = navController,
         needToGoBack = true,
-        title = "Gerenciar",
         onBackClick = { onBack() },
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
@@ -136,7 +135,8 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
                         buttonText = "Iniciar Treino",
                         /* Implementar a logica de Editar e Remover treino*/
                         // obs -> vai precisar modificar o componente CustomCard
-                        onButtonClick = {  }
+                        onButtonClick = {  },
+                        editButton = {}
                     )
                     Spacer(Modifier.height(8.dp))
                 }

@@ -65,7 +65,6 @@ sealed class NavIconProfessor {
 @Composable
 fun CustomScreenScaffoldProfessor(
     navController: NavHostController,
-    title: String,
     needToGoBack: Boolean = false,
     onBackClick: () -> Unit,
     selectedItemIndex: Int,
@@ -120,7 +119,7 @@ fun CustomScreenScaffoldProfessor(
                     )
                 } else {
                     TopAppBar(
-                        title = { Text(title) },
+                        title = { TitleScaffold() },
                         actions = {
                             IconButton(onClick = { scope.launch { drawerState.open() } }) {
                                 Icon(Icons.Default.Menu, contentDescription = "Abrir menu lateral.")

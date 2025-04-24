@@ -3,14 +3,17 @@ package com.example.devmobile_gym.presentation.screens.UserProfessor.AulasFuncio
 import ClassCardProfessor
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +35,7 @@ import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldPro
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 import com.example.devmobile_gym.presentation.screens.UserAluno.AulasFucionais.AulasProfessorViewModel
+import com.example.devmobile_gym.ui.theme.White
 
 @Composable
 fun AulasProfessorScreen(navController: NavHostController, onNavigateToAulas:() -> Unit){
@@ -51,7 +55,6 @@ fun AulasProfessorScreen(navController: NavHostController, onNavigateToAulas:() 
     }
     CustomScreenScaffoldProfessor (
         navController = navController,
-        title = "Olá",
         onBackClick = {  },
         selectedItemIndex = selectedItemIndex,
         needToGoBack = true,
@@ -66,10 +69,32 @@ fun AulasProfessorScreen(navController: NavHostController, onNavigateToAulas:() 
                         .padding(5.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(
-                            fontSize = 30.sp,
-                            text = "Aulas & Funcionais"
-                        )
+                        Row (
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Absolute.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth().padding(8.dp)
+                        ){
+
+                            Text(
+                                fontSize = 30.sp,
+                                text = "Aulas & Funcionais"
+                            )
+                            IconButton(
+                                onClick = {
+                                    navController.navigate(ProfessorRoutes.AdicionaEditaAula)
+                                    //navController.navigate("${ProfessorRoutes.CriarTreino}/${alunoSelecionado?.id}")
+                                },
+                                modifier = Modifier.size(35.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.add_circle_item),
+                                    contentDescription = "Adicionar",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(35.dp)
+                                )
+                            }
+                        }
+
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
                             painter = painterResource(id = R.drawable.add_circle_item),
@@ -89,7 +114,8 @@ fun AulasProfessorScreen(navController: NavHostController, onNavigateToAulas:() 
                             data = aula.data,
                             aula = "Jiu-jitsu", //adicionar atributo para a Classe Aula depois
                             professor = aula.professor.nome,
-                            hora = aula.hora
+                            hora = aula.hora,
+                            onEditClick = { navController.navigate(ProfessorRoutes.AdicionaEditaAula) }
                         )
                     }
                     Spacer(Modifier.height(8.dp))

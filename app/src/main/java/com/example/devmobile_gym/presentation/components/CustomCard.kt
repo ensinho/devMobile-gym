@@ -25,6 +25,7 @@ fun CustomCard(
     buttonText: String,
     onButtonClick: () -> Unit,
     needButton: Boolean = true,
+    editButton: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var desc: String
@@ -97,7 +98,7 @@ fun CustomCard(
 
                     CustomButton(modifier = Modifier.weight(1f),"Excluir", onClick = { /* Lógica para excluir */ }, backgroundColor = Color.Red, fillWidth = false)
                     Spacer(modifier = Modifier.width(10.dp))
-                    CustomButton(modifier = Modifier.weight(1f),"Editar", onClick = { /* Lógica para editar */ }, fillWidth = false)
+                    CustomButton(modifier = Modifier.weight(1f),"Editar", onClick = { editButton() }, fillWidth = false)
 
 
                 }
@@ -106,10 +107,4 @@ fun CustomCard(
 
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PreviewCard() {
-    CustomCard(true,"Treino A", listOf("Panturrilha em pé (máquina)", "Cadeira Extensora (máquina)", "Agachamento Livre", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {}, false)
 }

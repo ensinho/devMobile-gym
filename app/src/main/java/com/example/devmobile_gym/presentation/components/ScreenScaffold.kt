@@ -46,7 +46,6 @@ sealed class NavIcon {
 @Composable
 fun CustomScreenScaffold(
     navController: NavHostController,
-    title: String,
     needToGoBack: Boolean = false,
     onBackClick: () -> Unit,
     selectedItemIndex: Int,
@@ -102,7 +101,7 @@ fun CustomScreenScaffold(
                     )
                 } else {
                     TopAppBar(
-                        title = { Text(title) },
+                        title = { TitleScaffold() },
                         actions = {
                             IconButton(onClick = { scope.launch { drawerState.open() } }) {
                                 Icon(Icons.Default.Menu, contentDescription = "Menu")

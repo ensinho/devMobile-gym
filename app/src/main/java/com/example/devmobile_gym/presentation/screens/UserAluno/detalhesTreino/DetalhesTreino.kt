@@ -66,7 +66,6 @@ fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBa
 
     CustomScreenScaffold(
         navController = navController,
-        title = treino.nome,
         needToGoBack = true,
         onBackClick = { onBack() },
         selectedItemIndex = selectedItemIndex,

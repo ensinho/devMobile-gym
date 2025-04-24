@@ -43,7 +43,6 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = view
 
     CustomScreenScaffold (
         navController = navController,
-        title = "Home",
         onBackClick = { /* Handle back click */ },
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
@@ -79,7 +78,8 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = view
                         treino = treino.nome,
                         description = treino.exercicios.map { it.nome },
                         buttonText = "Iniciar Treino",
-                        onButtonClick = { onNavigateToTreino(treino.id) }
+                        onButtonClick = { onNavigateToTreino(treino.id) },
+                        editButton = {}
                     )
                     Spacer(Modifier.height(8.dp))
                 }

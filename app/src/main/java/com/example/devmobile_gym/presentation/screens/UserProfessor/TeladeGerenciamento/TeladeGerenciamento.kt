@@ -2,12 +2,15 @@ package com.example.devmobile_gym.presentation.screens.UserProfessor.TeladeGeren
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,13 +51,20 @@ fun TelaGerenciamento(navController: NavHostController, onBack: () -> Unit){
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(1.dp)
 
-            Box(){
+            Box(
+                contentAlignment = Alignment.Center,
+            ){
                 Column {
                     //CustomTextField(Modifier.weight(1f), "Título da Área",,{nome = it},12)
+                    Spacer(modifier = Modifier.height(6.dp))
                     BoxSeta2("Data")
+                    Spacer(modifier = Modifier.height(6.dp))
                     BoxSeta2("Professor")
+                    Spacer(modifier = Modifier.height(6.dp))
                     BoxSeta2("Alocação max")
+                    Spacer(modifier = Modifier.height(6.dp))
                     //CustomTextField(Modifier.weight(1f), "Horário","customfield",,12)
+                    Spacer(modifier = Modifier.height(6.dp))
                     Button( onClick = { /*TODO*/ }) {
                         Text(text = "Concluir", fontSize = 12.sp)
                     }

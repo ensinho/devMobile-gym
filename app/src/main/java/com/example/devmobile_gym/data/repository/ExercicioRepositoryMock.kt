@@ -5,29 +5,37 @@ import com.example.devmobile_gym.domain.model.Exercicio
 import com.example.devmobile_gym.domain.repository.ExercicioRepository
 
 class ExercicioRepositoryMock : ExercicioRepository {
+
     override fun getExercicio(exercicioId: Int): Exercicio? {
-        /* vamos mudar isso aq quando tivermos uma api com os exercicios */
-        /* vai ficar mais simples quando trocarmos os dados mockados */
+        return MockData.rotinaMock.treinos
+            .flatMap { it.exercicios }
+            .find { it.id == exercicioId }
+    }
+
+    override fun getAllExercicios(): List<Exercicio> {
+        return MockData.rotinaMock.treinos
+            .flatMap { it.exercicios }
+    }
+
+    override fun editarExercicio(
+        exercicioId: Int,
+        nome: String,
+        series: Int,
+        grupoMuscular: String,
+        repeticoes: Int,
+        peso: Int
+    ): Boolean {
         MockData.rotinaMock.treinos.forEach { treino ->
             treino.exercicios.forEach { exercicio ->
                 if (exercicio.id == exercicioId) {
-                    return exercicio
+                    exercicio.nome = nome
+                    exercicio.series = series
+                    exercicio.repeticoes = repeticoes
+                    exercicio.peso = peso
+                    return true
                 }
             }
         }
-
-        return null
+        return false
     }
-//    criar quando tiver o banco. Não dá para alterar as info com os dados mockados
-//    override fun editarExercicio(exercicioId: Int, nome: String, series: Int, repeticoes: Int) {
-//        MockData.rotinaMock.treinos.forEach { treino ->
-//            treino.exercicios.forEach { exercicio ->
-//                if (exercicio.id == exercicioId) {
-//                    exercicio.nome = nome
-//                    exercicio.series = series
-//                    exercicio.repeticoes = repeticoes
-//                }
-//            }
-//        }
-//    }
 }

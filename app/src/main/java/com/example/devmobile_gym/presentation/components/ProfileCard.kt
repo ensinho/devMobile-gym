@@ -66,7 +66,7 @@ fun ProfileCard(
 
             Column {
                 Text(
-                    text = "Nome do Fulano",
+                    text = name,
                     fontSize = 27.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,

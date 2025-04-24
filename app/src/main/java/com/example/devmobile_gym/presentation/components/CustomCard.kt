@@ -25,11 +25,12 @@ fun CustomCard(
     buttonText: String,
     onButtonClick: () -> Unit,
     needButton: Boolean = true,
+    editButton: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var desc: String
     if (expanded && description.isNotEmpty()) {
-        if (description.size <= 3) {
+        if (description.size <= 2) {
             desc = description.joinToString(", ")
         } else {
             desc = description.joinToString(", ")
@@ -37,7 +38,7 @@ fun CustomCard(
     } else if (description.isEmpty() && expanded) {
         desc = "Nenhum exercício adicionado."
     } else {
-        if (description.size <= 3) {
+        if (description.size <= 2) {
             desc = description.joinToString(", ")
         } else {
             desc = description.take(3).joinToString(", ") + ", ..."
@@ -51,7 +52,7 @@ fun CustomCard(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF2E3238))
     ) {
-        Column (modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp)) {
+        Column (modifier = Modifier.padding(top = 15.dp, bottom = 10.dp, start = 13.dp, end = 18.dp)) {
 
             Row (
                 modifier = Modifier.fillMaxWidth(),
@@ -59,7 +60,7 @@ fun CustomCard(
             ){
                 Text(
                     text = treino,
-                    fontSize = 22.sp,
+                    fontSize = 25.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -97,7 +98,7 @@ fun CustomCard(
 
                     CustomButton(modifier = Modifier.weight(1f),"Excluir", onClick = { /* Lógica para excluir */ }, backgroundColor = Color.Red, fillWidth = false)
                     Spacer(modifier = Modifier.width(10.dp))
-                    CustomButton(modifier = Modifier.weight(1f),"Editar", onClick = { /* Lógica para editar */ }, fillWidth = false)
+                    CustomButton(modifier = Modifier.weight(1f),"Editar", onClick = { editButton() }, fillWidth = false)
 
 
                 }
@@ -106,10 +107,4 @@ fun CustomCard(
 
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PreviewCard() {
-    CustomCard(true,"Treino A", listOf("Panturrilha em pé (máquina)", "Cadeira Extensora (máquina)", "Agachamento Livre", "Exercício 4", "Exercício 5", "Exercício 6"), "Iniciar Treino", {}, false)
 }

@@ -17,22 +17,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.devmobile_gym.R
 
-val icone = R.drawable.fire_svgrepo_com
-val texto = ""
-val texto1 = ""
+
 
 @Composable
 fun BoxDayStreak(texto: String, icone: Int) {
     Card(
         modifier = Modifier
             .padding(9.dp)
-            .width(70.dp)
             .border(
                 width =0.5.dp,
                 color = Color(0xFF000000),
@@ -45,14 +43,15 @@ fun BoxDayStreak(texto: String, icone: Int) {
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(3.dp)
+            modifier = Modifier.padding(15.dp)
 
         ) {
 
             Image(
                 painter = painterResource(id = icone),
                 contentDescription = "Fogo",
-                modifier = Modifier.size(9.dp)
+                modifier = Modifier.size(27.dp),
+                contentScale = ContentScale.Fit
             )
 
 
@@ -60,8 +59,7 @@ fun BoxDayStreak(texto: String, icone: Int) {
 
 
             Column {
-                Text(text = texto, fontSize = 6.sp, color = Color(0xFFFFFFFF))
-                Text(text = texto1, fontSize = 6.sp, color = Color.White)
+                Text(text = texto)
             }
         }
     }
@@ -70,6 +68,6 @@ fun BoxDayStreak(texto: String, icone: Int) {
 @Preview
 @Composable
 fun PreviewBoxDayStreak() {
-    BoxDayStreak(texto, icone)
+    BoxDayStreak("Day Streak", R.drawable.fire_svgrepo_com)
 }
 

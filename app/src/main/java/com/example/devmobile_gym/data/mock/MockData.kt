@@ -29,7 +29,7 @@ object MockData {
         fun createProfessor(
             id: Int = 1,
             nome: String = "Ana Paula",
-            email: String = "ana.paula@academia.com",
+            email: String = "adm",
             senha: String = "prof123"
         ): Professor {
             return Professor(
@@ -43,7 +43,7 @@ object MockData {
         fun createRotina(
             id: Int = 1,
             nome: String = "Rotina Semana A",
-            treinos: List<Treino> = listOf(createTreinoA(), createTreinoB(), createTreinoC())
+            treinos: MutableList<Treino> = listOf(createTreinoA(), createTreinoB(), createTreinoC()).toMutableList()
         ): Rotina {
             return Rotina(
                 id = id,
@@ -55,11 +55,12 @@ object MockData {
         fun createTreinoA(
             id: Int = 1,
             nome: String = "Lower A - Quadríceps",
-            exercicios: List<Exercicio> = listOf(
-                createExercicio(1, "Panturrilha em pé (máquina)"),
-                createExercicio(2, "Cadeira extensora (máquina)"),
-                createExercicio(3, "Agachamento livre")
-            )
+            exercicios: MutableList<Exercicio> = listOf(
+                createExercicio(id = 1, nome = "Panturrilha em pé (máquina)", peso = 180, series = 3, repeticoes = 12, grupoMuscular = "Panturrilha"),
+                createExercicio(id = 2, nome = "Cadeira extensora (máquina)", peso = 125, series = 3, repeticoes = 12, grupoMuscular = "Quadríceps"),
+                createExercicio(id = 3, nome = "Agachamento livre", peso = 55, series = 3, repeticoes = 12, grupoMuscular = "Quadríceps"),
+                createExercicio(id = 10, nome = "Agachamento Smith", peso = 55, series = 3, repeticoes = 12, grupoMuscular = "Quadríceps")
+            ).toMutableList()
         ): Treino {
             return Treino(
                 id = id,
@@ -71,11 +72,11 @@ object MockData {
         fun createTreinoB(
             id: Int = 2,
             nome: String = "Lower B - Posterior de Coxa",
-            exercicios: List<Exercicio> = listOf(
-                createExercicio(4, "Panturrilha sentada (máquina)"),
-                createExercicio(5, "Cadeira flexora (máquina)"),
-                createExercicio(6, "Agachamento sumô")
-            )
+            exercicios: MutableList<Exercicio> = listOf(
+                createExercicio(id = 4, nome = "Panturrilha sentada (máquina)", peso = 80, series = 3, repeticoes = 12, grupoMuscular = "Panturrilha"),
+                createExercicio(id = 5, nome = "Cadeira flexora (máquina)", peso = 100, series = 3, repeticoes = 12, grupoMuscular = "Posterior de Coxa"),
+                createExercicio(id = 6, nome = "Agachamento sumô", peso = 120, series = 3, repeticoes = 12, grupoMuscular = "Posterior de Coxa")
+            ).toMutableList()
         ): Treino {
             return Treino(
                 id = id,
@@ -87,11 +88,11 @@ object MockData {
         fun createTreinoC(
             id: Int = 3,
             nome: String = "Upper A - Peito e Ombro",
-            exercicios: List<Exercicio> = listOf(
-                createExercicio(7, "Supino inclinado (halteres)"),
-                createExercicio(8, "Peck Deck"),
-                createExercicio(9, "Tríceps polia")
-            )
+            exercicios: MutableList<Exercicio> = listOf(
+                createExercicio(id = 7, nome = "Supino inclinado (halteres)", peso = 25, series = 3, repeticoes = 12, grupoMuscular = "Peitoral Superior"),
+                createExercicio(id = 8, nome = "Peck Deck", peso = 60, series = 3, repeticoes = 12, grupoMuscular = "Peitoral Superior"),
+                createExercicio(id = 9, nome = "Tríceps polia", peso = 60, series = 3, repeticoes = 12, grupoMuscular = "Tríceps Braquial")
+            ).toMutableList()
         ): Treino {
             return Treino(
                 id = id,
@@ -103,23 +104,50 @@ object MockData {
         fun createExercicio(
             id: Int,
             nome: String,
-            series: Int = 3,
-            repeticoes: Int = 12
+            series: Int,
+            repeticoes: Int,
+            peso: Int,
+            grupoMuscular: String
         ): Exercicio {
             return Exercicio(
                 id = id,
                 nome = nome,
                 series = series,
-                repeticoes = repeticoes
+                repeticoes = repeticoes,
+                peso = peso,
+                grupoMuscular = grupoMuscular
             )
+        }
+
+        fun createAulas(
+            quantidade: Int = 5,
+            aluno: Aluno = createAluno(),
+            professor: Professor = createProfessor(),
+            treinos: List<Treino> = listOf(createTreinoA(), createTreinoB(), createTreinoC())
+        ): List<Aula> {
+            return (1..quantidade).map { index ->
+                Aula(
+                    id = index,
+                    professor = professor,
+                    data = "13/04", // datas fictícias no mês de abril
+                    alocacaoMaxima = 15,
+                    hora = "19h",
+                    tipoAula = "Boxe"
+                )
+            }
         }
     }
 
+
+
     // Use the factory methods to generate the mock objects
     val alunoMock: Aluno = Factory.createAluno()
+    var usuarios: MutableList<Aluno> = mutableListOf(alunoMock)
     val professorMock: Professor = Factory.createProfessor()
+    val professores: MutableList<Professor> = mutableListOf(professorMock)
     val rotinaMock: Rotina = Factory.createRotina()
     val treinoA: Treino = Factory.createTreinoA()
     val treinoB: Treino = Factory.createTreinoB()
     val treinoC: Treino = Factory.createTreinoC()
+    val aulasMock: List<Aula> = Factory.createAulas()
 }

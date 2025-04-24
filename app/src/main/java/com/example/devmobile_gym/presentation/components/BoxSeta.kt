@@ -66,7 +66,7 @@ fun BoxSeta() {
                 )
             }
                 Spacer(modifier = Modifier.width(3.dp))
-                Text(text = "Filtros", color = Color.White)
+                Text(text = "Filtro" , color = Color.White)
             }
         }
     }

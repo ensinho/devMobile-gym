@@ -4,7 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,11 +21,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.CustomTextField
+import com.example.devmobile_gym.presentation.screens.login.CustomButton
 
 @Composable
-fun RegisterScreen2(onBack: ()-> Unit) {
+fun RegisterScreen2(viewModel: RegisterViewModel = viewModel(), onBack: ()-> Unit) {
+    var senha = viewModel.senha.value
+    var confirmarSenha = viewModel.confirmSenha.value
+    var errorMessage = viewModel.errorMessage
+
     Column(
 
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -48,29 +56,43 @@ fun RegisterScreen2(onBack: ()-> Unit) {
             text = "Digite o sua senha para se registrar" ,
             color = Color.White
         )
-        var text1 by remember { mutableStateOf("") }
+
         CustomTextField(
             label = "Senha",
-            value = text1,
-            onValueChange = { text1 = it },
-            padding = 10
-
+            value = senha,
+            onValueChange = viewModel::onSenhaChange,
+            padding = 10,
+            modifier = Modifier
         )
-        var text2 by remember { mutableStateOf("") }
+
         CustomTextField(
             label = "Confirme sua senha",
-            value = text2,
-            onValueChange = { text2 = it },
-            padding = 10
-
+            value = confirmarSenha,
+            onValueChange = viewModel::onConfirmaSenhaChange,
+            padding = 10,
+            modifier = Modifier
         )
-        com.example.components.ui.theme.components.CustomButton(
-            text = "Registrar",
-            onClick = { onBack()
 
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (!errorMessage.isNullOrEmpty()) {
+
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                fontSize = 16.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.height(5.dp))
+
+        CustomButton("Acessar", onClick = {
+            viewModel.registrar {
+                // lambda para navegar para a próxima tela
+                onBack()
             }
+        })
 
-        )
         Text(
             textAlign = TextAlign.Center,
             text = " By clicking continue, you agree to our Terms of service and Privacy Policy" ,

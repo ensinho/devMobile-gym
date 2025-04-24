@@ -24,6 +24,7 @@ import com.example.devmobile_gym.presentation.screens.UserAluno.searchScreen.Sea
 import com.example.devmobile_gym.presentation.screens.UserProfessor.chatbot.ProfessorChatBotScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciaAluno.GerenciaAlunoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.AulasFuncionais.AulasProfessorScreen
+import com.example.devmobile_gym.presentation.screens.UserProfessor.adicionaMaquinaExercicio.AdicionaMaquinaScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.home.ProfessorHomeScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.CriarTreinoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciarMaquinasExercicios.GerenciarMaquinasExerciciosScreen
@@ -239,6 +240,16 @@ fun AppNavHost() {
                     navController.popBackStack()
                 },
                 navController = navController
+            )
+        }
+
+        composable(ProfessorRoutes.AdicionarNovaMaquina) {
+            AdicionaMaquinaScreen(
+                onBack = {
+                    navController.popBackStack()
+                },
+                navController = navController,
+                onConclude = { navController.popBackStack() }
             )
         }
 

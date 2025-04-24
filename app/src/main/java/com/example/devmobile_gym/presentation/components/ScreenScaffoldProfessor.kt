@@ -165,6 +165,7 @@ fun CustomScreenScaffoldProfessor(
                                         3 -> navController.navigate(ProfessorRoutes.Chatbot)
                                         4 -> navController.navigate(ProfessorRoutes.Gerenciar)
                                     }
+
                                 },
                                 label = { Text(item.title, color = Color.White) },
                                 alwaysShowLabel = true,

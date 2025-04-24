@@ -41,16 +41,16 @@ import com.example.devmobile_gym.ui.theme.White
 
 @Composable
 fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewModel: GerenciarMaquinasExerciciosViewModel = viewModel(), onBack: () -> Unit) {
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-
     val selectedItemIndex = when (currentRoute) {
-        AlunoRoutes.Home -> 0
-        AlunoRoutes.Search -> 1
-        AlunoRoutes.QrCode -> 2
-        AlunoRoutes.Chatbot -> 3
-        AlunoRoutes.Profile -> 4
-        else -> 0 // default
+        ProfessorRoutes.Home -> 0
+        ProfessorRoutes.Aulas -> 1
+        ProfessorRoutes.AdicionarRotina -> 2
+        ProfessorRoutes.Chatbot -> 3
+        ProfessorRoutes.Gerenciar -> 4
+        else -> 0
     }
 
     val search by viewModel.search
@@ -83,7 +83,7 @@ fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewMode
                     )
                     IconButton(
                         onClick = {
-                            navController.navigate(ProfessorRoutes.AdicionarNovaMaquinaExercicio)
+                            navController.navigate(ProfessorRoutes.AdicionarNovaMaquina)
                             //navController.navigate("${ProfessorRoutes.CriarTreino}/${alunoSelecionado?.id}")
                         },
                         modifier = Modifier.size(35.dp)

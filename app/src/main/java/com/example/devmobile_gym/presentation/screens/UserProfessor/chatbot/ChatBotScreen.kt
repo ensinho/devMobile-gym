@@ -50,7 +50,6 @@ fun ProfessorChatBotScreen(navController: NavHostController, viewModel: ChatBotV
         onBackClick = { onBack() },
         needToGoBack = true,
         selectedItemIndex = selectedItemIndex,
-        onMenuClick = {},
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(0.5.dp)
 

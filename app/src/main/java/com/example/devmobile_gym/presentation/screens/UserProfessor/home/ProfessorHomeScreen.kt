@@ -38,7 +38,6 @@ fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHo
         navController = navController,
         title = "Painel Professor",
         onBackClick = { /* Handle back click */ },
-        onMenuClick = { /* Handle menu click */ },
         needToGoBack = false,
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->

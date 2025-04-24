@@ -53,7 +53,6 @@ fun AulasProfessorScreen(navController: NavHostController, onNavigateToAulas:() 
         navController = navController,
         title = "Olá",
         onBackClick = {  },
-        onMenuClick = { /* Handle menu click */ },
         selectedItemIndex = selectedItemIndex,
         needToGoBack = true,
         content = { innerModifier ->

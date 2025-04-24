@@ -48,7 +48,6 @@ fun CriarTreinoScreen(navController: NavHostController, backStackEntry: NavBackS
         needToGoBack = true,
         title = "Exercícios",
         onBackClick = { onBack() },
-        onMenuClick = { },
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(16.dp)

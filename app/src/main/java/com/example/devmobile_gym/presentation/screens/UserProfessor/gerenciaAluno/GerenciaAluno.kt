@@ -64,7 +64,6 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
         needToGoBack = true,
         title = "Gerenciar",
         onBackClick = { onBack() },
-        onMenuClick = { /* Handle menu click */ },
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(8.dp)

@@ -15,16 +15,21 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -36,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
+import kotlinx.coroutines.launch
 
 // classe que representa cada item da navbar
 data class BottomNavigationItemProfessor(
@@ -63,199 +69,141 @@ fun CustomScreenScaffoldProfessor(
     title: String,
     needToGoBack: Boolean = false,
     onBackClick: () -> Unit,
-    onMenuClick: () -> Unit,
     selectedItemIndex: Int,
     content: @Composable (Modifier) -> Unit
 ) {
-//    forma que a topbar funciona (nesse caso ela some se scrollar pra baixo e volta se scrollar um pouco pra cima)
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    // mocka os itens da navbar do usuario
-    // futuramente vamos precisar validar o usuario (se é normal ou professor) para escolher entre esses itens e os itens do professor
-    val itemsUser = listOf(
-        /* HOME */
-        BottomNavigationItemProfessor(
-            title = "Home",
-            selectedIcon = NavIconProfessor.DrawableIcon(R.drawable.home_icon),
-            unselectedIcon = NavIconProfessor.DrawableIcon(R.drawable.home_icon),
-            hasNews = false
-            /* badgeCount = null (valor padrão)*/
-        ),
-        /* SEARCH */
-        BottomNavigationItemProfessor(
-            title = "Aulas",
-            selectedIcon = NavIconProfessor.DrawableIcon(R.drawable.ic_treinos),
-            unselectedIcon = NavIconProfessor.DrawableIcon(R.drawable.ic_treinos),
-            hasNews = false
-            /* badgeCount = null (valor padrão)*/
-        ),
-        /* SCAN QR CODE */
-        BottomNavigationItemProfessor(
+    // Estado do Drawer
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
-            title = "Adicionar Rotina",
-            selectedIcon = NavIconProfessor.DrawableIcon(R.drawable.ic_centroprofessor),
-            unselectedIcon = NavIconProfessor.DrawableIcon(R.drawable.ic_centroprofessor),
-            hasNews = false
-            /* badgeCount = null (valor padrão)*/
-        ),
-        /* CHAT */
-        BottomNavigationItemProfessor(
-            title = "ChatBot",
-            selectedIcon = NavIconProfessor.DrawableIcon(R.drawable.chat_icon_filled),
-            unselectedIcon = NavIconProfessor.DrawableIcon(R.drawable.chat_icon_outlined),
-            hasNews = false
-            /* badgeCount = null (valor padrão)*/
-        ),
-        /* PROFILE */
-        BottomNavigationItemProfessor(
-            title = "Gerenciar",
-            selectedIcon = NavIconProfessor.DrawableIcon(R.drawable.ic_chave_fenda),
-            unselectedIcon = NavIconProfessor.DrawableIcon(R.drawable.ic_chave_fenda),
-            hasNews = false
-            /* badgeCount = null (valor padrão)*/
-        )
+    val itemsUser = listOf(
+        BottomNavigationItemProfessor("Home", NavIconProfessor.DrawableIcon(R.drawable.home_icon), NavIconProfessor.DrawableIcon(R.drawable.home_icon), false),
+        BottomNavigationItemProfessor("Aulas", NavIconProfessor.DrawableIcon(R.drawable.ic_treinos), NavIconProfessor.DrawableIcon(R.drawable.ic_treinos), false),
+        BottomNavigationItemProfessor("Adicionar Rotina", NavIconProfessor.DrawableIcon(R.drawable.ic_centroprofessor), NavIconProfessor.DrawableIcon(R.drawable.ic_centroprofessor), false),
+        BottomNavigationItemProfessor("ChatBot", NavIconProfessor.DrawableIcon(R.drawable.chat_icon_filled), NavIconProfessor.DrawableIcon(R.drawable.chat_icon_outlined), false),
+        BottomNavigationItemProfessor("Gerenciar", NavIconProfessor.DrawableIcon(R.drawable.ic_chave_fenda), NavIconProfessor.DrawableIcon(R.drawable.ic_chave_fenda), false)
     )
 
-
-
-
-    Scaffold (
-
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            if (needToGoBack) {
-
-                CenterAlignedTopAppBar(
-                    title = { TitleScaffold() }
-                    ,
-                    navigationIcon = {
-                        IconButton(onClick = { onBackClick() }) {
-                            Icon(Icons.Default.KeyboardArrowLeft, contentDescription = "Voltar para a tela anterior.")
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = { onMenuClick() }) {
-                            Icon(Icons.Default.Menu, contentDescription = "Abrir menu lateral.")
-                        }
-                    },
-                    scrollBehavior = scrollBehavior
-
-                )
-            } else {
-                TopAppBar(
-                    title = { TitleScaffold()  }
-                    ,
-                    actions = {
-                        IconButton(onClick = { onMenuClick() }) {
-                            Icon(Icons.Default.Menu, contentDescription = "Abrir menu lateral.")
-                        }
-                    },
-                    scrollBehavior = scrollBehavior
-
+    // ENVOLVE o Scaffold com ModalNavigationDrawer
+    ModalNavigationDrawer(
+        drawerContent = {
+            Surface(color = Color(0xFF1E1E1E)) {
+                ProfessorDrawerContent (
+                    navController = navController,
+                    closeMenu = { scope.launch { drawerState.close() } }
                 )
             }
         },
-        bottomBar = {
-            NavigationBar(
-                containerColor = Color(0xFF2B2B2B),
-                tonalElevation = 6.dp,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
-            ) {
-                itemsUser.forEachIndexed { index, item ->
-                    if (index == 2) {
-                        // Botão central customizado
-                        IconButton(
-                            onClick = {
-                                navController.navigate(ProfessorRoutes.AdicionarRotina)
-                            },
-                            modifier = Modifier
-                                .padding(top = 0.dp)
-                                .background(Color.White, shape = CircleShape)
-                                .padding(3.dp) // Borda branca
-                                .background(Color(0xFF1E88E5), shape = CircleShape) // Fundo azul
-                                .padding(6.dp) // Espaçamento interno
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_centroprofessor),
-                                contentDescription = item.title,
-                                tint = Color.White,
+        drawerState = drawerState,
+        gesturesEnabled = true,
+    ) {
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
+            topBar = {
+                if (needToGoBack) {
+                    CenterAlignedTopAppBar(
+                        title = { Text(title) },
+                        navigationIcon = {
+                            IconButton(onClick = { onBackClick() }) {
+                                Icon(Icons.Default.KeyboardArrowLeft, contentDescription = "Voltar para a tela anterior.")
+                            }
+                        },
+                        actions = {
+                            IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                                Icon(Icons.Default.Menu, contentDescription = "Abrir menu lateral.")
+                            }
+                        },
+                        scrollBehavior = scrollBehavior
+                    )
+                } else {
+                    TopAppBar(
+                        title = { Text(title) },
+                        actions = {
+                            IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                                Icon(Icons.Default.Menu, contentDescription = "Abrir menu lateral.")
+                            }
+                        },
+                        scrollBehavior = scrollBehavior
+                    )
+                }
+            },
+            bottomBar = {
+                NavigationBar(
+                    containerColor = Color(0xFF2B2B2B),
+                    tonalElevation = 6.dp,
+                    modifier = Modifier.clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
+                ) {
+                    itemsUser.forEachIndexed { index, item ->
+                        if (index == 2) {
+                            IconButton(
+                                onClick = { navController.navigate(ProfessorRoutes.AdicionarRotina) },
                                 modifier = Modifier
-                                    .height(24.dp)
-                            )
-                        }
-                    } else {
-                        NavigationBarItem(
-                            selected = selectedItemIndex == index,
-                            onClick = {
-                                when(index) {
-                                    0 -> navController.navigate(ProfessorRoutes.Home)
-                                    1 -> navController.navigate(ProfessorRoutes.Aulas)
-                                    3 -> navController.navigate(ProfessorRoutes.Chatbot)
-                                    4 -> navController.navigate(ProfessorRoutes.Gerenciar)
-                                }
-                            },
-                            label = {
-                                Text(item.title,color = Color.White)
-                            },
-                            alwaysShowLabel = true,
-                            icon = {
-                                BadgedBox(
-                                    badge = {
-                                        when {
-                                            item.badgeCount != null -> {
-                                                Badge {
-                                                    Text(text = item.badgeCount.toString())
+                                    .padding(top = 0.dp)
+                                    .background(Color.White, shape = CircleShape)
+                                    .padding(3.dp)
+                                    .background(Color(0xFF1E88E5), shape = CircleShape)
+                                    .padding(6.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_centroprofessor),
+                                    contentDescription = item.title,
+                                    tint = Color.White,
+                                    modifier = Modifier.height(24.dp)
+                                )
+                            }
+                        } else {
+                            NavigationBarItem(
+                                selected = selectedItemIndex == index,
+                                onClick = {
+                                    when (index) {
+                                        0 -> navController.navigate(ProfessorRoutes.Home)
+                                        1 -> navController.navigate(ProfessorRoutes.Aulas)
+                                        3 -> navController.navigate(ProfessorRoutes.Chatbot)
+                                        4 -> navController.navigate(ProfessorRoutes.Gerenciar)
+                                    }
+                                },
+                                label = { Text(item.title, color = Color.White) },
+                                alwaysShowLabel = true,
+                                icon = {
+                                    BadgedBox(
+                                        badge = {
+                                            when {
+                                                item.badgeCount != null -> {
+                                                    Badge { Text(text = item.badgeCount.toString()) }
+                                                }
+                                                item.hasNews -> {
+                                                    Badge()
                                                 }
                                             }
-                                            item.hasNews -> {
-                                                Badge()
+                                        }
+                                    ) {
+                                        val iconToShow =
+                                            if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon
+                                        when (iconToShow) {
+                                            is NavIconProfessor.VectorIcon -> {
+                                                Icon(iconToShow.icon, contentDescription = item.title)
                                             }
+                                            is NavIconProfessor.DrawableIcon -> {
+                                                Icon(
+                                                    painter = painterResource(id = iconToShow.resId),
+                                                    contentDescription = item.title
+                                                )
+                                            }
+                                            else -> {}
                                         }
-                                    }
-                                ) {
-                                    val iconToShow = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon
-
-                                    when (iconToShow) {
-                                        is NavIconProfessor.VectorIcon -> {
-                                            Icon(
-                                                imageVector = iconToShow.icon,
-                                                contentDescription = item.title
-                                            )
-                                        }
-
-                                        is NavIconProfessor.DrawableIcon -> {
-                                            Icon(
-                                                painter = painterResource(id = iconToShow.resId),
-                                                contentDescription = item.title
-                                            )
-                                        }
-                                        else -> {}
                                     }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }
+        ) { innerPadding ->
+            content(Modifier.padding(innerPadding))
         }
-
-
-    ) { innerPadding ->
-        content(Modifier.padding(innerPadding))
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun ScreenScaffoldPreview() {
-////    CustomScreenScaffold(
-////        title = "Título",
-////        needToGoBack = true,
-////        onBackClick = {},
-////        onMenuClick = {},
-////        content = { modifier -> Text("Conteúdo aqui", modifier = modifier.padding(16.dp)) }
-////    )
-//}

@@ -24,7 +24,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.devmobile_gym.R
-import com.example.devmobile_gym.presentation.components.DrawerContent
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import kotlinx.coroutines.launch
 
@@ -51,7 +50,8 @@ fun CustomScreenScaffold(
     needToGoBack: Boolean = false,
     onBackClick: () -> Unit,
     selectedItemIndex: Int,
-    content: @Composable (Modifier) -> Unit
+    content: @Composable (Modifier) -> Unit,
+    onMenuClick: () -> Unit
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()

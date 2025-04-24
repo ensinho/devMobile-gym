@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -45,8 +42,8 @@ fun ChatBotScreen(navController: NavHostController, viewModel: ChatBotViewModel 
     CustomScreenScaffold(
         navController = navController,
         title = "ChatBot",
-        onBackClick = { onBack() },
         needToGoBack = true,
+        onBackClick = { onBack() },
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(0.5.dp)
@@ -90,5 +87,5 @@ fun ChatBotScreen(navController: NavHostController, viewModel: ChatBotViewModel 
                 }
             }
         }
-    )
+    ) { /* Handle menu click */ }
 }

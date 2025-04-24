@@ -41,22 +41,25 @@ import androidx.compose.ui.unit.dp
 import com.example.devmobile_gym.R
 
 @Composable
-fun BoxSeta() {
+fun BoxSeta2(palavra: String) {
     var expanded by remember { mutableStateOf(false) }
+
     Card(
         shape = RoundedCornerShape(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF343434)),
-        modifier = Modifier
+        modifier = Modifier.width(330.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.padding(vertical = 8.dp, horizontal = 8.dp)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 8.dp)
         ) {
-
+            // Ícone alinhado à esquerda
             IconButton(
-                onClick = {expanded = !expanded},
-                modifier = Modifier.size(20.dp)
+                onClick = { expanded = !expanded },
+                modifier = Modifier
+                    .size(20.dp)
+                    .align(Alignment.CenterStart)
             ) {
                 Icon(
                     imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
@@ -65,17 +68,24 @@ fun BoxSeta() {
                     modifier = Modifier.size(20.dp)
                 )
             }
-                Spacer(modifier = Modifier.width(3.dp))
-                Text(text = "Filtro" , color = Color.White)
-            }
+
+            // Texto centralizado
+            Text(
+                text = palavra,
+                color = Color.White,
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
     }
+}
+
+
 
 
 @Preview
 @Composable
-fun BoxSetaPreview(){
-    BoxSeta()
+fun BoxSeta2Preview(){
+    BoxSeta2("ALO")
 }
 
 

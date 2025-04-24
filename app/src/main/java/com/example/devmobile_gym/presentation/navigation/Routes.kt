@@ -20,6 +20,7 @@ object ProfessorRoutes {
     const val Gerenciar = "professor/gerenciar"
     const val AdicionarRotina = "professor/adicionarRotina"
     const val CriarTreino = "professor/criarTreino"
+    const val AdicionarNovaMaquinaExercicio = "professor/adicionarNovaMaquinaExercicio"
 }
 
 object AuthRoutes {

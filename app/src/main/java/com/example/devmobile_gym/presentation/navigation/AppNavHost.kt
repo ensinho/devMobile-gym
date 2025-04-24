@@ -26,6 +26,7 @@ import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciaAlun
 import com.example.devmobile_gym.presentation.screens.UserProfessor.AulasFuncionais.AulasProfessorScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.home.ProfessorHomeScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.CriarTreinoScreen
+import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciarMaquinasExercicios.GerenciarMaquinasExerciciosScreen
 
 @Composable
 fun AppNavHost() {
@@ -225,6 +226,15 @@ fun AppNavHost() {
         // PROFESSOR chatbot
         composable(ProfessorRoutes.Chatbot) {
             ProfessorChatBotScreen(
+                onBack = {
+                    navController.popBackStack()
+                },
+                navController = navController
+            )
+        }
+
+        composable(ProfessorRoutes.Gerenciar) {
+            GerenciarMaquinasExerciciosScreen(
                 onBack = {
                     navController.popBackStack()
                 },

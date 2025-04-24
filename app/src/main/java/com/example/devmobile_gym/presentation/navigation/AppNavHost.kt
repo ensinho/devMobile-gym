@@ -191,6 +191,19 @@ fun AppNavHost() {
             )
         }
 
+        //composable(
+        //    route = "${ProfessorRoutes.CriarTreino}/{alunoId}",
+        //    arguments = listOf(navArgument("alunoId") { type = NavType.StringType })
+        //) { backStackEntry ->
+        //    val alunoId = backStackEntry.arguments?.getString("alunoId")
+        //    CriarTreinoScreen(
+        //        navController = navController,
+        //        backStackEntry = backStackEntry,
+        //        alunoId = alunoId,
+        //        onBack = { navController.popBackStack() }
+        //    )
+        //}
+
         // HOME do ALUNO (visão Professor)
         composable(
             route = ProfessorRoutes.DetalhesAluno,

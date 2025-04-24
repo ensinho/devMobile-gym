@@ -41,9 +41,9 @@ fun ShowAulas(onBack: () -> Unit, navController: NavHostController) {
     CustomScreenScaffold(
         navController = navController,
         title = "Aulas & Funcionais",
+        needToGoBack = true,
         onBackClick = { onBack() },
         selectedItemIndex = selectedItemIndex,
-        needToGoBack = true,
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(1.dp)
 
@@ -70,7 +70,8 @@ fun ShowAulas(onBack: () -> Unit, navController: NavHostController) {
                     )
                 }
             }
-        })
+        }
+    ) { /* Handle menu click */ }
 }
 
 

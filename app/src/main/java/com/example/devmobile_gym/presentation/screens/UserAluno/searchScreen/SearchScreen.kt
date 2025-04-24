@@ -40,7 +40,6 @@ fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewMo
     CustomScreenScaffold(
         navController = navController,
         title = "Search",
-        needToGoBack = false,
         onBackClick = { /*TODO*/ },
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
@@ -70,5 +69,5 @@ fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewMo
                 }
             }
         }
-    )
+    ) { /* Handle menu click */ }
 }

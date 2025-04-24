@@ -25,5 +25,4 @@ class HomeViewModel (
         val treinosDaRotina = aluno.rotina?.treinos ?: emptyList()
         _treinos.value = treinosDaRotina
     }
-
 }

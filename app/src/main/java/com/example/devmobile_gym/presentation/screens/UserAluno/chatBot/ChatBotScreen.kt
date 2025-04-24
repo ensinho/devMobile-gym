@@ -46,7 +46,6 @@ fun ChatBotScreen(navController: NavHostController, viewModel: ChatBotViewModel 
         navController = navController,
         title = "ChatBot",
         onBackClick = { onBack() },
-        onMenuClick = { /* Handle menu click */ },
         needToGoBack = true,
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->

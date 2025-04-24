@@ -46,7 +46,6 @@ fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewMo
         navController = navController,
         title = "Histórico",
         onBackClick = { onBack() },
-        onMenuClick = { /* Handle menu click */ },
         needToGoBack = true,
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->

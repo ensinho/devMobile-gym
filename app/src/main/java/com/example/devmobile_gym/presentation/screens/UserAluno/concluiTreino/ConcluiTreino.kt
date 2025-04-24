@@ -70,7 +70,6 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
     CustomScreenScaffold(
         title = "Concluir Treino",
         needToGoBack = true,
-        onMenuClick = { /* Handle menu click */ },
         onBackClick = { onBack() },
         navController = navController,
         selectedItemIndex = selectedItemIndex

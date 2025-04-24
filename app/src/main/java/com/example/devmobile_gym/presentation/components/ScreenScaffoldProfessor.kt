@@ -169,7 +169,7 @@ fun CustomScreenScaffoldProfessor(
                         // Botão central customizado
                         IconButton(
                             onClick = {
-                                navController.navigate("adicionarRotina")
+                                navController.navigate(ProfessorRoutes.AdicionarRotina)
                             },
                             modifier = Modifier
                                 .padding(top = 0.dp)
@@ -192,9 +192,9 @@ fun CustomScreenScaffoldProfessor(
                             onClick = {
                                 when(index) {
                                     0 -> navController.navigate(ProfessorRoutes.Home)
-                                    1 -> navController.navigate("aulas")
-                                    3 -> navController.navigate("chatbot")
-                                    4 -> navController.navigate("gerenciar")
+                                    1 -> navController.navigate(ProfessorRoutes.Aulas)
+                                    3 -> navController.navigate(ProfessorRoutes.Chatbot)
+                                    4 -> navController.navigate(ProfessorRoutes.Gerenciar)
                                 }
                             },
                             label = {

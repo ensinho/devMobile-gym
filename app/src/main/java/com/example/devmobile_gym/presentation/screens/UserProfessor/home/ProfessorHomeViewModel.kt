@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.UserProfessor.home.Home
+package com.example.devmobile_gym.presentation.screens.UserProfessor.home
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

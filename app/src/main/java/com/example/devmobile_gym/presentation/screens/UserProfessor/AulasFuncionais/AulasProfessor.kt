@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.UserProfessor.home.AulasFuncionais
+package com.example.devmobile_gym.presentation.screens.UserProfessor.AulasFuncionais
 
 import ClassCardProfessor
 import androidx.compose.foundation.Image

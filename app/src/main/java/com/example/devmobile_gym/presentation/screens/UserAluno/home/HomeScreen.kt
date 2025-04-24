@@ -51,7 +51,6 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = view
         navController = navController,
         title = "Home",
         onBackClick = { /* Handle back click */ },
-        onMenuClick = { /* Handle menu click */ },
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(1.dp)

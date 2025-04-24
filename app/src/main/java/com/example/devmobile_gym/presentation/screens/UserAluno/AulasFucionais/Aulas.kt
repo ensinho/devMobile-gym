@@ -42,7 +42,6 @@ fun ShowAulas(onBack: () -> Unit, navController: NavHostController) {
         navController = navController,
         title = "Aulas & Funcionais",
         onBackClick = { onBack() },
-        onMenuClick = { /* Handle menu click */ },
         selectedItemIndex = selectedItemIndex,
         needToGoBack = true,
         content = { innerModifier ->

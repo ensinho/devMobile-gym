@@ -42,7 +42,6 @@ fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewMo
         title = "Search",
         needToGoBack = false,
         onBackClick = { /*TODO*/ },
-        onMenuClick = { /*TODO*/ },
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
 

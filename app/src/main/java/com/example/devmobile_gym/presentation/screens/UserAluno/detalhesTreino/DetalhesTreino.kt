@@ -70,7 +70,6 @@ fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBa
         navController = navController,
         title = treino.nome,
         needToGoBack = true,
-        onMenuClick = { /* Handle menu click */ },
         onBackClick = { onBack() },
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->

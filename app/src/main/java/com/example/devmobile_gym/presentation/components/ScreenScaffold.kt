@@ -87,7 +87,7 @@ fun CustomScreenScaffold(
             topBar = {
                 if (needToGoBack) {
                     CenterAlignedTopAppBar(
-                        title = { Text(title) },
+                        title = { TitleScaffold() },
                         navigationIcon = {
                             IconButton(onClick = { onBackClick() }) {
                                 Icon(Icons.Default.KeyboardArrowLeft, contentDescription = "Voltar")

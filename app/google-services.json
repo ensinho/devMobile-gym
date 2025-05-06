@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "739422137478",
+    "project_id": "unifor-gym-360b5",
+    "storage_bucket": "unifor-gym-360b5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739422137478:android:1a4e146dc9bf8804ec3507",
+        "android_client_info": {
+          "package_name": "com.example.devmobile_gym"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmFDhiACsKzUTA4vxDKog9xFWXiM7JE-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

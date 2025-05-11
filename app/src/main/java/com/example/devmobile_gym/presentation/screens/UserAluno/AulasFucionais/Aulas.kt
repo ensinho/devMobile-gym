@@ -77,4 +77,5 @@ fun ShowAulas(onBack: () -> Unit, navController: NavHostController) {
 @Preview
 @Composable
 fun ShowAulasPreview() {
+
 }

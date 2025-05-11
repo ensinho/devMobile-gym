@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.login
+package com.example.devmobile_gym.presentation.screens.authScreens.login
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +9,8 @@ import com.example.devmobile_gym.data.repository.AlunoRepositoryMock
 import com.example.devmobile_gym.data.repository.ProfessorRepositoryMock
 import com.example.devmobile_gym.domain.repository.AlunoRepository
 import com.example.devmobile_gym.domain.repository.ProfessorRepository
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class LoginViewModel(
     private val alunoRepository: AlunoRepository = AlunoRepositoryMock(),
@@ -27,6 +29,8 @@ class LoginViewModel(
     fun onEmailChange(newEmail: String) {
         email.value = newEmail
     }
+
+    var db = Firebase.firestore
 
     fun onSenhaChange(newSenha: String) {
         senha.value = newSenha

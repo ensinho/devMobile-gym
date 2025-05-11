@@ -11,7 +11,7 @@ object MockData {
     object Factory {
 
         fun createAluno(
-            userId: Int = 1,
+            userId: String = "1",
             nome: String = "João Silva",
             email: String = "joao@email.com",
             senha: String = "123456",

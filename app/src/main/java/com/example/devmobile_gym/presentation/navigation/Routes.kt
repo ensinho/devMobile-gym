@@ -28,5 +28,5 @@ object ProfessorRoutes {
 object AuthRoutes {
     const val Login = "login"
     const val Register = "register"
-    const val Register2 = "register2"
+    const val Register2 = "register2/{email}"  // Adicione o parâmetro na rota
 }

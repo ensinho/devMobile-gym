@@ -18,7 +18,7 @@ import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldPro
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 
 @Composable
-fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHomeViewModel = viewModel(), onNavigateToAluno: (Int) -> Unit) {
+fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHomeViewModel = viewModel(), onNavigateToAluno: (String) -> Unit) {
     val alunos by viewModel.alunos
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()

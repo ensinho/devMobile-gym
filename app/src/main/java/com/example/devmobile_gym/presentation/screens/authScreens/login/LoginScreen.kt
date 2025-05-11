@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.login
+package com.example.devmobile_gym.presentation.screens.authScreens.login
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*

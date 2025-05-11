@@ -1,4 +1,4 @@
-package com.example.devmobile_gym.presentation.screens.register
+package com.example.devmobile_gym.presentation.screens.authScreens.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,15 +25,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.CustomTextField
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
+import java.net.URLEncoder
 
 @Composable
-fun RegisterScreen(viewModel: RegisterViewModel = viewModel(), onNavigateToRegister2: () -> Unit) {
+fun RegisterScreen(viewModel: RegisterViewModel = viewModel(), navcontroller: NavHostController) {
 
-    var email = viewModel.email.value
+    val email by viewModel.email.collectAsState()
+//    var nome = viewModel.nome.value
     var errorMessage = viewModel.errorMessage
 
     Column(
@@ -62,12 +67,21 @@ fun RegisterScreen(viewModel: RegisterViewModel = viewModel(), onNavigateToRegis
 
         CustomTextField(
             label = "Email@domain.com",
-            value = email,
+            value = email, // Segurança adicional,
             onValueChange = viewModel::onEmailChange,
             padding = 10,
             modifier = Modifier
 
         )
+
+//        CustomTextField(
+//            label = "Insira seu nome",
+//            value = nome,
+//            onValueChange = viewModel::onNomeChange,
+//            padding = 10,
+//            modifier = Modifier
+//
+//        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -85,9 +99,10 @@ fun RegisterScreen(viewModel: RegisterViewModel = viewModel(), onNavigateToRegis
         CustomButton(
             text = "Continuar",
             onClick = {
-                viewModel.validaEmail(viewModel.email.value) {
-                    // lambda para navegar para a próxima tela
-                    onNavigateToRegister2()
+                viewModel.validaEmail(email) {
+                    // Codifica o email para URLs
+                    val encodedEmail = URLEncoder.encode(email, "UTF-8")
+                    navcontroller.navigate("register2/$encodedEmail")
                 }
             }
 
@@ -102,11 +117,4 @@ fun RegisterScreen(viewModel: RegisterViewModel = viewModel(), onNavigateToRegis
 
 
 
-}
-
-@Preview
-@Composable
-private fun Preview() {
-    val navController = rememberNavController()
-    RegisterScreen(onNavigateToRegister2 = {navController.navigate("register2")})
 }

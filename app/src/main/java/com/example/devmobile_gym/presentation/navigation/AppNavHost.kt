@@ -1,6 +1,6 @@
 package com.example.devmobile_gym.navigation
 
-import com.example.devmobile_gym.presentation.screens.register.RegisterScreen
+import com.example.devmobile_gym.presentation.screens.authScreens.register.RegisterScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -17,9 +17,9 @@ import com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino.D
 import com.example.devmobile_gym.presentation.screens.UserAluno.historico.HistoricoScreen
 import com.example.devmobile_gym.presentation.screens.UserAluno.home.HomeScreen
 
-import com.example.devmobile_gym.presentation.screens.login.LoginScreen
+import com.example.devmobile_gym.presentation.screens.authScreens.login.LoginScreen
 import com.example.devmobile_gym.presentation.screens.UserAluno.profile.profileScrenn
-import com.example.devmobile_gym.presentation.screens.register.RegisterScreen2
+import com.example.devmobile_gym.presentation.screens.authScreens.register.RegisterScreen2
 import com.example.devmobile_gym.presentation.screens.UserAluno.searchScreen.SearchScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.chatbot.ProfessorChatBotScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciaAluno.GerenciaAlunoScreen
@@ -30,6 +30,7 @@ import com.example.devmobile_gym.presentation.screens.UserProfessor.home.Profess
 import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.CriarTreinoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.editarTreino.EditarTreinoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciarMaquinasExercicios.GerenciarMaquinasExerciciosScreen
+import java.net.URLDecoder
 
 @Composable
 fun AppNavHost() {
@@ -53,15 +54,25 @@ fun AppNavHost() {
         }
 
         composable(AuthRoutes.Register) {
-            RegisterScreen(onNavigateToRegister2 = {
-                navController.navigate(AuthRoutes.Register2)
-            })
+            RegisterScreen(
+                navcontroller = navController
+            )
         }
 
-        composable(AuthRoutes.Register2) {
-            RegisterScreen2(onBack = {
-                navController.popBackStack()
-            })
+        composable(
+            route = AuthRoutes.Register2,
+            arguments = listOf(navArgument("email") { type = NavType.StringType })
+        ) { backStackEntry ->
+            // Decodifica o email
+            val email = URLDecoder.decode(
+                backStackEntry.arguments?.getString("email") ?: "",
+                "UTF-8"
+            )
+
+            RegisterScreen2(
+                email = email,
+                navController = navController,
+            )
         }
 
         // TODO(vvvvvvROTAS DO ALUNOvvvvvv)

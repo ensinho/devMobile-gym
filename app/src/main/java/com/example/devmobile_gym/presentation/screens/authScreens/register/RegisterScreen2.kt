@@ -32,6 +32,7 @@ import androidx.navigation.NavHostController
 import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 import com.example.devmobile_gym.presentation.screens.authScreens.login.CustomButton
@@ -53,19 +54,12 @@ fun RegisterScreen2(
     val context = LocalContext.current
 
 
+    // Recupera o nome do RegisterViewModel
     val nome by registerViewModel.nome.collectAsState()
     val senha by registerViewModel.senha.collectAsState()
     val confirmarSenha by registerViewModel.confirmSenha.collectAsState()
     val errorMessage = registerViewModel.errorMessage
 
-    LaunchedEffect(authState.value) {
-        when(authState.value) {
-            is AuthState.Authenticated -> navController.navigate(AlunoRoutes.Home)
-            is AuthState.Error -> Toast.makeText(context,
-                (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
-            else -> Unit
-        }
-    }
 
     Column(
 
@@ -122,9 +116,21 @@ fun RegisterScreen2(
         Spacer(modifier = Modifier.height(5.dp))
 
         CustomButton("Acessar", onClick = {
-            authViewModel.signup(email = email, senha = registerViewModel.senha.value, confirmarSenha = registerViewModel.confirmSenha.value)
+            authViewModel.signup(email = email, nome = nome, senha = registerViewModel.senha.value, confirmarSenha = registerViewModel.confirmSenha.value)
 
         })
+
+        // Controle de estado
+        LaunchedEffect(authViewModel.isRegistrationComplete) {
+            if (authViewModel.isRegistrationComplete) {
+                navController.navigate(AlunoRoutes.Home) {
+                    popUpTo(AuthRoutes.Register) { inclusive = true }
+                }
+            } else if (authState.value is AuthState.Error) {
+                Toast.makeText(context,
+                    (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+            }
+        }
 
 
         Text(

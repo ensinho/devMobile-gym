@@ -60,4 +60,14 @@ class RegisterViewModel() : ViewModel() {
 
     }
 
+    fun validarCamposRegistro1(email: String, nome: String, onSuccess: () -> Unit) {
+        if (email.isEmpty() || nome.isEmpty()) {
+            errorMessage = "Preencha todos os campos."
+        } else if (nome.length < 3) { // ← validação
+            errorMessage = "Nome deve ter pelo menos 3 caracteres"
+        } else {
+            validaEmail(email, onSuccess)
+        }
+    }
+
 }

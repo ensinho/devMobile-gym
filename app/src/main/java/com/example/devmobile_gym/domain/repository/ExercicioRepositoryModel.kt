@@ -2,7 +2,7 @@ package com.example.devmobile_gym.domain.repository
 
 import com.example.devmobile_gym.domain.model.Exercicio
 
-interface ExercicioRepository {
+interface ExercicioRepositoryModel {
     fun getExercicio(exercicioId: Int): Exercicio?
     fun getAllExercicios(): List<Exercicio>
     fun editarExercicio(

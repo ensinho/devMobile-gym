@@ -1,36 +1,37 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.devmobile_gym.data.repository.AlunoRepositoryMock
-import com.example.devmobile_gym.domain.model.Exercicio
+import com.example.devmobile_gym.data.repository.TreinoRepositoryModelMock
 import com.example.devmobile_gym.domain.model.Treino
-import com.example.devmobile_gym.domain.repository.AlunoRepository
+import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class DetalhesTreinoViewModel(
-    savedStateHandle: SavedStateHandle,
-    private val repository: AlunoRepository = AlunoRepositoryMock()
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val treinoId: Int = savedStateHandle.get<Int>("treinoId") ?: -1
+    private val treinoRepositoryModel: TreinoRepositoryModel = TreinoRepositoryModelMock()
+    private val treinoId: String = savedStateHandle.get<String>("treinoId") ?: "-1"
 
-    var treinoSelecionado by mutableStateOf<Treino?>(null)
-        private set
+    private val _treinoSelecionado = MutableStateFlow<Treino?>(null)
+    val treinoSelecionado: StateFlow<Treino?> = _treinoSelecionado
 
     init {
         carregarTreino()
     }
 
     private fun carregarTreino() {
-        val aluno = repository.getAlunoLogado()
-        treinoSelecionado = aluno.rotina?.treinos?.find { it.id == treinoId }
+        viewModelScope.launch {
+            val treino = treinoRepositoryModel.getTreino(treinoId)
+            _treinoSelecionado.value = treino
+        }
     }
 
     companion object {
@@ -42,8 +43,7 @@ class DetalhesTreinoViewModel(
             ): T {
                 val savedStateHandle = extras.createSavedStateHandle()
                 return DetalhesTreinoViewModel(
-                    savedStateHandle = savedStateHandle,
-                    repository = AlunoRepositoryMock()
+                    savedStateHandle = savedStateHandle
                 ) as T
             }
         }

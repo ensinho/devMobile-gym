@@ -18,10 +18,9 @@ object MockData {
             rotina: Rotina = createRotina()
         ): Aluno {
             return Aluno(
-                userId = userId,
+                uid = userId,
                 nome = nome,
                 email = email,
-                senha = senha,
                 rotina = rotina
             )
         }
@@ -53,7 +52,7 @@ object MockData {
         }
 
         fun createTreinoA(
-            id: Int = 1,
+            id: String = "1",
             nome: String = "Lower A - Quadríceps",
             exercicios: MutableList<Exercicio> = listOf(
                 createExercicio(id = 1, nome = "Panturrilha em pé (máquina)", peso = 180, series = 3, repeticoes = 12, grupoMuscular = "Panturrilha"),
@@ -70,7 +69,7 @@ object MockData {
         }
 
         fun createTreinoB(
-            id: Int = 2,
+            id: String = "2",
             nome: String = "Lower B - Posterior de Coxa",
             exercicios: MutableList<Exercicio> = listOf(
                 createExercicio(id = 4, nome = "Panturrilha sentada (máquina)", peso = 80, series = 3, repeticoes = 12, grupoMuscular = "Panturrilha"),
@@ -86,7 +85,7 @@ object MockData {
         }
 
         fun createTreinoC(
-            id: Int = 3,
+            id: String = "3",
             nome: String = "Upper A - Peito e Ombro",
             exercicios: MutableList<Exercicio> = listOf(
                 createExercicio(id = 7, nome = "Supino inclinado (halteres)", peso = 25, series = 3, repeticoes = 12, grupoMuscular = "Peitoral Superior"),

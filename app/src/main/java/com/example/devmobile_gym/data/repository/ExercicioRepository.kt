@@ -2,9 +2,9 @@ package com.example.devmobile_gym.data.repository
 
 import com.example.devmobile_gym.data.mock.MockData
 import com.example.devmobile_gym.domain.model.Exercicio
-import com.example.devmobile_gym.domain.repository.ExercicioRepository
+import com.example.devmobile_gym.domain.repository.ExercicioRepositoryModel
 
-class ExercicioRepositoryMock : ExercicioRepository {
+class ExercicioRepositoryModelMock : ExercicioRepositoryModel {
 
     override fun getExercicio(exercicioId: Int): Exercicio? {
         return MockData.rotinaMock.treinos

@@ -3,12 +3,14 @@ package com.example.devmobile_gym.presentation.screens.UserAluno.profile
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.devmobile_gym.data.repository.AlunoRepositoryMock
+import androidx.lifecycle.viewModelScope
+import com.example.devmobile_gym.data.repository.AlunoRepository
 import com.example.devmobile_gym.domain.model.Aluno
-import com.example.devmobile_gym.domain.repository.AlunoRepository
+import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
+import kotlinx.coroutines.launch
 
 class ProfileViewModel (
-    private val alunoRepository: AlunoRepository = AlunoRepositoryMock()
+    private val alunoRepositoryModel: AlunoRepositoryModel = AlunoRepository()
 ): ViewModel()  {
 
 
@@ -22,8 +24,10 @@ class ProfileViewModel (
     }
 
     private fun carregarAluno() {
-        val aluno = alunoRepository.getAlunoLogado()
-        _aluno.value = aluno
+        viewModelScope.launch {
+            val aluno = alunoRepositoryModel.getAlunoLogado()
+            _aluno.value = aluno
+        }
     }
 
 

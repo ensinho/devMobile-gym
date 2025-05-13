@@ -3,13 +3,12 @@ package com.example.devmobile_gym.presentation.screens.UserAluno.AulasFucionais
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
-import com.example.devmobile_gym.data.repository.AulaRepositoryMock
+import com.example.devmobile_gym.data.repository.AulaRepositoryModelMock
 import com.example.devmobile_gym.domain.model.Aula
-import com.example.devmobile_gym.domain.model.Treino
-import com.example.devmobile_gym.domain.repository.AulaRepository
+import com.example.devmobile_gym.domain.repository.AulaRepositoryModel
 
 class AulasViewModel(
-    private val aulasRepository: AulaRepository = AulaRepositoryMock()
+    private val aulasRepository: AulaRepositoryModel = AulaRepositoryModelMock()
 ): ViewModel() {
 
     private val _aulas = mutableStateOf<List<Aula?>>(emptyList())

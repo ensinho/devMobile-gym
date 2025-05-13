@@ -48,20 +48,7 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
         else -> 0 // default
     }
 
-    if (treinoFinalizado == null) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFF1C1C1E)),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Treino não encontrado", color = Color.White)
-        }
-        return
-    }
-
-    val quantidadeExercicios = treinoFinalizado.exercicios?.size ?: 0
+    val quantidadeExercicios = treinoFinalizado.value?.exercicios?.size ?: 0
 
     CustomScreenScaffold(
         navController = navController,

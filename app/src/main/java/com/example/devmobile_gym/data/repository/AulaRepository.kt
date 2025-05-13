@@ -2,9 +2,9 @@ package com.example.devmobile_gym.data.repository
 
 import com.example.devmobile_gym.data.mock.MockData
 import com.example.devmobile_gym.domain.model.Aula
-import com.example.devmobile_gym.domain.repository.AulaRepository
+import com.example.devmobile_gym.domain.repository.AulaRepositoryModel
 
-class AulaRepositoryMock : AulaRepository {
+class AulaRepositoryModelMock : AulaRepositoryModel {
     override fun getAula(): List<Aula?> {
         return MockData.aulasMock
     }

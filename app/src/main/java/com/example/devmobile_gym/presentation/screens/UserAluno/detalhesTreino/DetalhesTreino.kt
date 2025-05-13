@@ -31,14 +31,14 @@ import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 
 
 @Composable
-fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConclude: (Int) -> Unit
+fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConclude: (String) -> Unit
 ) {
     val viewModel: DetalhesTreinoViewModel = viewModel(
         viewModelStoreOwner = backStackEntry,
         factory = DetalhesTreinoViewModel.Factory
     )
     val treino = viewModel.treinoSelecionado
-    val quantidadeExercicios = treino?.exercicios?.size ?: 0
+    val quantidadeExercicios = treino.value?.exercicios?.size ?: 0
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -116,7 +116,7 @@ fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBa
 
                     CustomButton(
                         text = "Concluir",
-                        onClick = { onConclude(treino.id) }
+                        onClick = { treino.value?.let { onConclude(it.id) } }
                     )
                 }
 
@@ -126,11 +126,13 @@ fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBa
                     modifier = Modifier
                         .weight(1f)
                 ) {
-                    items(treino.exercicios) { exercicio ->
-                        ExerciseCard(
-                            title = exercicio.nome,
-                            peso = exercicio.peso
-                        )
+                    treino.value?.let {
+                        items(it.exercicios) { exercicio ->
+                            ExerciseCard(
+                                title = exercicio.nome,
+                                peso = exercicio.peso
+                            )
+                        }
                     }
                 }
             }

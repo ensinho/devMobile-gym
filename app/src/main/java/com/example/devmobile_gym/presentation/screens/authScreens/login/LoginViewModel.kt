@@ -4,17 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.devmobile_gym.data.mock.MockData
-import com.example.devmobile_gym.data.repository.AlunoRepositoryMock
-import com.example.devmobile_gym.data.repository.ProfessorRepositoryMock
-import com.example.devmobile_gym.domain.repository.AlunoRepository
-import com.example.devmobile_gym.domain.repository.ProfessorRepository
+import com.example.devmobile_gym.data.repository.AlunoRepository
+import com.example.devmobile_gym.data.repository.ProfessorRepositoryModelMock
+import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
+import com.example.devmobile_gym.domain.repository.ProfessorRepositoryModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class LoginViewModel(
-    private val alunoRepository: AlunoRepository = AlunoRepositoryMock(),
-    private val professorRepository: ProfessorRepository = ProfessorRepositoryMock()
+    private val alunoRepositoryModel: AlunoRepositoryModel = AlunoRepository(),
+    private val professorRepositoryModel: ProfessorRepositoryModel = ProfessorRepositoryModelMock()
 ) : ViewModel() {
 
     var email = mutableStateOf("")
@@ -44,12 +43,12 @@ class LoginViewModel(
         }
 
         when {
-            alunoRepository.logar(email.value, senha.value) -> {
+            alunoRepositoryModel.logar(email.value, senha.value) -> {
                 errorMessage = null
                 onSuccessAluno()
             }
 
-            professorRepository.logar(email.value, senha.value) -> {
+            professorRepositoryModel.logar(email.value, senha.value) -> {
                 errorMessage = null
                 onSuccessProfessor()
             }

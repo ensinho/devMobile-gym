@@ -96,7 +96,7 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
                 item{
                     ProfileCard(
                         name = aluno?.nome ?: "Carregando...",
-                        userId = (aluno?.userId?: "Carregando").toString(),
+                        userId = (aluno?.uid?: "Carregando").toString(),
                         weight = " 64 kg",
                         height = " 1,70 m "
                     )

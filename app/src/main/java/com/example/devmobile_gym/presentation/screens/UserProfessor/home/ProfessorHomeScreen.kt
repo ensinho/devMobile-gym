@@ -47,11 +47,13 @@ fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHo
             ) {
 //                Text
                 items(alunos) { aluno ->
-                    CardHomeProfessor(
-                        texto = aluno.nome,
-                        icone = R.drawable.ic_caneta,
-                        onClick = { onNavigateToAluno(aluno.userId)}
-                    )
+                    aluno.nome?.let {
+                        CardHomeProfessor(
+                            texto = it,
+                            icone = R.drawable.ic_caneta,
+                            onClick = { aluno.uid?.let { it1 -> onNavigateToAluno(it1) } }
+                        )
+                    }
                     Spacer(Modifier.height(8.dp))
 
                 }

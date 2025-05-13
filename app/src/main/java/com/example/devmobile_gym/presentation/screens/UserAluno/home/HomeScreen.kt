@@ -18,6 +18,7 @@ import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomCard
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -26,8 +27,8 @@ import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
-fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = viewModel(), onNavigateToTreino: (Int) -> Unit, onNavigateToAulas: () -> Unit) {
-    val treinos by viewModel.treinos
+fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = viewModel(), onNavigateToTreino: (String) -> Unit, onNavigateToAulas: () -> Unit) {
+    val treinos by viewModel.treinos.collectAsState()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route

@@ -1,26 +1,30 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.historico
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.devmobile_gym.data.repository.AlunoRepositoryMock
+import androidx.lifecycle.viewModelScope
+import com.example.devmobile_gym.data.repository.TreinoRepositoryModelMock
 import com.example.devmobile_gym.domain.model.Treino
-import com.example.devmobile_gym.domain.repository.AlunoRepository
+import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class HistoricoScreenViewModel (
-    private val alunoRepository: AlunoRepository = AlunoRepositoryMock()
-) : ViewModel() {
+class HistoricoScreenViewModel () : ViewModel() {
 
-    private val _treinos = mutableStateOf<List<Treino>>(emptyList())
-    val treinos: State<List<Treino>> = _treinos
+    // POR ENQUANTO TÁ FAZENDO A MESMA COISA QUE O HOME
+    private val treinoRepositoryModel: TreinoRepositoryModel = TreinoRepositoryModelMock()
+
+    private val _treinos = MutableStateFlow<List<Treino>>(emptyList())
+    val treinos: StateFlow<List<Treino>> = _treinos
 
     init {
         carregarTreinos()
     }
 
     private fun carregarTreinos() {
-        val aluno = alunoRepository.getAlunoLogado()
-        val treinosDaRotina = aluno.rotina?.treinos ?: emptyList()
-        _treinos.value = treinosDaRotina
+        viewModelScope.launch {
+            val listaTreinos = treinoRepositoryModel.getTreinos()
+            _treinos.value = listaTreinos
+        }
     }
 }

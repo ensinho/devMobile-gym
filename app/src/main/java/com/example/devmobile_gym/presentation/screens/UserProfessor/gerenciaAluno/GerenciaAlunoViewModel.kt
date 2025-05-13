@@ -8,19 +8,23 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.devmobile_gym.data.repository.AlunoRepositoryMock
+import com.example.devmobile_gym.data.repository.AlunoRepository
+import com.example.devmobile_gym.data.repository.ProfessorRepositoryModelMock
 import com.example.devmobile_gym.domain.model.Aluno
 import com.example.devmobile_gym.domain.model.Treino
-import com.example.devmobile_gym.domain.repository.AlunoRepository
-import com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino.DetalhesTreinoViewModel
+import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
+import com.example.devmobile_gym.domain.repository.ProfessorRepositoryModel
+import kotlinx.coroutines.launch
 
 class GerenciaAlunoViewModel(
-    savedStateHandle: SavedStateHandle,
-    private val alunoRepository: AlunoRepository = AlunoRepositoryMock()
+    savedStateHandle: SavedStateHandle
 ) : ViewModel(){
 
-    private val _alunoId: Int = savedStateHandle.get<Int>("alunoId") ?: -1
+    private val professorRepositoryModel: ProfessorRepositoryModel = ProfessorRepositoryModelMock()
+
+    private val _alunoId: String = savedStateHandle.get<String>("alunoId") ?: "-1"
 
     var alunoSelecionado by mutableStateOf<Aluno?>(null)
         private set
@@ -33,14 +37,14 @@ class GerenciaAlunoViewModel(
     }
 
     private fun carregarGerenciadorDeAluno() {
-        // alterar para buscar o aluno pelo id
-        // MockData.usuarios?.find { it.id == treinoId } acho que tem que fazer o map, n sei ao certo
-        // na hora a gente ve se ta certo
-        val aluno = alunoRepository.getAlunoLogado()
-        alunoSelecionado = aluno
+        viewModelScope.launch {
+            val aluno = professorRepositoryModel.getAlunoById(_alunoId)
+            alunoSelecionado = aluno
 
-        val treinosDaRotina = aluno.rotina?.treinos ?: emptyList()
-        _treinos.value = treinosDaRotina
+            val treinosDaRotina = aluno?.rotina?.treinos ?: emptyList()
+            _treinos.value = treinosDaRotina
+        }
+
     }
 
     companion object {
@@ -52,8 +56,7 @@ class GerenciaAlunoViewModel(
             ): T {
                 val savedStateHandle = extras.createSavedStateHandle()
                 return GerenciaAlunoViewModel(
-                    savedStateHandle = savedStateHandle,
-                    alunoRepository = AlunoRepositoryMock()
+                    savedStateHandle = savedStateHandle
                 ) as T
             }
         }

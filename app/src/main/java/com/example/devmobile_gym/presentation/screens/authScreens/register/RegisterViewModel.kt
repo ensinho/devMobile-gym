@@ -3,24 +3,15 @@ package com.example.devmobile_gym.presentation.screens.authScreens.register
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.devmobile_gym.data.repository.AlunoRepositoryMock
-import com.example.devmobile_gym.data.repository.AuthRepositoryImpl
-import com.example.devmobile_gym.domain.repository.AlunoRepository
-import com.example.devmobile_gym.domain.repository.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
-class RegisterViewModel(
-    private val authRepository: AuthRepository = AuthRepositoryImpl(),
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+class RegisterViewModel() : ViewModel() {
 
-) : ViewModel() {
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance() // vou deixar login/registro/log-out no authviewmodel
 
     private val _email = MutableStateFlow("")
     val email: StateFlow<String> = _email.asStateFlow()

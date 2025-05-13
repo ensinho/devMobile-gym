@@ -71,3 +71,41 @@ class RegisterViewModel() : ViewModel() {
     }
 
 }
+
+/*
+ fun verificarDominioProfessor(email: String): Boolean {
+        val dominioProfessor = "professor@universidade.com" // Domínio para identificar o professor
+        return email.contains(dominioProfessor)
+    }
+
+    // Função para validar e criar o objeto correto (Professor ou Aluno)
+    fun validaEmail(email: String, onSuccess: (Usuario) -> Unit) {
+        val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
+        val isValido = emailRegex.matches(email)
+
+        if (!isValido) {
+            errorMessage = "Email inválido"
+        } else {
+            // Verifica se o email é do domínio do professor e cria a instância correspondente
+            val isProfessor = verificarDominioProfessor(email)
+            val usuario: Usuario = if (isProfessor) {
+                Usuario.Professor(email, _nome.value, "Área de Conhecimento") // Exemplo de área de conhecimento
+            } else {
+                Usuario.Aluno(email, _nome.value, "Matricula1234") // Exemplo de matrícula
+            }
+
+            errorMessage = null
+            onSuccess(usuario)
+        }
+    }
+
+    fun validarCamposRegistro1(email: String, nome: String, onSuccess: (Usuario) -> Unit) {
+        if (email.isEmpty() || nome.isEmpty()) {
+            errorMessage = "Preencha todos os campos."
+        } else if (nome.length < 3) { // Validação de nome
+            errorMessage = "Nome deve ter pelo menos 3 caracteres"
+        } else {
+            validaEmail(email, onSuccess)
+        }
+    }
+*/

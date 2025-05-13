@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-class ProfessorRepositoryModelMock(
+class ProfessorRepository(
     private val auth : FirebaseAuth = FirebaseAuth.getInstance(),
     private val db : FirebaseFirestore = FirebaseFirestore.getInstance(),
 ) : ProfessorRepositoryModel {

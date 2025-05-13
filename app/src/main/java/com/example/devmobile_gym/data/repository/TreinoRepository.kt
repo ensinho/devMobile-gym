@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-class TreinoRepositoryModelMock(
+class TreinoRepository(
     private val auth : FirebaseAuth = FirebaseAuth.getInstance(),
     private val db : FirebaseFirestore = FirebaseFirestore.getInstance(),
 ) : TreinoRepositoryModel {

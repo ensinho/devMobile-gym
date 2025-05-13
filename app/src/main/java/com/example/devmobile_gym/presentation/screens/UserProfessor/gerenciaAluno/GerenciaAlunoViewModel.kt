@@ -10,11 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.devmobile_gym.data.repository.AlunoRepository
-import com.example.devmobile_gym.data.repository.ProfessorRepositoryModelMock
+import com.example.devmobile_gym.data.repository.ProfessorRepository
 import com.example.devmobile_gym.domain.model.Aluno
 import com.example.devmobile_gym.domain.model.Treino
-import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
 import com.example.devmobile_gym.domain.repository.ProfessorRepositoryModel
 import kotlinx.coroutines.launch
 
@@ -22,7 +20,7 @@ class GerenciaAlunoViewModel(
     savedStateHandle: SavedStateHandle
 ) : ViewModel(){
 
-    private val professorRepositoryModel: ProfessorRepositoryModel = ProfessorRepositoryModelMock()
+    private val professorRepositoryModel: ProfessorRepositoryModel = ProfessorRepository()
 
     private val _alunoId: String = savedStateHandle.get<String>("alunoId") ?: "-1"
 

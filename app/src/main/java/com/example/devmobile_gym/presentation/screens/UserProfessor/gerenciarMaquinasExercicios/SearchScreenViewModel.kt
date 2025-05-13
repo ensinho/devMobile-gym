@@ -3,12 +3,12 @@ package com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciarMa
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.devmobile_gym.data.repository.ExercicioRepositoryModelMock
+import com.example.devmobile_gym.data.repository.ExercicioRepository
 import com.example.devmobile_gym.domain.model.Exercicio
 import com.example.devmobile_gym.domain.repository.ExercicioRepositoryModel
 
 class GerenciarMaquinasExerciciosViewModel (
-    private val repository: ExercicioRepositoryModel = ExercicioRepositoryModelMock()
+    private val repository: ExercicioRepositoryModel = ExercicioRepository()
 ) : ViewModel(){
     private val _search = mutableStateOf("")
     val search: State<String> = _search

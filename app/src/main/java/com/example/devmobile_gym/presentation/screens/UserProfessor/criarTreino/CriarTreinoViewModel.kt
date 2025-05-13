@@ -9,11 +9,11 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.devmobile_gym.domain.model.Exercicio
 import com.example.devmobile_gym.domain.repository.ExercicioRepositoryModel
-import com.example.devmobile_gym.data.repository.ExercicioRepositoryModelMock
+import com.example.devmobile_gym.data.repository.ExercicioRepository
 
 class CriarTreinoViewModel(
     savedStateHandle: SavedStateHandle,
-    private val repository: ExercicioRepositoryModel = ExercicioRepositoryModelMock()
+    private val repository: ExercicioRepositoryModel = ExercicioRepository()
 ) : ViewModel() {
 
     private val _search = mutableStateOf("")

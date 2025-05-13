@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.devmobile_gym.data.repository.TreinoRepositoryModelMock
+import com.example.devmobile_gym.data.repository.TreinoRepository
 import com.example.devmobile_gym.domain.model.Treino
 import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ class ConcluiTreinoViewModel(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val treinoRepositoryModel: TreinoRepositoryModel = TreinoRepositoryModelMock()
+    private val treinoRepositoryModel: TreinoRepositoryModel = TreinoRepository()
 
     private val treinoId: String = savedStateHandle.get<String>("treinoId") ?: "-1"
 

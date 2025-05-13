@@ -2,6 +2,8 @@ package com.example.devmobile_gym.navigation
 
 import com.example.devmobile_gym.presentation.screens.authScreens.register.RegisterScreen
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -30,6 +32,7 @@ import com.example.devmobile_gym.presentation.screens.UserProfessor.home.Profess
 import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.CriarTreinoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.editarTreino.EditarTreinoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciarMaquinasExercicios.GerenciarMaquinasExerciciosScreen
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 import java.net.URLDecoder
 
 @Composable
@@ -53,10 +56,14 @@ fun AppNavHost() {
             )
         }
 
+        // No AppNavHost.kt
         composable(AuthRoutes.Register) {
-            RegisterScreen(
-                navcontroller = navController
-            )
+            val authViewModel: AuthViewModel = viewModel()
+            LaunchedEffect(Unit) {
+                authViewModel.resetAuthState()
+                authViewModel.isRegistrationComplete = false // ← Adicione esta linha
+            }
+            RegisterScreen(navcontroller = navController)
         }
 
         composable(

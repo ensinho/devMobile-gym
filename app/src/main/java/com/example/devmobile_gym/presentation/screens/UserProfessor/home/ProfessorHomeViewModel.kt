@@ -3,12 +3,12 @@ package com.example.devmobile_gym.presentation.screens.UserProfessor.home
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.devmobile_gym.data.repository.ProfessorRepositoryModelMock
+import com.example.devmobile_gym.data.repository.ProfessorRepository
 import com.example.devmobile_gym.domain.model.Aluno
 import com.example.devmobile_gym.domain.repository.ProfessorRepositoryModel
 
 class ProfessorHomeViewModel (
-    private val professorRepositoryModel: ProfessorRepositoryModel = ProfessorRepositoryModelMock()
+    private val professorRepositoryModel: ProfessorRepositoryModel = ProfessorRepository()
 ) : ViewModel() {
 
     private val _alunos = mutableStateOf<List<Aluno>>(emptyList())

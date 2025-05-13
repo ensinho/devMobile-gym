@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.devmobile_gym.data.repository.AlunoRepository
-import com.example.devmobile_gym.data.repository.ProfessorRepositoryModelMock
+import com.example.devmobile_gym.data.repository.ProfessorRepository
 import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
 import com.example.devmobile_gym.domain.repository.ProfessorRepositoryModel
 import com.google.firebase.firestore.ktx.firestore
@@ -13,7 +13,7 @@ import com.google.firebase.ktx.Firebase
 
 class LoginViewModel(
     private val alunoRepositoryModel: AlunoRepositoryModel = AlunoRepository(),
-    private val professorRepositoryModel: ProfessorRepositoryModel = ProfessorRepositoryModelMock()
+    private val professorRepositoryModel: ProfessorRepositoryModel = ProfessorRepository()
 ) : ViewModel() {
 
     var email = mutableStateOf("")

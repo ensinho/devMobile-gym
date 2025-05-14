@@ -1,15 +1,21 @@
 package com.example.devmobile_gym.domain.model
 
-data class Usuario(
-    val email: String,
-    val nome: String,
-    var isProfessor: Boolean = false
-)
+// Arquivo: domain/model/User.kt
+sealed class Usuario(
+    open val uid: String?,
+    open val nome: String,
+    open val email: String?
+) {
+    data class Aluno(
+        override val uid: String?,
+        override val nome: String,
+        override val email: String?,
+        val rotina: List<String>? = null
+    ) : Usuario(uid, nome, email)
 
-/* 
-    sealed class Usuario(val email: String, val nome: String) {
-    data class Professor(val email: String, val nome: String, val area: String) : Usuario(email, nome)
-    data class Aluno(val email: String, val nome: String, val matricula: String) : Usuario(email, nome)
-    }
-
-*/
+    data class Professor(
+        override val uid: String?,
+        override val nome: String,
+        override val email: String?
+    ) : Usuario(uid, nome, email)
+}

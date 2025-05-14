@@ -40,6 +40,7 @@ import com.example.devmobile_gym.presentation.screens.authScreens.login.CustomBu
 @Composable
 fun RegisterScreen2(
     email: String,
+    nome: String,
     authViewModel: AuthViewModel = viewModel(),
     registerViewModel: RegisterViewModel = viewModel(),
     navController: NavHostController
@@ -54,8 +55,6 @@ fun RegisterScreen2(
     val context = LocalContext.current
 
 
-    // Recupera o nome do RegisterViewModel
-    val nome by registerViewModel.nome.collectAsState()
     val senha by registerViewModel.senha.collectAsState()
     val confirmarSenha by registerViewModel.confirmSenha.collectAsState()
     val errorMessage = registerViewModel.errorMessage

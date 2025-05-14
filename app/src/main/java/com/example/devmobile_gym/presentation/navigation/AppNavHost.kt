@@ -68,16 +68,21 @@ fun AppNavHost() {
 
         composable(
             route = AuthRoutes.Register2,
-            arguments = listOf(navArgument("email") { type = NavType.StringType })
+            arguments = listOf(
+                navArgument("email") { type = NavType.StringType },
+                navArgument("nome") { type = NavType.StringType }
+            )
         ) { backStackEntry ->
             // Decodifica o email
             val email = URLDecoder.decode(
                 backStackEntry.arguments?.getString("email") ?: "",
                 "UTF-8"
             )
+            val nome = backStackEntry.arguments?.getString("nome") ?: ""
 
             RegisterScreen2(
                 email = email,
+                nome = nome,
                 navController = navController,
             )
         }

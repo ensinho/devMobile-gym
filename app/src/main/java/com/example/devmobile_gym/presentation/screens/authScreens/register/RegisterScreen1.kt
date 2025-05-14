@@ -94,7 +94,7 @@ fun RegisterScreen(viewModel: RegisterViewModel = viewModel(), navcontroller: Na
             onClick = {
                 viewModel.validarCamposRegistro1(email, nome) {
                     val encodedEmail = URLEncoder.encode(email, "UTF-8")
-                    navcontroller.navigate("register2/$encodedEmail")
+                    navcontroller.navigate("register2/$encodedEmail/$nome")
                 }
             }
 

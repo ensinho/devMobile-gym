@@ -6,15 +6,17 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.devmobile_gym.domain.model.Aluno
+import com.example.devmobile_gym.domain.model.Professor
+import com.example.devmobile_gym.domain.model.Usuario
+import com.example.devmobile_gym.presentation.screens.authScreens.register.RegisterViewModel
+import com.example.devmobile_gym.utils.isProfessorEmail
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.tasks.await
 
 class AuthViewModel : ViewModel() {
 
-    private val auth : FirebaseAuth = FirebaseAuth.getInstance()
+    val auth : FirebaseAuth = FirebaseAuth.getInstance()
     private val db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private val _authState = MutableLiveData<AuthState>()
@@ -24,6 +26,11 @@ class AuthViewModel : ViewModel() {
         checkAuthStatus()
     }
 
+    // metodos auxiliares
+    val currentUserEmail: String? get() = auth.currentUser?.email
+
+    fun isCurrentUserProfessor(): Boolean = currentUserEmail?.isProfessorEmail() == true
+
     fun checkAuthStatus() {
         if (auth.currentUser == null) {
             _authState.value = AuthState.Unauthenticated
@@ -32,11 +39,49 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    // No AuthViewModel.kt
+    // retorna o usuario instanciado no tipo correto baseado no email
+    private fun createUserInstance(user: FirebaseUser, nome: String): Usuario {
+
+        // metodo para separar os usuários em suas respectivas tabelas.
+        return if (isCurrentUserProfessor()) {
+            Usuario.Professor(
+                uid = user.uid,
+                nome = nome,
+                email = user.email
+            )
+        } else {
+            // aluno possui o campo rotina que inicialmente (quando cria a conta) é nulo.
+            Usuario.Aluno(
+                uid = user.uid,
+                nome = nome,
+                email = user.email
+            )
+        }
+
+
+    }
+
+    private fun saveToFirestore(usuario: Usuario, colecao: String) {
+        usuario.uid?.let { uid ->
+            db.collection(colecao)
+                .document(uid)
+                .set(usuario)
+                .addOnSuccessListener {
+                    _authState.value = AuthState.Authenticated
+                    isRegistrationComplete = true
+                }
+                .addOnFailureListener { e ->
+                    _authState.value = AuthState.Error(e.message ?: "Erro ao salvar dados: ${e.message}")
+                    auth.currentUser?.delete() // Opcional: remove usuário criado se falhar no Firestore
+                }
+        }
+    }
+
     fun resetAuthState() {
         _authState.value = AuthState.Unauthenticated
     }
 
+    // metodos de autenticacao
     fun login(email : String, senha : String) {
         if (email.isEmpty() || senha.isEmpty()) {
             _authState.value = AuthState.Error("Email ou senha não podem estar vazios.")
@@ -55,7 +100,6 @@ class AuthViewModel : ViewModel() {
 
     var isRegistrationComplete by mutableStateOf(false)
 
-    // No AuthViewModel
     fun signup(email: String, nome: String, senha: String, confirmarSenha: String) {
         isRegistrationComplete = false // ← Resetar estado
 
@@ -82,24 +126,11 @@ class AuthViewModel : ViewModel() {
                                 _authState.value = AuthState.Error("Usuário não criado")
                                 return@addOnCompleteListener
                             }
-                            val userData = Aluno(
-                                uid = user.uid,
-                                nome = nome,
-                                email = user.email
-                            )
-                            userData.uid?.let {
-                                db
-                                    .collection("Aluno")
-                                    .document(it)
-                                    .set(userData)
-                                    .addOnSuccessListener {
-                                        isRegistrationComplete = true
-                                        _authState.value = AuthState.Authenticated
-                                    }
-                                    .addOnFailureListener { e ->
-                                        _authState.value = AuthState.Error(e.message ?: "Erro ao salvar dados: ${e.message}")
-                                        auth.currentUser?.delete() // Opcional: remove usuário criado se falhar no Firestore
-                                    }
+                            val usuario = createUserInstance(user, nome)
+
+                            when (usuario){
+                                is Usuario.Aluno -> saveToFirestore(usuario, "alunos")
+                                is Usuario.Professor -> saveToFirestore(usuario, "professores")
                             }
                         } else {
                             _authState.value = AuthState.Error(task.exception?.message ?: "Erro no cadastro")

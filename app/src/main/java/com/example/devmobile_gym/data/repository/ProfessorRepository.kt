@@ -13,9 +13,6 @@ class ProfessorRepository(
     private val auth : FirebaseAuth = FirebaseAuth.getInstance(),
     private val db : FirebaseFirestore = FirebaseFirestore.getInstance(),
 ) : ProfessorRepositoryModel {
-    override fun logar(email: String, senha: String): Boolean {
-        return MockData.professores.any { it.email == email && it.senha == senha }
-    }
 
     override fun getProfessorLogado(): Professor {
         return MockData.professorMock

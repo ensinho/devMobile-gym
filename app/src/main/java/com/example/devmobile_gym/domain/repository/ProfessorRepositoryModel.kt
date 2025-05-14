@@ -4,7 +4,6 @@ import com.example.devmobile_gym.domain.model.Aluno
 import com.example.devmobile_gym.domain.model.Professor
 
 interface ProfessorRepositoryModel {
-    fun logar(email: String, senha: String): Boolean
     fun getProfessorLogado(): Professor
     fun getAlunos(): MutableList<Aluno>?
     suspend fun getAlunoById(alunoId: String): Aluno?

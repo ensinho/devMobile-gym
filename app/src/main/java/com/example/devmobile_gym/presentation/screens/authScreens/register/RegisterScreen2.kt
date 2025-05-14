@@ -30,9 +30,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.devmobile_gym.R
+import com.example.devmobile_gym.domain.model.Usuario
 import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.presentation.navigation.AuthRoutes
+import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 import com.example.devmobile_gym.presentation.screens.authScreens.login.CustomButton
@@ -121,15 +123,26 @@ fun RegisterScreen2(
 
         // Controle de estado
         LaunchedEffect(authViewModel.isRegistrationComplete) {
-            if (authViewModel.isRegistrationComplete) {
-                navController.navigate(AlunoRoutes.Home) {
-                    popUpTo(AuthRoutes.Register) { inclusive = true }
+            when {
+                authViewModel.isRegistrationComplete -> {
+                    val route = if (authViewModel.isCurrentUserProfessor()) {
+                        ProfessorRoutes.Home
+                    } else {
+                        AlunoRoutes.Home
+                    }
+                    navController.navigate(route) {
+                        popUpTo(AuthRoutes.Register) { inclusive = true }
+                    }
                 }
-            } else if (authState.value is AuthState.Error) {
-                Toast.makeText(context,
-                    (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+                authState.value is AuthState.Error -> {
+                    Toast.makeText(context,
+                        (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
+
+
+
 
 
         Text(

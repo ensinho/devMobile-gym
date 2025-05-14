@@ -1,9 +1,6 @@
 package com.example.devmobile_gym.data.mock
 
-import com.example.devmobile_gym.*
 import com.example.devmobile_gym.domain.model.*
-
-import java.util.UUID
 
 object MockData {
 
@@ -26,16 +23,15 @@ object MockData {
         }
 
         fun createProfessor(
-            id: Int = 1,
+            id: String = "1",
             nome: String = "Ana Paula",
             email: String = "adm",
             senha: String = "prof123"
         ): Professor {
             return Professor(
-                id = id,
+                uid = id,
                 nome = nome,
                 email = email,
-                senha = senha
             )
         }
 

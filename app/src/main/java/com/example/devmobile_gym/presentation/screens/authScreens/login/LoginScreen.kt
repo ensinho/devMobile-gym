@@ -57,13 +57,13 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onNavigateToRegister: (
 
         Spacer(modifier = Modifier.height(5.dp))
 
-        CustomButton("Acessar", onClick = {
-            viewModel.login(onSuccessAluno = {
-                onNavigateToHomeAluno()
-            }, onSuccessProfessor = {
-                onNavigateToHomeProfessor()
-            })
-        })
+//        CustomButton("Acessar", onClick = {
+//            viewModel.login(onSuccessAluno = {
+//                onNavigateToHomeAluno()
+//            }, onSuccessProfessor = {
+//                onNavigateToHomeProfessor()
+//            })
+//        })
         Text(
             text = "Registrar-se na plataforma",
             color = Color.Blue,

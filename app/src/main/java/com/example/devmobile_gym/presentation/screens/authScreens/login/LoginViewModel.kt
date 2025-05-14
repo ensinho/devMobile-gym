@@ -35,28 +35,5 @@ class LoginViewModel(
         senha.value = newSenha
     }
 
-    fun login(onSuccessAluno: () -> Unit, onSuccessProfessor: () -> Unit) {
-
-        if (email.value.isBlank() || senha.value.isBlank()) {
-            errorMessage = "Preencha todos os campos"
-            return
-        }
-
-        when {
-            alunoRepositoryModel.logar(email.value, senha.value) -> {
-                errorMessage = null
-                onSuccessAluno()
-            }
-
-            professorRepositoryModel.logar(email.value, senha.value) -> {
-                errorMessage = null
-                onSuccessProfessor()
-            }
-
-            else -> {
-                errorMessage = "Credenciais inválidas."
-            }
-        }
-    }
 
 }

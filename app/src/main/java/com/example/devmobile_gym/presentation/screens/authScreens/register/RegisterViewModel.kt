@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.devmobile_gym.domain.model.Aluno
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,9 +29,6 @@ class RegisterViewModel() : ViewModel() {
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
-    var uiState by mutableStateOf<RegisterUiState>(RegisterUiState.Idle)
-        private set
-
     fun onEmailChange(newEmail: String) {
         _email.value = newEmail
     }
@@ -47,7 +45,7 @@ class RegisterViewModel() : ViewModel() {
         _confirmSenha.value = newConfirmSenha
     }
 
-    fun validaEmail(email: String, onSuccess: () -> Unit) {
+    private fun validaEmail(email: String, onSuccess: () -> Unit) {
         val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
         val isValido = emailRegex.matches(email)
 

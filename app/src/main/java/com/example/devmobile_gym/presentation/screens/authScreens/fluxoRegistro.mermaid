@@ -1,0 +1,7 @@
+graph TD
+  A[Screen1: Email+Nome] --> B[Screen2: Senha]
+  B --> C{Verificação Email}
+  C -->|Professor| D[Salva em 'professores']
+  C -->|Aluno| E[Salva em 'alunos']
+  D --> F[Navega para Home Professor]
+  E --> G[Navega para Home Aluno]

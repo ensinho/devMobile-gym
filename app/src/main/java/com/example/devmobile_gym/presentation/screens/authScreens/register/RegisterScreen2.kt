@@ -122,6 +122,7 @@ fun RegisterScreen2(
         })
 
         // Controle de estado
+        // trocar para acessar a tela de login ao inves da home
         LaunchedEffect(authViewModel.isRegistrationComplete) {
             when {
                 authViewModel.isRegistrationComplete -> {

@@ -10,6 +10,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.devmobile_gym.R
@@ -18,8 +29,20 @@ import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldPro
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 
 @Composable
-fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHomeViewModel = viewModel(), onNavigateToAluno: (String) -> Unit) {
-    val alunos by viewModel.alunos
+fun ProfessorHomeScreen(
+    navController: NavHostController,
+    viewModel: ProfessorHomeViewModel = viewModel(),
+    onNavigateToAluno: (String) -> Unit
+) {
+    val alunos by viewModel.alunos.collectAsState()
+    var isLoading by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        isLoading = true
+        viewModel.fetchAlunos()
+        isLoading = false
+    }
+
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -42,23 +65,37 @@ fun ProfessorHomeScreen(navController: NavHostController, viewModel: ProfessorHo
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(1.dp)
 
-            LazyColumn(
-                modifier = combinedModifier
-            ) {
-//                Text
-                items(alunos) { aluno ->
-                    aluno.nome?.let {
-                        CardHomeProfessor(
-                            texto = it,
-                            icone = R.drawable.ic_caneta,
-                            onClick = { aluno.uid?.let { it1 -> onNavigateToAluno(it1) } }
+            if (isLoading) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.onSurface // Se seu fundo for escuro
+                )
+            } else {
+                LazyColumn(
+                    modifier = combinedModifier
+                ) {
+                    item {
+                        Text(
+                            text = "Painel de Alunos",
+                            color = Color.White,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 30.sp,
+                            modifier = Modifier.padding(top = 20.dp, start = 30.dp, end = 0.dp, bottom = 25.dp)
                         )
                     }
-                    Spacer(Modifier.height(8.dp))
+                    items(alunos) { aluno ->
+                        aluno.nome?.let {
+                            CardHomeProfessor(
+                                texto = it,
+                                icone = R.drawable.ic_caneta,
+                                onClick = { aluno.uid?.let { it1 -> onNavigateToAluno(it1) } }
+                            )
+                        }
+
+                    }
 
                 }
-
             }
+
         }
     )
 

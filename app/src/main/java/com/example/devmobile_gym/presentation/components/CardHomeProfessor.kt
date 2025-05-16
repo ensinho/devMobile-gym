@@ -30,7 +30,7 @@ fun CardHomeProfessor(
 ) {
     Card(
         modifier = Modifier
-            .padding(27.dp)
+            .padding(top = 0.dp, start = 5.dp, end = 5.dp, bottom = 13.dp)
             .fillMaxWidth()
             .clickable { onClick() } // Card inteiro clicável
             .border(

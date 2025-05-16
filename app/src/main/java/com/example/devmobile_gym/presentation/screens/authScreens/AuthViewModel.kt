@@ -81,8 +81,10 @@ class AuthViewModel : ViewModel() {
         _authState.value = AuthState.Unauthenticated
     }
 
+    var isLoginComplete by mutableStateOf(false)
     // metodos de autenticacao
     fun login(email : String, senha : String) {
+        isLoginComplete = false // ← Resetar estado
         if (email.isEmpty() || senha.isEmpty()) {
             _authState.value = AuthState.Error("Email ou senha não podem estar vazios.")
             return
@@ -92,6 +94,7 @@ class AuthViewModel : ViewModel() {
         auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 _authState.value = AuthState.Authenticated
+                isLoginComplete = true
             } else {
                 _authState.value = AuthState.Error(task.exception?.message ?: "Erro desconhecido")
             }

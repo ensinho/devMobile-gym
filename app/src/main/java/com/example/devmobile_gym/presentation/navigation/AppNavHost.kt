@@ -186,10 +186,7 @@ fun AppNavHost() {
                 navController = navController,
                 onNavigateToAluno = {
                     navController.navigate("professor/detalhesAluno/$it")
-                },
-//                onNavigateToAulas = {
-//                    navController.navigate("aulas")
-//                }
+                }
             )
         }
 
@@ -237,7 +234,7 @@ fun AppNavHost() {
         composable(
             route = ProfessorRoutes.DetalhesAluno,
             arguments = listOf(
-                navArgument("alunoId") { type = NavType.IntType }
+                navArgument("uid") { type = NavType.StringType }
             )
 
         ) { BackStackEntry ->

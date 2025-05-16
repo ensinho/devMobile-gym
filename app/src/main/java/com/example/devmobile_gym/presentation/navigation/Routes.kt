@@ -14,7 +14,7 @@ object AlunoRoutes {
 
 object ProfessorRoutes {
     const val Home = "professor/home"
-    const val DetalhesAluno = "professor/detalhesAluno/{alunoId}"
+    const val DetalhesAluno = "professor/detalhesAluno/{uid}"
     const val Aulas = "professor/aulas"
     const val Chatbot = "professor/chatbot"
     const val Gerenciar = "professor/gerenciar"

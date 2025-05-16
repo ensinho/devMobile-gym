@@ -10,29 +10,32 @@ import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
 import com.example.devmobile_gym.domain.repository.ProfessorRepositoryModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class LoginViewModel(
     private val alunoRepositoryModel: AlunoRepositoryModel = AlunoRepository(),
     private val professorRepositoryModel: ProfessorRepositoryModel = ProfessorRepository()
 ) : ViewModel() {
 
-    var email = mutableStateOf("")
-        private set
+    private val _email = MutableStateFlow("")
+    val email: StateFlow<String> = _email.asStateFlow()
 
-    var senha = mutableStateOf("")
-        private set
+    private val _senha = MutableStateFlow("")
+    val senha: StateFlow<String> = _senha.asStateFlow()
 
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
     fun onEmailChange(newEmail: String) {
-        email.value = newEmail
+        _email.value = newEmail
     }
 
     var db = Firebase.firestore
 
     fun onSenhaChange(newSenha: String) {
-        senha.value = newSenha
+        _senha.value = newSenha
     }
 
 

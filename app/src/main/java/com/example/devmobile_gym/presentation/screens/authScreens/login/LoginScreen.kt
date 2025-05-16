@@ -1,5 +1,6 @@
 package com.example.devmobile_gym.presentation.screens.authScreens.login
 
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,8 +8,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -17,14 +20,42 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.CustomTextField
+import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
+import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = viewModel(), onNavigateToRegister: () -> Unit, onNavigateToHomeAluno: () -> Unit, onNavigateToHomeProfessor: () -> Unit) {
-    var email = viewModel.email.value
-    var senha = viewModel.senha.value
+fun LoginScreen(viewModel: LoginViewModel = viewModel(), authViewModel: AuthViewModel = viewModel(), navController: NavHostController) {
+    val email by viewModel.email.collectAsState()
+    val senha by viewModel.senha.collectAsState()
     val errorMessage = viewModel.errorMessage
+
+    val authState = authViewModel.authState.observeAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(authViewModel.isLoginComplete) {
+        when {
+            authViewModel.isLoginComplete -> {
+                val route = if (authViewModel.isCurrentUserProfessor()) {
+                    ProfessorRoutes.Home
+                } else {
+                    AlunoRoutes.Home
+                }
+                navController.navigate(route) {
+                    popUpTo(AuthRoutes.Register) { inclusive = true }
+                }
+            }
+            authState.value is AuthState.Error -> {
+                Toast.makeText(context,
+                    (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -57,19 +88,15 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onNavigateToRegister: (
 
         Spacer(modifier = Modifier.height(5.dp))
 
-//        CustomButton("Acessar", onClick = {
-//            viewModel.login(onSuccessAluno = {
-//                onNavigateToHomeAluno()
-//            }, onSuccessProfessor = {
-//                onNavigateToHomeProfessor()
-//            })
-//        })
+        CustomButton("Acessar", onClick = {
+            authViewModel.login(email, senha)
+        })
         Text(
             text = "Registrar-se na plataforma",
             color = Color.Blue,
             modifier = Modifier
                 .padding(top = 16.dp)
-                .clickable(onClick = onNavigateToRegister),
+                .clickable(onClick = { navController.navigate(AuthRoutes.Register) }),
             textDecoration = TextDecoration.Underline
         )
 

@@ -44,15 +44,7 @@ fun AppNavHost() {
         // Auth Route (Login e Register)
         composable(AuthRoutes.Login) {
             LoginScreen(
-                onNavigateToRegister = {
-                navController.navigate(AuthRoutes.Register)
-                                       },
-                onNavigateToHomeAluno = {
-                navController.navigate(AlunoRoutes.Home)
-                                        },
-                onNavigateToHomeProfessor = {
-                navController.navigate(ProfessorRoutes.Home)
-                }
+                navController = navController
             )
         }
 

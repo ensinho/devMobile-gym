@@ -36,7 +36,7 @@ object MockData {
         }
 
         fun createRotina(
-            id: Int = 1,
+            id: String = "1",
             nome: String = "Rotina Semana A",
             treinos: MutableList<Treino> = listOf(createTreinoA(), createTreinoB(), createTreinoC()).toMutableList()
         ): Rotina {

@@ -12,10 +12,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,7 +58,7 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
         else -> 0 // default
     }
 
-    val alunoSelecionado = viewModel.alunoSelecionado
+    val alunoSelecionado by viewModel.alunoSelecionado.collectAsState()
     val treinosAluno by viewModel.treinos
 
     CustomScreenScaffoldProfessor(
@@ -71,6 +73,19 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
                 verticalArrangement = Arrangement.Center,
                 modifier = combinedModifier
             ) {
+                if (viewModel.isLoading.value) {
+                    item {
+                        CircularProgressIndicator()
+                    }
+                } else if (viewModel.error.value != null) {
+                    item {
+                        Text("Erro: ${viewModel.error.value}", color = Color.Red)
+                    }
+                } else if (alunoSelecionado == null) {
+                    item {
+                        Text("Aluno não encontrado", color = Color.White)
+                    }
+                }
 
                 item {
                     Row (
@@ -141,6 +156,8 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
                     Spacer(Modifier.height(8.dp))
                 }
             }
+
+
         }
     )
 }

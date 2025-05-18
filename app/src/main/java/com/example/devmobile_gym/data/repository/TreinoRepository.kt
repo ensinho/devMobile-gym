@@ -2,6 +2,7 @@ package com.example.devmobile_gym.data.repository
 
 import android.util.Log
 import com.example.devmobile_gym.domain.model.Aluno
+import com.example.devmobile_gym.domain.model.Exercicio
 import com.example.devmobile_gym.domain.model.Treino
 import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
 import com.google.firebase.auth.FirebaseAuth
@@ -12,17 +13,11 @@ class TreinoRepository(
     private val auth : FirebaseAuth = FirebaseAuth.getInstance(),
     private val db : FirebaseFirestore = FirebaseFirestore.getInstance(),
 ) : TreinoRepositoryModel {
-    // TODO("Implementar quando tiver um banco")
-//    override fun adicionaExercicio(treinoId: Int, exercicioId: Int): Exercicio {
-//        var treinoModificado = getTreino(treinoId)
-//
-//        if (treinoModificado != null) {
-////            treinoModificado.exercicios.add()
-//
-//        }
-//
-//        return treinoModificado!!.exercicios.last()
-//    }
+    override fun adicionaExercicio(treinoId: String, exercicios: List<Exercicio>): List<Exercicio> {
+        TODO("Not yet implemented")
+
+    }
+
 
     // TODO("Implementar quando tiver um banco")
 //    override fun removeExercicio(treinoId: Int, exercicioId: Int) {

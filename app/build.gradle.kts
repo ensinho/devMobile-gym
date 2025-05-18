@@ -52,6 +52,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.gson)
+
 
     // livedata
     implementation(libs.androidx.compose.runtime.livedata)
@@ -77,6 +79,7 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
+    implementation(libs.firebase.crashlytics.buildtools)
 
     // Testes
     testImplementation(libs.junit)

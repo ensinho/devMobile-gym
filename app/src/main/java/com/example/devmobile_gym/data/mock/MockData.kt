@@ -105,11 +105,7 @@ object MockData {
             grupoMuscular: String
         ): Exercicio {
             return Exercicio(
-                id = id,
                 nome = nome,
-                series = series,
-                repeticoes = repeticoes,
-                peso = peso,
                 grupoMuscular = grupoMuscular
             )
         }

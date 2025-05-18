@@ -126,7 +126,7 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
 
                         IconButton(
                             onClick = {
-                                navController.navigate(ProfessorRoutes.CriarTreino)
+                                navController.navigate(ProfessorRoutes.AdicionarRotina)
                                 //navController.navigate("${ProfessorRoutes.CriarTreino}/${alunoSelecionado?.id}")
                             },
                             modifier = Modifier.size(35.dp)

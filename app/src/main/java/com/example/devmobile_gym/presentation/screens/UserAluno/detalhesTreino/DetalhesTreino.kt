@@ -130,7 +130,6 @@ fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBa
                         items(it.exercicios) { exercicio ->
                             ExerciseCard(
                                 title = exercicio.nome,
-                                peso = exercicio.peso
                             )
                         }
                     }

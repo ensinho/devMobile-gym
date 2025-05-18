@@ -38,7 +38,7 @@ private val thead: MutableList<String> = mutableListOf("SÉRIE", "ANTERIOR", "KG
 
 
 @Composable
-fun ExerciseCard(title: String, quantSeries: Int = 3, quantReps: Int = 12, peso: Int) {
+fun ExerciseCard(title: String, quantSeries: Int = 3, quantReps: Int = 12, peso: Int = 20) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

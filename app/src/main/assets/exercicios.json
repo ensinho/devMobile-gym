@@ -1,0 +1,77 @@
+[
+  {
+    "nome": "Cadeira extensora",
+    "grupoMuscular": "Pernas - Quadríceps",
+    "imagem": "https://example.com/imagens/cadeira_extensora.png"
+  },
+  {
+    "nome": "Agachamento livre",
+    "grupoMuscular": "Pernas - Quadríceps, Glúteos",
+    "imagem": "https://example.com/imagens/agachamento_livre.png"
+  },
+  {
+    "nome": "Mesa flexora",
+    "grupoMuscular": "Pernas - Posteriores (Isquiotibiais)",
+    "imagem": "https://example.com/imagens/mesa_flexora.png"
+  },
+  {
+    "nome": "Panturilha em pé (máquina)",
+    "grupoMuscular": "Pernas - Panturrilhas",
+    "imagem": "https://example.com/imagens/panturrilha_em_pe.png"
+  },
+  {
+    "nome": "Supino reto com barra",
+    "grupoMuscular": "Peitoral - Peitoral maior, Tríceps",
+    "imagem": "https://example.com/imagens/supino_reto_barra.png"
+  },
+  {
+    "nome": "Supino inclinado com halteres",
+    "grupoMuscular": "Peitoral - Peitoral superior, Deltoide anterior",
+    "imagem": "https://example.com/imagens/supino_inclinado_halteres.png"
+  },
+  {
+    "nome": "Pulldown frente (barra)",
+    "grupoMuscular": "Costas - Latíssimo do dorso",
+    "imagem": "https://example.com/imagens/pulldown_frente.png"
+  },
+  {
+    "nome": "Remada curvada com barra",
+    "grupoMuscular": "Costas - Dorsal, Trapézio",
+    "imagem": "https://example.com/imagens/remada_curvada.png"
+  },
+  {
+    "nome": "Desenvolvimento com halteres",
+    "grupoMuscular": "Ombros - Deltoide anterior e medial",
+    "imagem": "https://example.com/imagens/desenvolvimento_halteres.png"
+  },
+  {
+    "nome": "Elevação lateral",
+    "grupoMuscular": "Ombros - Deltoide lateral",
+    "imagem": "https://example.com/imagens/elevacao_lateral.png"
+  },
+  {
+    "nome": "Rosca direta com barra",
+    "grupoMuscular": "Braços - Bíceps braquial",
+    "imagem": "https://example.com/imagens/rosca_direta.png"
+  },
+  {
+    "nome": "Tríceps pulley",
+    "grupoMuscular": "Braços - Tríceps braquial",
+    "imagem": "https://example.com/imagens/triceps_pulley.png"
+  },
+  {
+    "nome": "Abdominal supra no solo",
+    "grupoMuscular": "Abdômen - Reto abdominal",
+    "imagem": "https://example.com/imagens/abdominal_solo.png"
+  },
+  {
+    "nome": "Prancha isométrica",
+    "grupoMuscular": "Abdômen - Core completo",
+    "imagem": "https://example.com/imagens/prancha_isometrica.png"
+  },
+  {
+    "nome": "Levantamento terra",
+    "grupoMuscular": "Pernas e Costas - Glúteos, Posteriores, Lombar",
+    "imagem": "https://example.com/imagens/levantamento_terra.png"
+  }
+]

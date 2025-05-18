@@ -14,9 +14,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             DevmobileGymTheme {
                 AppNavHost()
+
             }
         }
-
 
     }
 }

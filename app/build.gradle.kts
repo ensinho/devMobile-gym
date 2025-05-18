@@ -5,6 +5,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
+    /*id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")*/
+
+
 }
 
 android {
@@ -48,6 +52,7 @@ android {
 
 dependencies {
 
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
@@ -70,6 +75,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
+    implementation ("com.google.ai.client.generativeai:generativeai:0.5.0")
+    //implementation("com.google.dagger:hilt-android-gradle-plugin:2.51")
 
     // Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -89,4 +96,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    //implementation("com.google.dagger:hilt-android:2.51")
+    //kapt("com.google.dagger:hilt-compiler:2.51")
+
+
 }

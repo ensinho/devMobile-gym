@@ -53,6 +53,7 @@ fun ChatBotScreen(navController: NavHostController, viewModel: ChatBotViewModel 
                 LazyColumn (
                     modifier = Modifier.weight(1.5f)
                 ){
+                    ->
                     items(messages) { message ->
                         CardMessage(message)
                     }

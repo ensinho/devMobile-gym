@@ -1,24 +1,37 @@
 package com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.devmobile_gym.domain.model.Exercicio
 import com.example.devmobile_gym.domain.repository.ExercicioRepositoryModel
 import com.example.devmobile_gym.data.repository.ExercicioRepository
+import com.example.devmobile_gym.data.repository.TreinoRepository
 import com.example.devmobile_gym.domain.model.Treino
+import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class CriarTreinoViewModel(
     savedStateHandle: SavedStateHandle,
-    private val repository: ExercicioRepositoryModel = ExercicioRepository()
+    private val repository: ExercicioRepositoryModel = ExercicioRepository(),
+    private val treinoRepository: TreinoRepositoryModel = TreinoRepository()
 ) : ViewModel() {
+
+    private val alunoId: String = savedStateHandle.get<String>("uid") ?: "-1"
+
+    private var _status = MutableStateFlow("")
+    val status: StateFlow<String> = _status.asStateFlow()
 
     private val _titulo = MutableStateFlow("")
     val titulo: StateFlow<String> = _titulo.asStateFlow()
@@ -26,13 +39,21 @@ class CriarTreinoViewModel(
     private val _search = MutableStateFlow("")
     val search: StateFlow<String> = _search.asStateFlow()
 
-    private val _todosExercicios = repository.getAllExercicios()
+    private val _todosExercicios = MutableStateFlow<List<Exercicio>>(emptyList())
 
-    private val _exercicioos = MutableStateFlow<List<Exercicio>>(emptyList())
-    val exercicioos: StateFlow<List<Exercicio>> = _exercicioos.asStateFlow()
+    private val _exerciciosAdicionados = MutableStateFlow<List<Exercicio>>(emptyList())
+    val exerciciosAdicionados: StateFlow<List<Exercicio>> = _exerciciosAdicionados.asStateFlow()
 
-    private val _exerciciosFiltrados = mutableStateOf(_todosExercicios)
+    private val _exerciciosFiltrados = mutableStateOf<List<Exercicio>>(emptyList())
     val exerciciosFiltrados: State<List<Exercicio>> = _exerciciosFiltrados
+
+    init {
+        viewModelScope.launch {
+            val exercicios = repository.getAllExercicios()
+            _todosExercicios.value = exercicios
+            _exerciciosFiltrados.value = exercicios
+        }
+    }
 
     fun onSearchChange(novoTexto: String) {
         _search.value = novoTexto
@@ -43,11 +64,48 @@ class CriarTreinoViewModel(
         _titulo.value = novoTitulo
     }
 
+    fun criarNovoTreino(onSucces: () -> Unit) {
+        if (_titulo.value.isBlank()) {
+            _status.value = "Por favor, insira um título para o treino"
+            return
+        }
+
+        if (_exerciciosAdicionados.value.isEmpty()) {
+            _status.value = "Por favor, adicione pelo menos um exercício no treino"
+            return
+        }
+        // criar treino
+        viewModelScope.launch {
+            treinoRepository.criarTreino(
+                exercicios = _exerciciosAdicionados.value,
+                nome = _titulo.value,
+                alunoId = alunoId
+            )
+
+            onSucces()
+        }
+    }
+
+    fun adicionarExercicio(novoExercicio: Exercicio) {
+        val listaAtual = _exerciciosAdicionados.value
+        if (listaAtual.contains(novoExercicio)) return
+        val novaLista = listaAtual + novoExercicio
+        _exerciciosAdicionados.value = novaLista
+    }
+
+    fun removerExercicio(exercicio: Exercicio) {
+        _exerciciosAdicionados.value = _exerciciosAdicionados.value.filter { it != exercicio }
+            // cria uma nova lista sem aquele valor do exercicio passado como parâmetro
+    }
+
+
+
     private fun filtrarExercicios(texto: String) {
+        val todos = _todosExercicios.value
         _exerciciosFiltrados.value = if (texto.isBlank()) {
-            _todosExercicios
+            todos
         } else {
-            _todosExercicios.filter {
+            todos.filter {
                 it.nome.contains(texto, ignoreCase = true) ||
                         it.grupoMuscular.contains(texto, ignoreCase = true)
             }
@@ -64,3 +122,4 @@ class CriarTreinoViewModel(
         }
     }
 }
+

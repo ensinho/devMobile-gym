@@ -48,10 +48,11 @@ fun CriarTreinoScreen(navController: NavHostController, backStackEntry: NavBackS
     }
 
     val context = LocalContext.current
-    var importStatus by remember { mutableStateOf<String?>(null) }
+    var error = viewModel.status.collectAsState()
 
     val search by viewModel.search.collectAsState() // busca por exercicio
-    val exercicios by viewModel.exercicioos.collectAsState() // lista de exercicios adicionados no treino
+    val titulo by viewModel.titulo.collectAsState() // Nome do novo treino
+    val exerciciosAdicionados by viewModel.exerciciosAdicionados.collectAsState() // lista de exercicios adicionados no treino
     val exerciciosFiltrados by viewModel.exerciciosFiltrados // exercicios filtrados de acordo com a busca
     // TODO("Armazenar todos os exercicios no banco")
 
@@ -79,7 +80,7 @@ fun CriarTreinoScreen(navController: NavHostController, backStackEntry: NavBackS
 
                     CustomTextField(
                         label = "Título do treino",
-                        value = search,
+                        value = titulo,
                         onValueChange = viewModel::onTituloChange,
                         padding = 8,
                         modifier = Modifier.fillMaxWidth()
@@ -110,7 +111,9 @@ fun CriarTreinoScreen(navController: NavHostController, backStackEntry: NavBackS
                         items(exerciciosFiltrados) { exercicio ->
                             CustomExerciseItem(
                                 exercise = exercicio.nome,
-                                description = exercicio.grupoMuscular
+                                description = exercicio.grupoMuscular,
+                                addExerciseToTreino = { viewModel.adicionarExercicio(exercicio) },
+                                removeExerciseFromTreino = { viewModel.removerExercicio(exercicio)}
                             )
                         }
                     }
@@ -119,20 +122,23 @@ fun CriarTreinoScreen(navController: NavHostController, backStackEntry: NavBackS
 
                     CustomButton(
                         text = "Concluir",
-                        onClick = {} ,
-//                        metodo para adicionar exercicios no firebase
-//                        usei ele por esse botao, vou deixar aqui por enquanto
-//                                importarExerciciosParaFirestore(context) { success ->
-//                                importStatus = if (success) "Importação concluída com sucesso!"
-//                                else "Erro ao importar exercícios."
-//                                }
+                        onClick = {
+                            viewModel.criarNovoTreino() {
+                                navController.popBackStack()
+                                // pensei em colocar um delay e exibir alguma mensagem afirmando que
+                                // deu certo criar o treino
 
+                            }
+                                  },
                             modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp) // opcional: deixa o botão com tamanho fixo
                     )
-                    importStatus?.let {
-                        Text(text = it, color = if (it.contains("Erro")) Color.Red else Color.Green)
+                    error.value.let {
+                        Text(
+                            text = it,
+                            color = Color.Red
+                        )
                     }
                 }
             }

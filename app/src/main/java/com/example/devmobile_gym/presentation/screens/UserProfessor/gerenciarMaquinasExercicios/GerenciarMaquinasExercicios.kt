@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,8 +54,8 @@ fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewMode
         else -> 0
     }
 
-    val search by viewModel.search
-    val MaqExercFiltrados by viewModel.MaqExercFiltrados
+    val search by viewModel.search.collectAsState() // busca por exercicio
+    val maqExercFiltrados by viewModel.MaqExercFiltrados
 
     CustomScreenScaffoldProfessor(
         navController = navController,
@@ -116,7 +117,7 @@ fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewMode
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    items(MaqExercFiltrados) { MaqExerc ->
+                    items(maqExercFiltrados) { MaqExerc ->
                         val grupoMuscular: MutableList<String> = mutableListOf(MaqExerc.grupoMuscular)
 
                         CustomCard(

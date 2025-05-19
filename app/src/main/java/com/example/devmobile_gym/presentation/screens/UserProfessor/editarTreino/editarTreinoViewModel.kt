@@ -6,23 +6,36 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.devmobile_gym.data.repository.ExercicioRepository
 import com.example.devmobile_gym.domain.model.Exercicio
 import com.example.devmobile_gym.domain.repository.ExercicioRepositoryModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class EditarTreinoViewModel(
     savedStateHandle: SavedStateHandle,
     private val repository: ExercicioRepositoryModel = ExercicioRepository()
 ) : ViewModel() {
 
-    private val _search = mutableStateOf("")
-    val search: State<String> = _search
+    private val _search = MutableStateFlow("")
+    val search: StateFlow<String> = _search.asStateFlow()
 
-    private val _todosExercicios = repository.getAllExercicios()
+    private val _todosExercicios = MutableStateFlow<List<Exercicio>>(emptyList())
 
-    private val _exerciciosFiltrados = mutableStateOf(_todosExercicios)
+    private val _exerciciosFiltrados = mutableStateOf<List<Exercicio>>(emptyList())
     val exerciciosFiltrados: State<List<Exercicio>> = _exerciciosFiltrados
+
+    init {
+        viewModelScope.launch {
+            val exercicios = repository.getAllExercicios()
+            _todosExercicios.value = exercicios
+            _exerciciosFiltrados.value = exercicios
+        }
+    }
 
     fun onSearchChange(novoTexto: String) {
         _search.value = novoTexto
@@ -30,10 +43,11 @@ class EditarTreinoViewModel(
     }
 
     private fun filtrarExercicios(texto: String) {
+        val todos = _todosExercicios.value
         _exerciciosFiltrados.value = if (texto.isBlank()) {
-            _todosExercicios
+            todos
         } else {
-            _todosExercicios.filter {
+            todos.filter {
                 it.nome.contains(texto, ignoreCase = true) ||
                         it.grupoMuscular.contains(texto, ignoreCase = true)
             }

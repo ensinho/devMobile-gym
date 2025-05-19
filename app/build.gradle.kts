@@ -87,6 +87,8 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
     implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.firebase.dataconnect)
+    implementation(libs.places)
 
     // Testes
     testImplementation(libs.junit)

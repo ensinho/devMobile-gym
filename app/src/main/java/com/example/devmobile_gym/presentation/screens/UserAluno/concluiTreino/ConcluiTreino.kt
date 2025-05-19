@@ -104,9 +104,25 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.weight(0.09f)) {
 
+                    val scope = rememberCoroutineScope()
+                    val context = LocalContext.current
+
                     CustomButton(
+
+
                         text = "Concluir Treino",
-                        onClick = { onConclude() }
+                        onClick = {
+                            scope.launch {
+                                try {
+                                    alunoRepository.concluirTreinoParaAluno()
+                                    Toast.makeText(context, "Treino concluído com sucesso!", Toast.LENGTH_SHORT).show()
+                                } catch (e: Exception) {
+                                    Toast.makeText(context, "Erro ao concluir treino", Toast.LENGTH_SHORT).show()
+                                    Log.e("DayStreak", "Erro: ${e.message}")
+                                }
+                            }
+                        }
+                        }
                     )
                 }
             }

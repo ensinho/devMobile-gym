@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.devmobile_gym.data.repository.AlunoRepository
 import com.example.devmobile_gym.domain.model.Aluno
 import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
+import com.google.android.libraries.places.api.model.LocalDate
+import com.google.firebase.dataconnect.LocalDate
 import kotlinx.coroutines.launch
 
 class ProfileViewModel (
@@ -29,6 +31,10 @@ class ProfileViewModel (
             _aluno.value = aluno
         }
     }
+
+    val diasTreinados = aluno.value?.diasTreinados?.map {
+        LocalDate.parse(it)
+    } ?: emptyList()
 
 
 }

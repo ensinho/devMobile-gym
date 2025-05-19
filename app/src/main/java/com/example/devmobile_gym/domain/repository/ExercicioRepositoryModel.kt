@@ -4,13 +4,6 @@ import com.example.devmobile_gym.domain.model.Exercicio
 
 interface ExercicioRepositoryModel {
 //    fun getExercicio(exercicioId: Int): Exercicio?
-    fun getAllExercicios(): List<Exercicio>
-//    fun editarExercicio(
-//        exercicioId: Int,
-//        nome: String,
-//        series: Int,
-//        grupoMuscular: String,
-//        repeticoes: Int,
-//        peso: Int
-//    ): Boolean
+    suspend fun getAllExercicios(): List<Exercicio>
+    suspend fun insertExercicio(exercicio: Exercicio)
 }

@@ -105,7 +105,9 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
                     Row (
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Absolute.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth().padding(8.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
                     ){
 
                         Row {
@@ -126,8 +128,9 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
 
                         IconButton(
                             onClick = {
-                                navController.navigate(ProfessorRoutes.AdicionarRotina)
-                                //navController.navigate("${ProfessorRoutes.CriarTreino}/${alunoSelecionado?.id}")
+                                alunoSelecionado?.uid?.let { uid ->
+                                    navController.navigate("${ProfessorRoutes.AdicionarRotina}/${alunoSelecionado!!.uid}")
+                                }
                             },
                             modifier = Modifier.size(35.dp)
                         ) {

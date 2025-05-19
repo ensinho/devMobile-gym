@@ -200,16 +200,21 @@ fun AppNavHost() {
         }
 
         // CRIAR TREINO ( visao professor )
-        composable(route = ProfessorRoutes.CriarTreino) { backStackEntry ->
-            CriarTreinoScreen(
-                navController = navController,
-                backStackEntry = backStackEntry,
-                onBack = { navController.popBackStack() }
-            )
-        }
+//        composable(route = ProfessorRoutes.CriarTreino) { backStackEntry ->
+//            CriarTreinoScreen(
+//                navController = navController,
+//                backStackEntry = backStackEntry,
+//                onBack = { navController.popBackStack() }
+//            )
+//        }
 
         // CRIAR TREINO ( visao professor )
-        composable(route = ProfessorRoutes.AdicionarRotina) { backStackEntry ->
+        composable(
+            route = ProfessorRoutes.AdicionarRotina + "/{uid}",
+            arguments = listOf(
+                navArgument("uid") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
             CriarTreinoScreen(
                 navController = navController,
                 backStackEntry = backStackEntry,

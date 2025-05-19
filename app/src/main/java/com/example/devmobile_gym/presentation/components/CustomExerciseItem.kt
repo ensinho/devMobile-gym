@@ -41,7 +41,9 @@ import com.example.devmobile_gym.R
 @Composable
 fun CustomExerciseItem(
     exercise: String,
-    description: String
+    description: String,
+    addExerciseToTreino: () -> Unit,
+    removeExerciseFromTreino: () -> Unit
 ) {
     var isIncluded by remember { mutableStateOf(false) }
     Card (
@@ -78,7 +80,16 @@ fun CustomExerciseItem(
             }
 
             IconButton(
-                onClick = {isIncluded = !isIncluded},
+                onClick = {
+                    if (isIncluded) {
+                        removeExerciseFromTreino()
+                    } else {
+                        addExerciseToTreino()
+                    }
+
+                    // altera o valor da variavel isIncluded para a próxima interação.
+                    isIncluded = !isIncluded
+                }
             ) {
                 Icon(
                     painter = painterResource(id = if (isIncluded) R.drawable.remove_item else R.drawable.add_circle_item),
@@ -93,8 +104,8 @@ fun CustomExerciseItem(
     }
 }
 
-@Preview
-@Composable
-private fun PreviewCustomExerciseItem() {
-    CustomExerciseItem("Agachamento Livre", "Quadríceps e posterior")
-}
+//@Preview
+//@Composable
+//private fun PreviewCustomExerciseItem() {
+//    CustomExerciseItem("Agachamento Livre", "Quadríceps e posterior")
+//}

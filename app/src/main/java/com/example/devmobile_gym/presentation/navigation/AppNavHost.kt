@@ -249,7 +249,9 @@ fun AppNavHost() {
                 onBack = {
                     navController.popBackStack()
                 },
-                NavigateToEdit = {navController.navigate(ProfessorRoutes.EditarTreino)}
+                navigateToEdit = {
+                    navController.navigate(ProfessorRoutes.EditarTreino + "/$it")
+                }
             )
         }
 
@@ -289,7 +291,12 @@ fun AppNavHost() {
             )
         }
 
-        composable(route = ProfessorRoutes.EditarTreino) { backStackEntry ->
+        composable(
+            route = ProfessorRoutes.EditarTreino + "/{id}",
+            arguments = listOf(
+                navArgument("id") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
             EditarTreinoScreen(
                 navController = navController,
                 backStackEntry = backStackEntry,

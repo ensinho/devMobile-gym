@@ -11,11 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.devmobile_gym.data.repository.ProfessorRepository
+import com.example.devmobile_gym.data.repository.ExercicioRepository
 import com.example.devmobile_gym.data.repository.TreinoRepository
 import com.example.devmobile_gym.domain.model.Aluno
 import com.example.devmobile_gym.domain.model.Treino
 import com.example.devmobile_gym.domain.model.Usuario
+import com.example.devmobile_gym.domain.repository.ExercicioRepositoryModel
 import com.example.devmobile_gym.domain.repository.ProfessorRepositoryModel
 import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
 import com.google.firebase.firestore.FirebaseFirestore
@@ -33,6 +34,7 @@ class GerenciaAlunoViewModel(
     private val alunoId: String = savedStateHandle["uid"] ?: throw IllegalArgumentException("UID não encontrado")
 
     private val treinoRepository: TreinoRepositoryModel = TreinoRepository()
+    private val exerciciosRepository : ExercicioRepositoryModel = ExercicioRepository()
 
     private val _alunoSelecionado = MutableStateFlow<Usuario.Aluno?>(null)
     val alunoSelecionado: StateFlow<Usuario.Aluno?> = _alunoSelecionado
@@ -46,12 +48,20 @@ class GerenciaAlunoViewModel(
     private val _error = mutableStateOf<String?>(null)
     val error: State<String?> = _error
 
+    private val _nomesExercicios = MutableStateFlow<Map<String, String>>(emptyMap())
+    val nomesExercicios: StateFlow<Map<String, String>> = _nomesExercicios.asStateFlow()
+
     init {
-        viewModelScope.launch { loadData() }
+        viewModelScope.launch {
+            loadData()
+        }
     }
 
     private suspend fun loadData() {
         try {
+            val todos = exerciciosRepository.getAllExercicios()
+            _nomesExercicios.value = todos.associateBy({ it.id }, { it.nome })
+
             _isLoading.value = true
             val aluno = getAlunoById(alunoId)
             _alunoSelecionado.value = aluno
@@ -75,6 +85,11 @@ class GerenciaAlunoViewModel(
         val snap = db.collection("alunos").document(uid).get().await()
         return snap.toObject(Usuario.Aluno::class.java)
     }
+
+    fun getNomeExercicio(id: String): String {
+        return _nomesExercicios.value[id] ?: "Exercício não encontrado"
+    }
+
 
     companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {

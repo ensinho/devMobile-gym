@@ -48,7 +48,7 @@ fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewMo
                 items(treinos) { treino ->
                     CustomCard(
                         treino = treino.nome,
-                        description = treino.exercicios.map { it.nome },
+                        description = treino.exercicios.map { "it.nome" },
                         buttonText = "Iniciar Treino",
                         needButton = false,
                         onButtonClick = { /* nao precisa de botao */ },

@@ -129,7 +129,7 @@ fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBa
                     treino.value?.let {
                         items(it.exercicios) { exercicio ->
                             ExerciseCard(
-                                title = exercicio.nome,
+                                title = "",
                             )
                         }
                     }

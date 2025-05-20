@@ -6,7 +6,7 @@ import com.example.devmobile_gym.domain.repository.AulaRepositoryModel
 
 class AulaRepository : AulaRepositoryModel {
     override fun getAula(): List<Aula?> {
-        return MockData.aulasMock
+        TODO("Not yet implemented")
     }
 
 }

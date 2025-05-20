@@ -77,7 +77,9 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = view
                 items(treinos) { treino ->
                     CustomCard(
                         treino = treino.nome,
-                        description = treino.exercicios.map { it.nome },
+                        description = treino.exercicios.map {
+                            viewModel.getNomeExercicio(it)
+                        },
                         buttonText = "Iniciar Treino",
                         onButtonClick = { onNavigateToTreino(treino.id) },
                         editButton = {}

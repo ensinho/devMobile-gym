@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.devmobile_gym.data.repository.ProfessorRepository
 import com.example.devmobile_gym.domain.model.Aluno
 import com.example.devmobile_gym.domain.model.Rotina
 import com.example.devmobile_gym.domain.repository.ProfessorRepositoryModel

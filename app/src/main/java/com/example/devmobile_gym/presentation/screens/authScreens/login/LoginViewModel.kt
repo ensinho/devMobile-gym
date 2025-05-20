@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.devmobile_gym.data.repository.AlunoRepository
-import com.example.devmobile_gym.data.repository.ProfessorRepository
 import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
 import com.example.devmobile_gym.domain.repository.ProfessorRepositoryModel
 import com.google.firebase.firestore.ktx.firestore

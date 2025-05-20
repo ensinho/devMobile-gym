@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -35,11 +33,15 @@ import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.CustomCard
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldProfessor
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
-import com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino.DetalhesTreinoViewModel
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
-fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBackStackEntry, onBack: () -> Unit, NavigateToEdit: () -> Unit) {
+fun GerenciaAlunoScreen(
+    navController: NavHostController,
+    backStackEntry: NavBackStackEntry,
+    onBack: () -> Unit,
+    navigateToEdit: (String) -> Unit
+) {
     // factory para o viewmodel receber os parametros da rota
     val viewModel: GerenciaAlunoViewModel = viewModel(
         viewModelStoreOwner = backStackEntry,
@@ -150,12 +152,14 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
                             isAdm = true,
                             needButton = false,
                             treino = it,
-                            description = treino.exercicios.map { it.nome },
+                            description = treino.exercicios.map {
+                                viewModel.getNomeExercicio(it)
+                                                                },
                             buttonText = "Iniciar Treino",
                             /* Implementar a logica de Editar e Remover treino*/
                             // obs -> vai precisar modificar o componente CustomCard
-                            onButtonClick = {  },
-                            editButton = { NavigateToEdit() }
+                            onButtonClick = { /*user adm nao precisa dessa funcao*/ },
+                            editButton = { navigateToEdit(treino.id) }
                         )
                     }
                     Spacer(Modifier.height(8.dp))

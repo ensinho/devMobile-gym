@@ -41,8 +41,8 @@ class CriarTreinoViewModel(
 
     private val _todosExercicios = MutableStateFlow<List<Exercicio>>(emptyList())
 
-    private val _exerciciosAdicionados = MutableStateFlow<List<Exercicio>>(emptyList())
-    val exerciciosAdicionados: StateFlow<List<Exercicio>> = _exerciciosAdicionados.asStateFlow()
+    private val _exerciciosAdicionados = MutableStateFlow<List<String>>(emptyList())
+    val exerciciosAdicionados: StateFlow<List<String>> = _exerciciosAdicionados.asStateFlow()
 
     private val _exerciciosFiltrados = mutableStateOf<List<Exercicio>>(emptyList())
     val exerciciosFiltrados: State<List<Exercicio>> = _exerciciosFiltrados
@@ -88,15 +88,17 @@ class CriarTreinoViewModel(
 
     fun adicionarExercicio(novoExercicio: Exercicio) {
         val listaAtual = _exerciciosAdicionados.value
-        if (listaAtual.contains(novoExercicio)) return
-        val novaLista = listaAtual + novoExercicio
+        val novoId = novoExercicio.id
+        if (listaAtual.contains(novoId)) return
+        val novaLista = listaAtual + novoId
         _exerciciosAdicionados.value = novaLista
     }
 
     fun removerExercicio(exercicio: Exercicio) {
-        _exerciciosAdicionados.value = _exerciciosAdicionados.value.filter { it != exercicio }
-            // cria uma nova lista sem aquele valor do exercicio passado como parâmetro
+        val idParaRemover = exercicio.id
+        _exerciciosAdicionados.value = _exerciciosAdicionados.value.filter { it != idParaRemover }
     }
+
 
 
 

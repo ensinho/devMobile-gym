@@ -13,7 +13,7 @@ sealed class Usuario(
         override val uid: String? = "",
         override val nome: String = "",
         override val email: String? = "",
-        val rotina: List<Rotina>? = emptyList()
+        val rotina: List<String>? = emptyList()
     ) : Usuario(uid, nome, email)
 
     data class Professor(

@@ -1,8 +1,8 @@
 package com.example.devmobile_gym.domain.model
 
 data class Treino(
-    val id: String,
-    val nome: String,
-    val exercicios: MutableList<Exercicio>
+    val id: String = "",
+    val nome: String = "",
+    val exercicios: List<Exercicio> = emptyList()
 
 )

@@ -12,10 +12,12 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.devmobile_gym.data.repository.ProfessorRepository
+import com.example.devmobile_gym.data.repository.TreinoRepository
 import com.example.devmobile_gym.domain.model.Aluno
 import com.example.devmobile_gym.domain.model.Treino
 import com.example.devmobile_gym.domain.model.Usuario
 import com.example.devmobile_gym.domain.repository.ProfessorRepositoryModel
+import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,11 +32,13 @@ class GerenciaAlunoViewModel(
     private val db = FirebaseFirestore.getInstance()
     private val alunoId: String = savedStateHandle["uid"] ?: throw IllegalArgumentException("UID não encontrado")
 
+    private val treinoRepository: TreinoRepositoryModel = TreinoRepository()
+
     private val _alunoSelecionado = MutableStateFlow<Usuario.Aluno?>(null)
     val alunoSelecionado: StateFlow<Usuario.Aluno?> = _alunoSelecionado
 
-    private val _treinos = mutableStateOf<List<Treino>>(emptyList())
-    val treinos: State<List<Treino>> = _treinos
+    private val _treinos = mutableStateOf<List<Treino?>>(emptyList())
+    val treinos: State<List<Treino?>> = _treinos
 
     private val _isLoading = mutableStateOf(true)
     val isLoading: State<Boolean> = _isLoading
@@ -52,26 +56,20 @@ class GerenciaAlunoViewModel(
             val aluno = getAlunoById(alunoId)
             _alunoSelecionado.value = aluno
 
-            if (aluno?.rotina != null) {
-                // exemplo usando abordagem de coleção separada:
-                val treinosCarregados = aluno.rotina
-                    .mapNotNull { treinoId ->
-                        db.collection("treinos")
-                            .document(treinoId.id)
-                            .get()
-                            .await()
-                            .toObject(Treino::class.java)
-                    } ?: emptyList()
+            if (!aluno?.rotina.isNullOrEmpty()) {
+                val treinosCarregados = treinoRepository.getTreinosByIds(aluno.rotina)
                 _treinos.value = treinosCarregados
             } else {
                 _treinos.value = emptyList()
             }
+
         } catch (e: Exception) {
             _error.value = "Erro ao carregar dados: ${e.message}"
         } finally {
             _isLoading.value = false
         }
     }
+
 
     private suspend fun getAlunoById(uid: String): Usuario.Aluno? {
         val snap = db.collection("alunos").document(uid).get().await()

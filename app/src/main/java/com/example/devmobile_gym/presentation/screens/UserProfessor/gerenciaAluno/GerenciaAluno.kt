@@ -145,17 +145,19 @@ fun GerenciaAlunoScreen(navController: NavHostController, backStackEntry: NavBac
                     }
                 }
                 items(treinosAluno) { treino ->
-                    CustomCard(
-                        isAdm = true,
-                        needButton = false,
-                        treino = treino.nome,
-                        description = treino.exercicios.map { it.nome },
-                        buttonText = "Iniciar Treino",
-                        /* Implementar a logica de Editar e Remover treino*/
-                        // obs -> vai precisar modificar o componente CustomCard
-                        onButtonClick = {  },
-                        editButton = { NavigateToEdit() }
-                    )
+                    treino?.nome?.let {
+                        CustomCard(
+                            isAdm = true,
+                            needButton = false,
+                            treino = it,
+                            description = treino.exercicios.map { it.nome },
+                            buttonText = "Iniciar Treino",
+                            /* Implementar a logica de Editar e Remover treino*/
+                            // obs -> vai precisar modificar o componente CustomCard
+                            onButtonClick = {  },
+                            editButton = { NavigateToEdit() }
+                        )
+                    }
                     Spacer(Modifier.height(8.dp))
                 }
             }

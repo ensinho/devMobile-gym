@@ -18,7 +18,7 @@ object MockData {
                 uid = userId,
                 nome = nome,
                 email = email,
-                rotina = rotina
+//                rotina = rotina
             )
         }
 

@@ -7,4 +7,6 @@ interface TreinoRepositoryModel {
     fun criarTreino( exercicios: List<Exercicio>, nome: String, alunoId: String)
     suspend fun getTreino(treinoId: String): Treino?
     suspend fun getTreinos() : List<Treino>
+    suspend fun getTreinosByIds(ids: List<String>): List<Treino?>
+
 }

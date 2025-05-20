@@ -55,25 +55,59 @@ class TreinoRepository(
 
 
     override suspend fun getTreino(treinoId: String): Treino? {
-        val user = auth.currentUser ?: return null
-        val documentSnapshot = db.collection("alunos").document(user.uid).get().await()
+        return try {
+            val treinoSnapshot = treinoCollection.document(treinoId).get().await()
+            if (!treinoSnapshot.exists()) return null
 
-        if (!documentSnapshot.exists()) return null
-        val aluno = documentSnapshot.toObject(Aluno::class.java)
-        return aluno?.rotina?.treinos?.find { it.id == treinoId }
+            treinoSnapshot.toObject(Treino::class.java)
+        } catch (e: Exception) {
+            Log.e("TreinoRepository", "Erro ao buscar treino por ID", e)
+            null
+        }
     }
+
 
     override suspend fun getTreinos(): List<Treino> {
         val user = auth.currentUser ?: return emptyList()
+
         return try {
             val documentSnapshot = db.collection("alunos").document(user.uid).get().await()
             if (!documentSnapshot.exists()) return emptyList()
 
             val aluno = documentSnapshot.toObject(Aluno::class.java)
-            aluno?.rotina?.treinos ?: emptyList()
+            val treinosRef = aluno?.rotina ?: return emptyList()
+
+            val treinos = mutableListOf<Treino>()
+            for (treinoId in treinosRef) {
+                val treinoSnapshot = treinoCollection.document(treinoId).get().await()
+                if (treinoSnapshot.exists()) {
+                    treinoSnapshot.toObject(Treino::class.java)?.let { treinos.add(it) }
+                }
+            }
+
+            treinos
         } catch (e: Exception) {
-            Log.e("TreinoRepositoryMock", "Erro ao buscar treinos", e)
+            Log.e("TreinoRepository", "Erro ao buscar treinos", e)
             emptyList()
         }
     }
+
+    override suspend fun getTreinosByIds(ids: List<String>): List<Treino?> {
+        val treinos = mutableListOf<Treino?>()
+        try {
+            for (id in ids) {
+                val doc = db.collection("treinos").document(id).get().await()
+                if (doc.exists()) {
+                    val treino = doc.toObject(Treino::class.java)
+                    treino?.let { treinos.add(it) }
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("Firestore", "Erro ao buscar treinos por IDs: ${e.message}")
+        }
+        return treinos
+    }
+
+
+
 }

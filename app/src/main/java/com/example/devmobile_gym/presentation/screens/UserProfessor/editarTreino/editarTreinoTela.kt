@@ -25,6 +25,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.components.BoxSeta
 import com.example.devmobile_gym.presentation.components.CustomExerciseItem
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldProfessor
@@ -34,7 +35,10 @@ import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
-fun EditarTreinoScreen(navController: NavHostController, backStackEntry: NavBackStackEntry, onBack: () -> Unit){
+fun EditarTreinoScreen(
+    navController: NavHostController,
+    backStackEntry: NavBackStackEntry,
+    onBack: () -> Unit){
 
     val viewModel: EditarTreinoViewModel = viewModel(
         viewModelStoreOwner = backStackEntry,
@@ -53,7 +57,9 @@ fun EditarTreinoScreen(navController: NavHostController, backStackEntry: NavBack
     }
 
     val search by viewModel.search.collectAsState()
+    val titulo by viewModel.titulo.collectAsState()
     val exerciciosFiltrados by viewModel.exerciciosFiltrados
+    val exerciciosAdicionados by viewModel.exerciciosAdicionados.collectAsState()
 
 
     CustomScreenScaffoldProfessor(
@@ -73,6 +79,17 @@ fun EditarTreinoScreen(navController: NavHostController, backStackEntry: NavBack
                     color = White
                 )
                 Spacer(Modifier.height(5.dp))
+
+                CustomTextField(
+                    label = "Título do treino",
+                    value = titulo,
+                    onValueChange = viewModel::onTituloChange,
+                    padding = 8,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(Modifier.height(1.dp))
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
@@ -91,30 +108,31 @@ fun EditarTreinoScreen(navController: NavHostController, backStackEntry: NavBack
 
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.weight(1f) // <- Aqui é a mágica!
                 ) {
-//                    item {
-//                        CustomExerciseItem(
-//                            exercise = "Agachamento Livre",
-//                            description = "Quadriceps e posterior"
-//                        )
-//                    }
-//                    item {
-//                        CustomExerciseItem(
-//                            exercise = "Cadeira Extensora",
-//                            description = "Quadriceps"
-//                        )
-//
-//                    }
-//                    item {
-//                        CustomExerciseItem(
-//                            exercise = "Cadeira Flexora",
-//                            description = "Posterior e coxa"
-//                        )
-//
-//                    }
-
+                    items(exerciciosFiltrados) { exercicio ->
+                        CustomExerciseItem(
+                            exercise = exercicio.nome,
+                            description = exercicio.grupoMuscular,
+                            addExerciseToTreino = { viewModel.adicionarExercicio(exercicio) },
+                            removeExerciseFromTreino = { viewModel.removerExercicio(exercicio)}
+                        )
+                    }
                 }
+
+                CustomButton(
+                    text = "Concluir",
+                    onClick = {
+                        viewModel.editarTreino {
+                            navController.popBackStack()
+                        }
+                            // pensei em colocar um delay e exibir alguma mensagem afirmando que
+                            // deu certo criar o treino
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp) // opcional: deixa o botão com tamanho fixo
+                )
             }
         }
     )
@@ -123,18 +141,3 @@ fun EditarTreinoScreen(navController: NavHostController, backStackEntry: NavBack
 }
 
 
-@Preview(showBackground = true, backgroundColor = 0xFF000000)
-@Composable
-fun EditarTreinoScreenPreview() {
-    val navController = rememberNavController()
-    val fakeBackStackEntry = navController.currentBackStackEntry ?: run {
-        navController.navigate("fake") // cria uma rota fake só pro preview funcionar
-        navController.currentBackStackEntry!!
-    }
-
-    EditarTreinoScreen(
-        navController = navController,
-        backStackEntry = fakeBackStackEntry,
-        onBack = {}
-    )
-}

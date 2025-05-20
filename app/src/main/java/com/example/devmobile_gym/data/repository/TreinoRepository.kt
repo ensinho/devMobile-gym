@@ -2,7 +2,6 @@ package com.example.devmobile_gym.data.repository
 
 import android.util.Log
 import com.example.devmobile_gym.domain.model.Aluno
-import com.example.devmobile_gym.domain.model.Exercicio
 import com.example.devmobile_gym.domain.model.Treino
 import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
 import com.google.firebase.auth.FirebaseAuth
@@ -16,7 +15,7 @@ class TreinoRepository(
 ) : TreinoRepositoryModel {
     private val treinoCollection = db.collection("treinos")
 
-    override fun criarTreino(exercicios: List<Exercicio>, nome: String, alunoId: String) {
+    override fun criarTreino(exercicios: List<String>, nome: String, alunoId: String) {
         Log.d("Firestore", alunoId)
         val treinosRef = db.collection("treinos")
 
@@ -27,7 +26,7 @@ class TreinoRepository(
         val treino = Treino(
             id = novoDocRef.id,
             nome = nome,
-            exercicios = exercicios.toMutableList()
+            exercicios = exercicios
         )
 
         // 3. Salva o treino na coleção "treinos"
@@ -106,6 +105,39 @@ class TreinoRepository(
             Log.e("Firestore", "Erro ao buscar treinos por IDs: ${e.message}")
         }
         return treinos
+    }
+
+    override suspend fun updateTreino(treinoId: String, nome: String, exercicios: List<String>) {
+        try {
+            val treinoMap = mapOf(
+                "nome" to nome,
+                "exercicios" to exercicios
+            )
+
+            treinoCollection.document(treinoId).update(treinoMap).await()
+            Log.d("Firestore", "Treino atualizado com sucesso")
+        } catch (e: Exception) {
+            Log.e("Firestore", "Erro ao atualizar treino: ${e.message}")
+        }
+    }
+
+
+    override suspend fun deleteTreino(treinoId: String) {
+        val user = auth.currentUser ?: return
+
+        try {
+            // 1. Remove o treino da coleção "treinos"
+            treinoCollection.document(treinoId).delete().await()
+
+            // 2. Remove o ID do treino da rotina do aluno
+            db.collection("alunos").document(user.uid)
+                .update("rotina", FieldValue.arrayRemove(treinoId))
+                .await()
+
+            Log.d("Firestore", "Treino deletado com sucesso")
+        } catch (e: Exception) {
+            Log.e("Firestore", "Erro ao deletar treino: ${e.message}")
+        }
     }
 
 

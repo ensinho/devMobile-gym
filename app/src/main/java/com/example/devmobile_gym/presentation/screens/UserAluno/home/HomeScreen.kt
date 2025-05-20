@@ -84,10 +84,6 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = view
                     )
                     Spacer(Modifier.height(8.dp))
                 }
-
-                items(100) { item ->
-                    Text("Item $item")
-                }
             }
         }
     ) { /* Handle menu click */ }

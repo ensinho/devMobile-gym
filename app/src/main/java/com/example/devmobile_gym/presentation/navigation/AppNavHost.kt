@@ -192,10 +192,7 @@ fun AppNavHost() {
 
         composable(ProfessorRoutes.Aulas){
             AulasProfessorScreen(
-                navController = navController,
-                onNavigateToAulas = {
-                    navController.navigate(ProfessorRoutes.Aulas)
-                }
+                navController = navController
             )
         }
 

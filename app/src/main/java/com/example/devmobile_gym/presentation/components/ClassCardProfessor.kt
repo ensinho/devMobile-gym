@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.components.ui.theme.components.CustomButton
 
 @Composable
@@ -30,13 +31,14 @@ fun ClassCardProfessor(data: String, aula: String, professor: String, hora: Stri
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(15.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.Start
         ) {
             // Coluna com os textos à esquerda
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.Start
             ) {
                 Text(
                     text = "Data: $data às $hora",
@@ -46,7 +48,8 @@ fun ClassCardProfessor(data: String, aula: String, professor: String, hora: Stri
                 Text(
                     text = " $aula",
                     color = Color.White,
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    modifier = Modifier.padding(bottom = 4.dp, start = 0.dp, end = 4.dp),
+                    fontSize = 30.sp
                 )
                 Text(
                     text = "Professor: $professor",

@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.getValue
@@ -14,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.devmobile_gym.domain.model.getDataFormatada
+import com.example.devmobile_gym.domain.model.getHoraFormatada
 import com.example.devmobile_gym.presentation.components.ClassCardAluno
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
@@ -23,7 +26,7 @@ import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 fun ShowAulas(onBack: () -> Unit, navController: NavHostController) {
 
     val viewmodel: AulasViewModel = viewModel()
-    val aulas by viewmodel.aulas
+    val aulas by viewmodel.aulas.collectAsState()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -61,12 +64,14 @@ fun ShowAulas(onBack: () -> Unit, navController: NavHostController) {
                 }
 
                 itemsIndexed(aulas) { index, aula ->
-                    ClassCardAluno(
-                        data = aula?.data.toString(),
-                        aula = "Jiu-Jitsu",
-                        professor = aula?.professor?.nome.toString(),
-                        hora = "00:00"
-                    )
+                    aula?.aula?.let {
+                        ClassCardAluno(
+                            data = aula.getDataFormatada(),
+                            aula = it,
+                            professor = aula.professor,
+                            hora = aula.getHoraFormatada(),
+                        )
+                    }
                 }
             }
         }

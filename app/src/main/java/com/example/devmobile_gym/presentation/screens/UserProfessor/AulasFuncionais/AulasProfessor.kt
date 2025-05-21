@@ -16,6 +16,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +31,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.devmobile_gym.R
+import com.example.devmobile_gym.domain.model.getDataFormatada
+import com.example.devmobile_gym.domain.model.getHoraFormatada
 import com.example.devmobile_gym.presentation.components.CardHomeProfessor
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldProfessor
@@ -38,9 +42,14 @@ import com.example.devmobile_gym.presentation.screens.UserAluno.AulasFucionais.A
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
-fun AulasProfessorScreen(navController: NavHostController, onNavigateToAulas:() -> Unit){
+fun AulasProfessorScreen(navController: NavHostController){
     val viewmodel: AulasProfessorViewModel = viewModel()
-    val aulas by viewmodel.aulas
+    val aulas by viewmodel.aulas.collectAsState()
+
+    LaunchedEffect(aulas) {
+        viewmodel.carregaAulas()
+    }
+
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -109,26 +118,19 @@ fun AulasProfessorScreen(navController: NavHostController, onNavigateToAulas:() 
                 }
 
                 items(aulas) { aula ->
-                    if (aula != null) {
+                    aula?.aula?.let {
                         ClassCardProfessor(
-                            data = aula.data,
-                            aula = "Jiu-jitsu", //adicionar atributo para a Classe Aula depois
-                            professor = aula.professor.nome,
-                            hora = aula.hora,
+                            data = aula.getDataFormatada(),
+                            aula = it,
+                            professor = aula.professor,
+                            hora = aula.getHoraFormatada(),
                             onEditClick = { navController.navigate(ProfessorRoutes.AdicionaEditaAula) }
                         )
                     }
+
                     Spacer(Modifier.height(8.dp))
 
                 }
             }
         })
 }
-
-//@Preview
-//@Composable
-//fun aulasProfessorPreview(){
-//    AulasProfessorScreen(
-//        navController = rememberNavController()
-//    )
-//}

@@ -20,7 +20,14 @@ import androidx.compose.ui.unit.sp
 import com.example.components.ui.theme.components.CustomButton
 
 @Composable
-fun ClassCardProfessor(data: String, aula: String, professor: String, hora: String, onEditClick: () -> Unit) {
+fun ClassCardProfessor(
+    data: String,
+    aula: String,
+    professor: String,
+    hora: String,
+    onEditClick: () -> Unit,
+    onRemoveClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,7 +80,7 @@ fun ClassCardProfessor(data: String, aula: String, professor: String, hora: Stri
                 Spacer(modifier = Modifier.height(8.dp))
                 CustomButton(
                     text = "Excluir",
-                    onClick = { /* ação aqui */ },
+                    onClick = { onRemoveClick() },
                     backgroundColor = Color(0xFFDE4343),
                     fillWidth = false,
                     modifier = Modifier.width(130.dp)

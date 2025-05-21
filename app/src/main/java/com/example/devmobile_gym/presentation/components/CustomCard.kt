@@ -26,6 +26,7 @@ fun CustomCard(
     onButtonClick: () -> Unit,
     needButton: Boolean = true,
     editButton: () -> Unit,
+    deleteButton: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var desc: String
@@ -96,7 +97,7 @@ fun CustomCard(
                     modifier = Modifier.fillMaxWidth()
                 ){
 
-                    CustomButton(modifier = Modifier.weight(1f),"Excluir", onClick = { /* Lógica para excluir */ }, backgroundColor = Color.Red, fillWidth = false)
+                    CustomButton(modifier = Modifier.weight(1f),"Excluir", onClick = { deleteButton() }, backgroundColor = Color.Red, fillWidth = false)
                     Spacer(modifier = Modifier.width(10.dp))
                     CustomButton(modifier = Modifier.weight(1f),"Editar", onClick = { editButton() }, fillWidth = false)
 

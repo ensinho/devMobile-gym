@@ -1,25 +1,29 @@
 package com.example.devmobile_gym.presentation
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.devmobile_gym.domain.UseCases.SendChatMessageUseCase
+import com.example.devmobile_gym.data.repository.ChatRepository
+import com.example.devmobile_gym.domain.model.Message
 import kotlinx.coroutines.launch
-import kotlin.collections.mutableListOf
 
-class ChatViewModel(
-    private val sendChatMessageUseCase: SendChatMessageUseCase
-) : ViewModel() {
+class ChatViewModel : ViewModel() {
+    private val repository = ChatRepository()
+    val chatMessages = mutableStateListOf<Message>()
 
-    private val _chatMessages = mutableListOf<String>()
-    val chatMessages: List<String> = _chatMessages
+    fun sendMessage(userText: String) {
+        if (userText.isBlank()) return
 
-    fun sendMessage(prompt : String){
+        val userMessage = Message(role = "user", content = userText)
+        chatMessages.add(userMessage)
+
         viewModelScope.launch {
-            val response = sendChatMessageUseCase(prompt)
-            _chatMessages += "Você: $prompt"
-            _chatMessages += "Gemini: $response"
-
+            try {
+                val botReply = repository.sendChat(chatMessages)
+                chatMessages.add(Message(role = "model", content = botReply))
+            } catch (e: Exception) {
+                chatMessages.add(Message(role = "model", content = "Erro ao responder: ${e.localizedMessage}"))
+            }
         }
     }
-
 }

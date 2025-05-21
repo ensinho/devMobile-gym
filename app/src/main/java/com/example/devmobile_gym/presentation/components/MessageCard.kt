@@ -18,19 +18,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.devmobile_gym.domain.model.Message
+import com.example.devmobile_gym.domain.model.Sender
 
 @Composable
 fun CardMessage(message: Message) {
-    val backgroundColor = if (message.isUser) Color(0xFF343A3F) else Color(0xFFE5E5EA)
-    val alignment = if (message.isUser) Alignment.End else Alignment.Start
-    val shape = if (message.isUser) RoundedCornerShape(12.dp, 0.dp, 12.dp, 12.dp)
+    val backgroundColor = if (message.sender == Sender.USER) Color(0xFF343A3F) else Color(0xFFE5E5EA)
+    val alignment = if (message.sender == Sender.USER) Alignment.End else Alignment.Start
+    val shape = if (message.sender == Sender.USER) RoundedCornerShape(12.dp, 0.dp, 12.dp, 12.dp)
     else RoundedCornerShape(0.dp, 12.dp, 12.dp, 12.dp)
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 4.dp),
-        horizontalArrangement = if (message.isUser) Arrangement.End else Arrangement.Start
+        horizontalArrangement = if (message.sender == Sender.USER) Arrangement.End else Arrangement.Start
     ) {
         Box(
             modifier = Modifier
@@ -40,7 +41,7 @@ fun CardMessage(message: Message) {
             Text(
                 text = message.text,
                 fontSize = 18.sp,
-                color = if (message.isUser) Color.White else Color.Black
+                color = if (message.sender == Sender.USER) Color.White else Color.Black
             )
         }
     }
@@ -49,5 +50,5 @@ fun CardMessage(message: Message) {
 @Preview
 @Composable
 private fun Preview() {
-    CardMessage(Message("Olá", false))
+    CardMessage(Message("Olá",Sender.USER))
 }

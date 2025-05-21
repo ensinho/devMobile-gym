@@ -1,6 +1,11 @@
 package com.example.devmobile_gym.domain.model
 
 data class Message(
-    val text: String,
-    val isUser: Boolean
+    val role: String,
+    val content: String
 )
+
+enum class Sender {
+    BOT,
+    USER
+}

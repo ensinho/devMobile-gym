@@ -10,23 +10,29 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.components.ui.theme.components.CustomButton
+import com.example.devmobile_gym.domain.model.Message
+import com.example.devmobile_gym.domain.model.Sender
+import com.example.devmobile_gym.presentation.ChatViewModel
 import com.example.devmobile_gym.presentation.components.CardMessage
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 
 @Composable
-fun ChatBotScreen(navController: NavHostController, viewModel: ChatBotViewModel = viewModel(), onBack: () -> Unit) {
+fun ChatBotScreen(navController: NavHostController, viewModel: ChatViewModel = viewModel(), onBack: () -> Unit) {
 //    lista de mensagens do chat
-    val messages = viewModel.message
+    val messages = viewModel.chatMessages
 //    input do usuario
-    val userInput = viewModel.userInputs
+    var userInput by  remember {mutableStateOf("")}
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -53,7 +59,6 @@ fun ChatBotScreen(navController: NavHostController, viewModel: ChatBotViewModel 
                 LazyColumn (
                     modifier = Modifier.weight(1.5f)
                 ){
-                    ->
                     items(messages) { message ->
                         CardMessage(message)
                     }
@@ -66,8 +71,8 @@ fun ChatBotScreen(navController: NavHostController, viewModel: ChatBotViewModel 
                     Column {
 
                         CustomTextField(
-                            value = userInput.value,
-                            onValueChange = { viewModel.onUserInputChange(it) },
+                            value = userInput,
+                            onValueChange = { userInput = it },
                             label = "Digite sua mensagem",
                             padding = 0,
                             modifier = Modifier.width(270.dp)
@@ -78,7 +83,7 @@ fun ChatBotScreen(navController: NavHostController, viewModel: ChatBotViewModel 
                         CustomButton(
                             text = "Enviar",
                             onClick = {
-                                viewModel.sendMessage(userInput.value)
+                                viewModel.sendMessage(userInput)
                             },
                             modifier = Modifier
                         )

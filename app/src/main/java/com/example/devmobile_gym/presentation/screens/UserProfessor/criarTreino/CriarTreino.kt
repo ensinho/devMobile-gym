@@ -71,7 +71,7 @@ fun CriarTreinoScreen(navController: NavHostController, backStackEntry: NavBackS
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Text(
-                        text = "Buscar",
+                        text = "Criar Treino",
                         fontSize = 30.sp,
                         color = White,
                         modifier = Modifier.padding(start = 10.dp, top = 10.dp)

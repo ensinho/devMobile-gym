@@ -19,6 +19,7 @@ import com.example.devmobile_gym.domain.model.Usuario
 import com.example.devmobile_gym.domain.repository.ExercicioRepositoryModel
 import com.example.devmobile_gym.domain.repository.ProfessorRepositoryModel
 import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,8 +40,11 @@ class GerenciaAlunoViewModel(
     private val _alunoSelecionado = MutableStateFlow<Usuario.Aluno?>(null)
     val alunoSelecionado: StateFlow<Usuario.Aluno?> = _alunoSelecionado
 
-    private val _treinos = mutableStateOf<List<Treino?>>(emptyList())
-    val treinos: State<List<Treino?>> = _treinos
+    private val _treinos = MutableStateFlow<List<Treino?>>(emptyList())
+    val treinos: StateFlow<List<Treino?>> = _treinos.asStateFlow()
+
+    private var _status = MutableStateFlow("")
+    val status: StateFlow<String> = _status.asStateFlow()
 
     private val _isLoading = mutableStateOf(true)
     val isLoading: State<Boolean> = _isLoading
@@ -57,7 +61,7 @@ class GerenciaAlunoViewModel(
         }
     }
 
-    private suspend fun loadData() {
+    suspend fun loadData() {
         try {
             val todos = exerciciosRepository.getAllExercicios()
             _nomesExercicios.value = todos.associateBy({ it.id }, { it.nome })
@@ -65,6 +69,21 @@ class GerenciaAlunoViewModel(
             _isLoading.value = true
             val aluno = getAlunoById(alunoId)
             _alunoSelecionado.value = aluno
+
+            aluno?.rotina?.let {
+                db.collection("treinos")
+                    .whereIn(FieldPath.documentId(), it)
+            }
+                ?.addSnapshotListener { snapshot, e ->
+                    if (e != null) {
+                        _error.value = "Erro ao escutar treinos: ${e.message}"
+                        return@addSnapshotListener
+                    }
+
+                    val novosTreinos = snapshot?.toObjects(Treino::class.java) ?: emptyList()
+                    _treinos.value = novosTreinos
+                }
+
 
             if (!aluno?.rotina.isNullOrEmpty()) {
                 val treinosCarregados = treinoRepository.getTreinosByIds(aluno.rotina)
@@ -84,6 +103,18 @@ class GerenciaAlunoViewModel(
     private suspend fun getAlunoById(uid: String): Usuario.Aluno? {
         val snap = db.collection("alunos").document(uid).get().await()
         return snap.toObject(Usuario.Aluno::class.java)
+    }
+
+    fun deletarTreino(treinoId: String, onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            _status.value = "" // limpa mensagens anteriores
+            try {
+                treinoRepository.deleteTreino(treinoId)
+                onSuccess()
+            } catch (e: Exception) {
+                _status.value = "Erro ao deletar treino: ${e.message}"
+            }
+        }
     }
 
     fun getNomeExercicio(id: String): String {

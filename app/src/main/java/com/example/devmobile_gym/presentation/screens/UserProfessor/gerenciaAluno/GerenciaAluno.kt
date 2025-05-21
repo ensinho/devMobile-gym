@@ -1,5 +1,6 @@
 package com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciaAluno
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,11 +17,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -61,7 +64,14 @@ fun GerenciaAlunoScreen(
     }
 
     val alunoSelecionado by viewModel.alunoSelecionado.collectAsState()
-    val treinosAluno by viewModel.treinos
+    val treinosAluno by viewModel.treinos.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(alunoSelecionado?.rotina) {
+        alunoSelecionado?.let {
+            viewModel.loadData()
+        }
+    }
 
     CustomScreenScaffoldProfessor(
         navController = navController,
@@ -159,7 +169,18 @@ fun GerenciaAlunoScreen(
                             /* Implementar a logica de Editar e Remover treino*/
                             // obs -> vai precisar modificar o componente CustomCard
                             onButtonClick = { /*user adm nao precisa dessa funcao*/ },
-                            editButton = { navigateToEdit(treino.id) }
+                            editButton = {
+                                treino.id.let { id -> // Verifique se o ID não é nulo
+                                    navigateToEdit(id)
+                                }
+                            },
+                            deleteButton = {
+                                treino.id.let {
+                                   viewModel.deletarTreino(it) {
+                                       Toast.makeText(context, "Treino deletado com sucesso!", Toast.LENGTH_SHORT).show()
+                                   }
+                                }
+                            }
                         )
                     }
                     Spacer(Modifier.height(8.dp))

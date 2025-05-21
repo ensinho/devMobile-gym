@@ -36,6 +36,9 @@ class EditarTreinoViewModel(
     private val _titulo = MutableStateFlow("")
     val titulo: StateFlow<String> = _titulo.asStateFlow()
 
+    private val _isIncluded = MutableStateFlow(false)
+    val isIncluded: StateFlow<Boolean> = _isIncluded.asStateFlow()
+
     // todos os exercicios do banco
     private val _todosExercicios = MutableStateFlow<List<Exercicio>>(emptyList())
 
@@ -51,8 +54,8 @@ class EditarTreinoViewModel(
         viewModelScope.launch {
             val exercicios = exercicioRepository.getAllExercicios()
             _todosExercicios.value = exercicios
-            val adicionados = exercicioRepository.getExerciciosOfTreino(treinoId)
-            _exerciciosAdicionados.value = adicionados.toSet()
+//            val adicionados = exercicioRepository.getExerciciosOfTreino(treinoId)
+//            _exerciciosAdicionados.value = adicionados.toSet()
             // pegar os exercicios do treino
             _exerciciosFiltrados.value = exercicios
 
@@ -66,6 +69,7 @@ class EditarTreinoViewModel(
         _search.value = novoTexto
         filtrarExercicios(novoTexto)
     }
+
 
     fun contemExercicio(exercicioId : String) : Boolean {
         return exerciciosAdicionados.value.any { it.id == exercicioId }
@@ -109,7 +113,6 @@ class EditarTreinoViewModel(
                     nome = _titulo.value,
                     exercicios = _exerciciosAdicionados.value.map { it.id } // pega só os IDs
                 )
-                _status.value = "Treino atualizado com sucesso"
                 onSuccess()
             } catch (e: Exception) {
                 _status.value = "Erro ao atualizar treino: ${e.message}"
@@ -120,23 +123,6 @@ class EditarTreinoViewModel(
     fun onTituloChange(novoTitulo: String) {
         _titulo.value = novoTitulo
     }
-
-
-    fun deletarTreino(onSuccess: () -> Unit) {
-        viewModelScope.launch {
-            _status.value = "" // limpa mensagens anteriores
-            try {
-                treinoRepository.deleteTreino(treinoId)
-                _status.value = "Treino deletado com sucesso"
-                onSuccess()
-            } catch (e: Exception) {
-                _status.value = "Erro ao deletar treino: ${e.message}"
-            }
-        }
-    }
-
-
-
 
 
     fun removerExercicio(exercicio: Exercicio) {

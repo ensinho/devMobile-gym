@@ -1,6 +1,7 @@
 package com.example.devmobile_gym.presentation.screens.UserProfessor.editarTreino
 
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,8 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,11 +32,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.components.BoxSeta
 import com.example.devmobile_gym.presentation.components.CustomExerciseItem
+import com.example.devmobile_gym.presentation.components.CustomExerciseItemAlreadyAdd
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldProfessor
 import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.CriarTreinoViewModel
 import com.example.devmobile_gym.ui.theme.White
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.logging.Log
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun EditarTreinoScreen(
@@ -58,8 +66,11 @@ fun EditarTreinoScreen(
 
     val search by viewModel.search.collectAsState()
     val titulo by viewModel.titulo.collectAsState()
+    val error = viewModel.status.collectAsState()
     val exerciciosFiltrados by viewModel.exerciciosFiltrados
     val exerciciosAdicionados by viewModel.exerciciosAdicionados.collectAsState()
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
 
     CustomScreenScaffoldProfessor(
@@ -79,6 +90,7 @@ fun EditarTreinoScreen(
                     color = White
                 )
                 Spacer(Modifier.height(5.dp))
+
 
                 CustomTextField(
                     label = "Título do treino",
@@ -108,14 +120,14 @@ fun EditarTreinoScreen(
 
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.weight(1f) // <- Aqui é a mágica!
+                    modifier = Modifier.weight(1f)
                 ) {
                     items(exerciciosFiltrados) { exercicio ->
                         CustomExerciseItem(
                             exercise = exercicio.nome,
                             description = exercicio.grupoMuscular,
                             addExerciseToTreino = { viewModel.adicionarExercicio(exercicio) },
-                            removeExerciseFromTreino = { viewModel.removerExercicio(exercicio)}
+                            removeExerciseFromTreino = { viewModel.removerExercicio(exercicio) }
                         )
                     }
                 }
@@ -125,14 +137,26 @@ fun EditarTreinoScreen(
                     onClick = {
                         viewModel.editarTreino {
                             navController.popBackStack()
+
+                            coroutineScope.launch {
+                                delay(300L) // espera meio segundo (300 milissegundos)
+                                Toast.makeText(context, "Treino editado com sucesso!", Toast.LENGTH_SHORT).show()
+                            }
                         }
-                            // pensei em colocar um delay e exibir alguma mensagem afirmando que
-                            // deu certo criar o treino
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp) // opcional: deixa o botão com tamanho fixo
                 )
+
+                error.value.let {
+                    Text(
+                        text = it,
+                        color = Color.Red
+                    )
+                }
+
+
             }
         }
     )

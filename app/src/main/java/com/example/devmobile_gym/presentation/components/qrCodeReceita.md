@@ -1,11 +1,14 @@
 1. Adicionar permissões no AndroidManifest.xml
 Adicionar aspermissões necessárias no AndroidManifest.xml:
+```
 <uses-permission android:name="android.permission.CAMERA" />
 <uses-feature android:name="android.hardware.camera" />
 <uses-feature android:name="android.hardware.camera.autofocus" />
+```
 
 2. Adicionar dependências no build.gradle (app)
 Você precisa adicionar a biblioteca CameraX e uma biblioteca para leitura de QR code:
+```
 // CameraX
 implementation "androidx.camera:camera-camera2:1.3.1"
 implementation "androidx.camera:camera-lifecycle:1.3.1"
@@ -13,6 +16,7 @@ implementation "androidx.camera:camera-view:1.3.1"
 
 // ML Kit para leitura de QR code (Google)
 implementation "com.google.mlkit:barcode-scanning:17.2.0"
+```
 
 3. Criar a tela de leitura de QR code
 Vamos criar um composable para a tela de leitura de QR Code:

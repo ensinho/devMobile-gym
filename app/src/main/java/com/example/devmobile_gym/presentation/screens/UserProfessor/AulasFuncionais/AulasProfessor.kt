@@ -1,6 +1,7 @@
 package com.example.devmobile_gym.presentation.screens.UserProfessor.AulasFuncionais
 
 import ClassCardProfessor
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,9 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,11 +43,17 @@ import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 import com.example.devmobile_gym.presentation.screens.UserAluno.AulasFucionais.AulasProfessorViewModel
 import com.example.devmobile_gym.ui.theme.White
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun AulasProfessorScreen(navController: NavHostController){
     val viewmodel: AulasProfessorViewModel = viewModel()
     val aulas by viewmodel.aulas.collectAsState()
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val status by viewmodel.status.collectAsState()
 
     LaunchedEffect(aulas) {
         viewmodel.carregaAulas()
@@ -91,7 +100,6 @@ fun AulasProfessorScreen(navController: NavHostController){
                             IconButton(
                                 onClick = {
                                     navController.navigate(ProfessorRoutes.AdicionaEditaAula)
-                                    //navController.navigate("${ProfessorRoutes.CriarTreino}/${alunoSelecionado?.id}")
                                 },
                                 modifier = Modifier.size(35.dp)
                             ) {
@@ -124,7 +132,24 @@ fun AulasProfessorScreen(navController: NavHostController){
                             aula = it,
                             professor = aula.professor,
                             hora = aula.getHoraFormatada(),
-                            onEditClick = { navController.navigate(ProfessorRoutes.AdicionaEditaAula) }
+                            onEditClick = { navController.navigate(ProfessorRoutes.AdicionaEditaAula) },
+                            onRemoveClick = {
+                                viewmodel.deleteAula(
+                                    aula = aula,
+                                    onSuccess = {
+                                        coroutineScope.launch {
+                                            delay(300L) // espera meio segundo (300 milissegundos)
+                                            Toast.makeText(context, status, Toast.LENGTH_SHORT).show()
+                                        }
+                                                },
+                                    onError = {
+                                        coroutineScope.launch {
+                                            delay(300L) // espera meio segundo (300 milissegundos)
+                                            Toast.makeText(context, status, Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                )
+                            }
                         )
                     }
 

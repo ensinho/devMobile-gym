@@ -21,6 +21,9 @@ class AulasProfessorViewModel(
     private val _aulas = MutableStateFlow<List<Aula?>>(emptyList())
     val aulas : StateFlow<List<Aula?>> = _aulas.asStateFlow()
 
+    private val _status = MutableStateFlow("")
+    val status: StateFlow<String> = _status.asStateFlow()
+
 
     init{
         viewModelScope.launch {
@@ -30,5 +33,20 @@ class AulasProfessorViewModel(
 
     suspend fun carregaAulas(){
         _aulas.value = aulasRepository.getAulas()
+    }
+
+    fun deleteAula(aula: Aula, onSuccess: () -> Unit, onError: () -> Unit) {
+        viewModelScope.launch {
+            val aulaDeletada = aulasRepository.deleteAula(aula.id)
+
+            if (aulaDeletada) {
+                _status.value = "Aula deletada com sucesso."
+                carregaAulas()
+                onSuccess()
+            } else {
+                _status.value = "Erro ao deletar a aula."
+                onError()
+            }
+        }
     }
 }

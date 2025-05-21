@@ -127,7 +127,8 @@ fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewMode
                             description = grupoMuscular,
                             buttonText = "",
                             onButtonClick = {},
-                            editButton = { navController.navigate(ProfessorRoutes.AdicionarNovaMaquina)}
+                            editButton = { navController.navigate(ProfessorRoutes.AdicionarNovaMaquina)},
+                            deleteButton = {}
                         )
                     }
 

@@ -82,7 +82,8 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = view
                         },
                         buttonText = "Iniciar Treino",
                         onButtonClick = { onNavigateToTreino(treino.id) },
-                        editButton = {}
+                        editButton = {},
+                        deleteButton = {}
                     )
                     Spacer(Modifier.height(8.dp))
                 }

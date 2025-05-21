@@ -52,7 +52,8 @@ fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewMo
                         buttonText = "Iniciar Treino",
                         needButton = false,
                         onButtonClick = { /* nao precisa de botao */ },
-                        editButton = {}
+                        editButton = {},
+                        deleteButton = {}
                     )
                     Spacer(Modifier.height(8.dp))
                 }

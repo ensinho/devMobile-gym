@@ -113,7 +113,7 @@ fun CriarTreinoScreen(navController: NavHostController, backStackEntry: NavBackS
                                 exercise = exercicio.nome,
                                 description = exercicio.grupoMuscular,
                                 addExerciseToTreino = { viewModel.adicionarExercicio(exercicio) },
-                                removeExerciseFromTreino = { viewModel.removerExercicio(exercicio)}
+                                removeExerciseFromTreino = { viewModel.removerExercicio(exercicio) }
                             )
                         }
                     }

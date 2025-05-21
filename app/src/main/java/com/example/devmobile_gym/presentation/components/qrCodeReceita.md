@@ -17,7 +17,7 @@ implementation "com.google.mlkit:barcode-scanning:17.2.0"
 3. Criar a tela de leitura de QR code
 Vamos criar um composable para a tela de leitura de QR Code:
 ------------------------------------------------------------
-
+```
 import android.Manifest
 import android.content.pm.PackageManager
 import android.util.Log
@@ -244,13 +244,14 @@ private fun processImageProxy(
         imageProxy.close()
     }
 }
-
+```
 ------------------------------------------------------------
 
 
 4. Modificar o arquivo de rotas
 Agora, precisamos adicionar a rota do QR code no seu arquivo de rotas para direcionar corretamente ao abrir a câmera:
 ---------------------------------------------------------------------------------------------------------------------
+```
 object AlunoRoutes {
     const val Home = "home"
     const val Search = "search"
@@ -258,13 +259,14 @@ object AlunoRoutes {
     const val Chatbot = "chatbot"
     const val Profile = "profile"
 }
-
+```
 ---------------------------------------------------------------------------------------------------------------------
 
 
 5. Configurar a navegação
 Agora, vamos configurar a navegação para a tela de QR code:
 -----------------------------------------------------------
+```
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -333,12 +335,13 @@ fun ChatbotScreen(navController: NavHostController) {
 fun ProfileScreen(navController: NavHostController) {
     // Implementação da tela Profile
 }
-
+```
 -----------------------------------------------------------
 
 
 6. Implementar um modelo de dados para NavIcon
 O seu código atual já tem uma implementação para os ícones da barra de navegação, mas para facilitar a referência, vamos criar o modelo de dados NavIcon:
+```
 ------------------------------------------------------
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -354,13 +357,14 @@ data class BottomNavigationItem(
     val hasNews: Boolean,
     val badgeCount: Int? = null
 )
-
+```
 ------------------------------------------------------
 
 
 7. Modificar o MainActivity
 Agora, vamos modificar sua MainActivity para incorporar a navegação e a leitura de QR code:
 -------------------------------------------------------------------------------------------
+```
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -420,7 +424,7 @@ fun YourAppTheme(content: @Composable () -> Unit) {
         content()
     }
 }
-
+```
 -------------------------------------------------------------------------------------------
 
 
@@ -428,6 +432,7 @@ fun YourAppTheme(content: @Composable () -> Unit) {
 Finalmente, vamos implementar o seu CustomScreenScaffold com a navegação completa para o QR Code. 
 O código que você já tem está bom, mas vamos garantir que a integração seja perfeita:
 -------------------------------------------------------------------------------------------------
+```
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -658,13 +663,14 @@ fun DrawerContent(
         modifier = Modifier.padding(16.dp)
     )
 }
-
+```
 -------------------------------------------------------------------------------------------------
 
 
 9. Exemplo de uso do CustomScreenScaffold em uma tela
 Aqui está um exemplo de como usar o CustomScreenScaffold em uma tela real:
--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+```
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -700,7 +706,7 @@ fun ExampleScreen(navController: NavHostController) {
         }
     )
 }
-
+```
 -------------------------------------------------------------------------
 
 Explicações:
@@ -751,12 +757,14 @@ Possíveis problemas e soluções:
 Se o usuário negar a permissão da câmera permanentemente, você pode precisar direcioná-lo para as configurações do aplicativo:
 
 // Adicione essa função na QRCodeScreen
+```
 private fun openAppSettings(context: Context) {
     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
         data = Uri.fromParts("package", context.packageName, null)
     }
     context.startActivity(intent)
 }
+```
 
 2. Câmera não inicializa
 Se a câmera não inicializar, verifique o LogCat para erros específicos. Problemas comuns incluem:

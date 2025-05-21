@@ -17,6 +17,7 @@ implementation "com.google.mlkit:barcode-scanning:17.2.0"
 3. Criar a tela de leitura de QR code
 Vamos criar um composable para a tela de leitura de QR Code:
 ------------------------------------------------------------
+
 import android.Manifest
 import android.content.pm.PackageManager
 import android.util.Log
@@ -243,6 +244,7 @@ private fun processImageProxy(
         imageProxy.close()
     }
 }
+
 ------------------------------------------------------------
 
 
@@ -256,6 +258,7 @@ object AlunoRoutes {
     const val Chatbot = "chatbot"
     const val Profile = "profile"
 }
+
 ---------------------------------------------------------------------------------------------------------------------
 
 
@@ -330,6 +333,7 @@ fun ChatbotScreen(navController: NavHostController) {
 fun ProfileScreen(navController: NavHostController) {
     // Implementação da tela Profile
 }
+
 -----------------------------------------------------------
 
 
@@ -350,6 +354,7 @@ data class BottomNavigationItem(
     val hasNews: Boolean,
     val badgeCount: Int? = null
 )
+
 ------------------------------------------------------
 
 
@@ -415,6 +420,7 @@ fun YourAppTheme(content: @Composable () -> Unit) {
         content()
     }
 }
+
 -------------------------------------------------------------------------------------------
 
 
@@ -652,6 +658,7 @@ fun DrawerContent(
         modifier = Modifier.padding(16.dp)
     )
 }
+
 -------------------------------------------------------------------------------------------------
 
 
@@ -693,6 +700,7 @@ fun ExampleScreen(navController: NavHostController) {
         }
     )
 }
+
 -------------------------------------------------------------------------
 
 Explicações:

@@ -22,7 +22,12 @@ class ChatViewModel : ViewModel() {
                 val botReply = repository.sendChat(chatMessages)
                 chatMessages.add(Message(role = "model", content = botReply))
             } catch (e: Exception) {
-                chatMessages.add(Message(role = "model", content = "Erro ao responder: ${e.localizedMessage}"))
+                chatMessages.add(
+                    Message(
+                        role = "model",
+                        content = "Erro ao responder: ${e.message ?: e.toString()}"
+                    )
+                )
             }
         }
     }

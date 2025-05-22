@@ -16,10 +16,11 @@ import com.example.devmobile_gym.domain.model.Sender
 
 @Composable
 fun CardMessage(message: Message) {
-    val sender = if (message.role.lowercase() == "user") Sender.USER else Sender.BOT
-    val backgroundColor = if (sender == Sender.USER) Color(0xFF343A3F) else Color(0xFFE5E5EA)
-    val alignment = if (sender == Sender.USER) Alignment.End else Alignment.Start
-    val shape = if (sender == Sender.USER)
+    val isUser = message.role.lowercase() == "user"
+
+    val backgroundColor = if (isUser) Color(0xFF343A3F) else Color(0xFFE5E5EA)
+    val alignment = if (isUser) Alignment.End else Alignment.Start
+    val shape = if (isUser)
         RoundedCornerShape(12.dp, 0.dp, 12.dp, 12.dp)
     else
         RoundedCornerShape(0.dp, 12.dp, 12.dp, 12.dp)
@@ -28,7 +29,7 @@ fun CardMessage(message: Message) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 4.dp),
-        horizontalArrangement = if (sender == Sender.USER) Arrangement.End else Arrangement.Start
+        horizontalArrangement = if (isUser) Arrangement.End else Arrangement.Start
     ) {
         Box(
             modifier = Modifier
@@ -38,11 +39,12 @@ fun CardMessage(message: Message) {
             Text(
                 text = message.content,
                 fontSize = 18.sp,
-                color = if (sender == Sender.USER) Color.White else Color.Black
+                color = if (isUser) Color.White else Color.Black
             )
         }
     }
 }
+
 
 @Preview
 @Composable

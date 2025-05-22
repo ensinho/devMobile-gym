@@ -5,13 +5,13 @@
 //import androidx.compose.runtime.mutableStateOf
 //import androidx.lifecycle.ViewModel
 //import androidx.lifecycle.viewModelScope
-//import com.example.devmobile_gym.domain.model.Message
+//import com.example.devmobile_gym.domain.model.Message.kt
 //import kotlinx.coroutines.delay
 //import kotlinx.coroutines.launch
 //
 //class ChatBotViewModel : ViewModel() {
-//    private val _message = mutableStateListOf<Message>()
-//    val message: List<Message> = _message
+//    private val _message = mutableStateListOf<Message.kt>()
+//    val message: List<Message.kt> = _message
 //
 //    private val _userInputs = mutableStateOf("")
 //    val userInputs: State<String> = _userInputs
@@ -23,7 +23,7 @@
 //
 //    fun sendMessage(userMessage: String) {
 //        if (userMessage.isNotEmpty()) {
-//            _message.add(Message(text = userMessage, isUser = true))
+//            _message.add(Message.kt(text = userMessage, isUser = true))
 //            _userInputs.value = ""
 //
 //            // Resposta do chatbot
@@ -63,7 +63,7 @@
 //        viewModelScope.launch {
 //            delay(1000)
 //            val botResponse = generateBotResponse(userMessage)
-//            _message.add(Message(text = botResponse, isUser = false))
+//            _message.add(Message.kt(text = botResponse, isUser = false))
 //        }
 //    }
 //}

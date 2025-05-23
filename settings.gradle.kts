@@ -3,6 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven(url = "https://jitpack.io") // ADICIONE AQUI TAMBÉM
     }
     /*plugins {
         id("org.jetbrains.kotlin.jvm") version "1.9.23"
@@ -15,7 +16,9 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
+        gradlePluginPortal()
         mavenCentral()
+        maven(url = "https://jitpack.io")
     }
 }
 

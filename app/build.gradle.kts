@@ -52,6 +52,10 @@ android {
 
 dependencies {
 
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    //noinspection UseTomlInstead
+    implementation("com.github.jeziellago:compose-markdown:0.5.7")
+
 
     // Firebase
     implementation(platform(libs.firebase.bom))
@@ -101,3 +105,4 @@ dependencies {
 
 
 }
+

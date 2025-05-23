@@ -783,3 +783,97 @@ Algumas dicas para melhorar a detecção:
 Certifique-se de que o QR code esteja bem iluminado
 Adicione uma área guia na tela usando um overlay para ajudar o usuário
 Ajuste o foco da câmera (você pode adicionar um modo de foco automático
+
+========================================================
+
+Detalhes Importantes de Implementação e Próximos Passos
+Estrutura do Exercício no Firebase: A imagem mostra que você tem um campo image e nome no documento de exercício. Para o link do YouTube, você precisaria de um campo adicional, por exemplo, linkVideo ou youtubeUrl. Certifique-se de que este campo exista no seu modelo de dados Exercicio em Kotlin também.
+
+```
+Kotlin
+
+// Exemplo de como seria seu modelo de dados Exercicio
+data class Exercicio(
+    val id: String?,
+    val grupoMuscular: String?,
+    val imagem: String?, // Ou URL para imagem
+    val nome: String?,
+    val linkVideo: String? // Novo campo para o link do YouTube
+)
+```
+
+Lógica onQRCodeScanned na MainActivity (mais elaborada):
+Se o QR code contiver o ID do Exercício do Firebase, você precisará de um ExercicioRepository e uma função para buscar o exercício:
+```
+// Exemplo em MainActivity (ou ViewModel)
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.rememberCoroutineScope
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
+
+// Suponha que você tenha um ExercicioRepository injetado
+// class ExercicioRepository(private val db: FirebaseFirestore) {
+//     suspend fun getExercicioById(exercicioId: String): Exercicio? {
+//         return db.collection("exercicios").document(exercicioId).get().await()
+//             .toObject(Exercicio::class.java)
+//     }
+// }
+
+class MainActivity : ComponentActivity() {
+    private val db = FirebaseFirestore.getInstance() // Ou use injeção de dependência
+    // private val exercicioRepository = ExercicioRepository(db)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            val navController = rememberNavController()
+            val scope = rememberCoroutineScope() // Obter CoroutineScope para launch
+
+            val handleQRCodeResult: (String) -> Unit = { result ->
+                Toast.makeText(this@MainActivity, "QR Code lido: $result", Toast.LENGTH_LONG).show()
+
+                // CENÁRIO 1: QR code contém diretamente a URL do YouTube
+                if (result.startsWith("http://") || result.startsWith("https://")) {
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(result))
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        Toast.makeText(this@MainActivity, "Não foi possível abrir o link", Toast.LENGTH_SHORT).show()
+                        Log.e("QRCode", "Erro ao abrir link: ${e.message}")
+                    }
+                } else {
+                    // CENÁRIO 2: QR code contém o ID do Exercício do Firebase
+                    scope.launch {
+                        try {
+                            val exercicioRef = db.collection("exercicios").document(result)
+                            val snapshot = exercicioRef.get().await()
+                            val exercicio = snapshot.toObject(Exercicio::class.java) // Assumindo seu modelo Exercicio
+
+                            exercicio?.linkVideo?.let { youtubeLink ->
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeLink))
+                                startActivity(intent)
+                            } ?: Toast.makeText(this@MainActivity, "Link do vídeo não encontrado para este exercício.", Toast.LENGTH_LONG).show()
+
+                        } catch (e: Exception) {
+                            Toast.makeText(this@MainActivity, "Erro ao buscar exercício: ${e.message}", Toast.LENGTH_LONG).show()
+                            Log.e("QRCode", "Erro ao buscar exercício no Firebase: ${e.message}")
+                        }
+                    }
+                }
+            }
+
+            // ... (restante do código)
+            AlunoNavHost(
+                navController = navController,
+                modifier = Modifier.fillMaxSize(),
+                onQRCodeScanned = handleQRCodeResult
+            )
+        }
+    }
+}
+```

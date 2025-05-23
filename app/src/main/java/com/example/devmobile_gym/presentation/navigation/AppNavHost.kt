@@ -13,7 +13,6 @@ import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.presentation.navigation.AuthRoutes
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 import com.example.devmobile_gym.presentation.screens.UserAluno.AulasFucionais.ShowAulas
-import com.example.devmobile_gym.presentation.screens.UserAluno.chatBot.ChatBotScreen
 import com.example.devmobile_gym.presentation.screens.UserAluno.concluiTreino.ConcluiTreino
 import com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino.DetalhesTreinoScreen
 import com.example.devmobile_gym.presentation.screens.UserAluno.historico.HistoricoScreen
@@ -23,7 +22,6 @@ import com.example.devmobile_gym.presentation.screens.authScreens.login.LoginScr
 import com.example.devmobile_gym.presentation.screens.UserAluno.profile.profileScrenn
 import com.example.devmobile_gym.presentation.screens.authScreens.register.RegisterScreen2
 import com.example.devmobile_gym.presentation.screens.UserAluno.searchScreen.SearchScreen
-import com.example.devmobile_gym.presentation.screens.UserProfessor.chatbot.ProfessorChatBotScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciaAluno.GerenciaAlunoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.AulasFuncionais.AulasProfessorScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.adicionaEditaAula.AdicionaEditaAula
@@ -33,6 +31,8 @@ import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.
 import com.example.devmobile_gym.presentation.screens.UserProfessor.editarTreino.EditarTreinoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciarMaquinasExercicios.GerenciarMaquinasExerciciosScreen
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
+import com.example.devmobile_gym.presentation.screens.chatbotScreens.AlunoChatbotScreen
+import com.example.devmobile_gym.presentation.screens.chatbotScreens.ProfessorChatbotScreen
 import java.net.URLDecoder
 
 @Composable
@@ -138,13 +138,11 @@ fun AppNavHost() {
             SearchScreen(navController = navController)
         }
 
-        // ALUNO chatbot
+//        // ALUNO chatbot
         composable(AlunoRoutes.Chatbot) {
-            ChatBotScreen(
-                onBack = {
-                    navController.popBackStack()
-                         },
-                navController = navController)
+            AlunoChatbotScreen(
+                navController = navController
+            )
         }
 
         // ALUNO HISTORICO DE TREINOS
@@ -245,10 +243,7 @@ fun AppNavHost() {
 
         // PROFESSOR chatbot
         composable(ProfessorRoutes.Chatbot) {
-            ProfessorChatBotScreen(
-                onBack = {
-                    navController.popBackStack()
-                },
+            ProfessorChatbotScreen(
                 navController = navController
             )
         }

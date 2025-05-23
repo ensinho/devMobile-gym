@@ -50,27 +50,22 @@ class ExercicioRepository : ExercicioRepositoryModel {
 
 
     override suspend fun getAllExercicios(): List<Exercicio> {
-        val exercicios = MutableStateFlow<List<Exercicio>>(emptyList())
-        db.collection("exercicios")
-            .get()
-            .addOnSuccessListener { result ->
-                val listaExercicios = result.map { document ->
-                    Exercicio(
-                        id = document.id,
-                        nome = document.getString("nome") ?: "",
-                        grupoMuscular = document.getString("grupoMuscular") ?: "",
-                        imagem = document.getString("imagem") ?: ""
-                    )
-                }
-                exercicios.value = listaExercicios
+        return try {
+            val result = db.collection("exercicios").get().await()
+            result.map { document ->
+                Exercicio(
+                    id = document.id,
+                    nome = document.getString("nome") ?: "",
+                    grupoMuscular = document.getString("grupoMuscular") ?: "",
+                    imagem = document.getString("imagem") ?: ""
+                )
             }
-            .addOnFailureListener {
-                Log.e("ExercicioRepository", "Erro ao buscar exercícios", it)
-            }
-            .await()
-
-        return exercicios.value
+        } catch (e: Exception) {
+            Log.e("ExercicioRepository", "Erro ao buscar exercícios", e)
+            emptyList()
+        }
     }
+
 
     override suspend fun insertExercicio(exercicio: Exercicio) {
         try {

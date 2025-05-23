@@ -27,7 +27,10 @@ import com.example.devmobile_gym.presentation.components.CustomTextField
 import java.net.URLEncoder
 
 @Composable
-fun RegisterScreen(viewModel: RegisterViewModel = viewModel(), navcontroller: NavHostController) {
+fun RegisterScreen(
+    viewModel: RegisterViewModel = viewModel(),
+    navcontroller: NavHostController
+) {
 
     val email by viewModel.email.collectAsState()
     val nome by viewModel.nome.collectAsState()

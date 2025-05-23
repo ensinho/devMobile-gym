@@ -57,6 +57,13 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), authViewModel: AuthView
         }
     }
 
+//    LaunchedEffect(authState.value) {
+//        val state = authState.value
+//        if (state is AuthState.Error) {
+//            Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+//        }
+//    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -75,16 +82,16 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), authViewModel: AuthView
         CustomTextField(label = "Email", value = email, onValueChange = viewModel::onEmailChange, padding = 10, modifier = Modifier)
         CustomTextField(label = "Senha", value = senha, onValueChange = viewModel::onSenhaChange, padding = 10, modifier = Modifier)
 
-        Spacer(modifier = Modifier.height(8.dp))
 
-        if (!errorMessage.isNullOrEmpty()) {
-
+        if (authState.value is AuthState.Error) {
+            val errorMessage = (authState.value as AuthState.Error).message
             Text(
                 text = errorMessage,
                 color = Color.Red,
-                fontSize = 16.sp
+                modifier = Modifier.padding(top = 8.dp)
             )
         }
+
 
         Spacer(modifier = Modifier.height(5.dp))
 

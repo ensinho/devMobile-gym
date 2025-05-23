@@ -12,10 +12,11 @@ import java.net.URL
 
 class ChatRepository {
 
-    private val apiKey = "AIzaSyDaMJbTpgtASF8JVMIJEq5K00_fusTAm4Q"
+    private val apiKey = "AIzaSyA9eMRWfMCXTKB15vVOz9r9SJ3hCjxA_8I"
     // URL da API corrigida para usar v1beta e o modelo gemini-2.0-flash
     // A chave da API será adicionada separadamente na URL
-    private val baseUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+    private val baseUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
+
 
 
     suspend fun sendChat(messages: List<Message>): String = withContext(Dispatchers.IO) {
@@ -23,7 +24,7 @@ class ChatRepository {
             put("contents", JSONArray().apply {
                 messages.forEach { msg ->
                     put(JSONObject().apply {
-                        put("role", msg.role)
+                        put("role", msg.role) // "user" ou "model"
                         put("parts", JSONArray().apply {
                             put(JSONObject().apply {
                                 put("text", msg.content)
@@ -34,7 +35,6 @@ class ChatRepository {
             })
         }
 
-        // Constrói a URL completa com a chave da API
         val url = URL("$baseUrl?key=$apiKey")
         val connection = (url.openConnection() as HttpURLConnection).apply {
             requestMethod = "POST"
@@ -48,17 +48,11 @@ class ChatRepository {
         }
 
         val responseCode = connection.responseCode
-
-        val stream = if (responseCode in 200..299) {
-            connection.inputStream
-        } else {
-            connection.errorStream
-        }
-
+        val stream = if (responseCode in 200..299) connection.inputStream else connection.errorStream
         val response = stream.bufferedReader().use { it.readText() }
 
         if (responseCode !in 200..299) {
-            Log.e("ChatRepository", "Erro ao enviar mensagem. Código: $responseCode, Resposta: $response")
+            Log.e("ChatRepository", "Erro ao enviar mensagem. Código: $responseCode\nResposta: $response\nEnviado: ${jsonBody.toString(2)}")
             throw Exception("Erro da API ($responseCode): $response")
         }
 
@@ -71,4 +65,5 @@ class ChatRepository {
 
         contentArray.getJSONObject(0).getString("text")
     }
+
 }

@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,7 +20,7 @@ import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 @Composable
 fun ProfessorChatBotScreen(
     navController: NavHostController,
-    viewModel: ChatViewModel = viewModel(),
+    chatViewModel: ChatViewModel = viewModel(),
     onBack: () -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -35,8 +34,8 @@ fun ProfessorChatBotScreen(
         else -> 0
     }
 
-    val messages = viewModel.chatMessages
-    var userInput by remember { mutableStateOf("") }
+    val messages = chatViewModel.chatMessages
+    val userInput by chatViewModel.userInput.collectAsState()
 
     CustomScreenScaffoldProfessor(
         navController = navController,
@@ -68,18 +67,19 @@ fun ProfessorChatBotScreen(
 
                         CustomTextField(
                             value = userInput,
-                            onValueChange = { userInput = it },
+                            onValueChange = { chatViewModel.onUserInputChange(it) }, // ← CORRETO
                             label = "Digite sua mensagem",
                             padding = 0,
                             modifier = Modifier.width(270.dp)
                         )
+
                     }
 
                     Column {
                         CustomButton(
                             text = "Enviar",
                             onClick = {
-                                viewModel.sendMessage(userInput)
+                                chatViewModel.sendMessage(userInput)
                             },
                             modifier = Modifier
                         )

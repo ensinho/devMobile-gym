@@ -38,7 +38,6 @@ import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.CriarTreinoViewModel
 import com.example.devmobile_gym.ui.theme.White
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.logging.Log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

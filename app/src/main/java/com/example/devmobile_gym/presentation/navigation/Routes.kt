@@ -3,7 +3,7 @@ package com.example.devmobile_gym.presentation.navigation
 object AlunoRoutes {
     const val Home = "aluno/home"
     const val DetalhesTreino = "aluno/detalhesTreino/{treinoId}"
-    const val ConcluirTreino = "aluno/concluirTreino/{treinoId}"
+    const val ConcluirTreino = "aluno/concluirTreino/{treinoId}/{tempoTreino}"
     const val Aulas = "aluno/aulas"
     const val Chatbot = "aluno/chatbot"
     const val Historico = "aluno/historico"

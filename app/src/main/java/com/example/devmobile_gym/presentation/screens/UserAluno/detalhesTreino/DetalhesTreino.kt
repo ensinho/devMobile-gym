@@ -41,7 +41,6 @@ fun DetalhesTreinoScreen(
     navController: NavHostController,
     backStackEntry: NavBackStackEntry,
     onBack: () -> Unit,
-    onConclude: (String) -> Unit
 ) {
     val viewModel: DetalhesTreinoViewModel = viewModel(
         viewModelStoreOwner = backStackEntry,
@@ -135,7 +134,12 @@ fun DetalhesTreinoScreen(
 
                     CustomButton(
                         text = "Concluir",
-                        onClick = { treino.value?.let { onConclude(it.id) } }
+                        onClick = {
+                            val tempo = viewModel.finalizarTreino()
+                            treino.value?.let {
+                                navController.navigate("aluno/concluirTreino/${viewModel.getTreinoId()}/${tempo}")
+                            }
+                        }
                     )
                 }
 

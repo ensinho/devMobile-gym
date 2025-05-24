@@ -106,9 +106,6 @@ fun AppNavHost() {
                 onBack = {
                 navController.popBackStack()
                 },
-                onConclude = { treinoId ->
-                    navController.navigate("aluno/concluirTreino/$treinoId")
-                },
                 navController = navController
 
             )
@@ -118,7 +115,9 @@ fun AppNavHost() {
         composable(
             route = AlunoRoutes.ConcluirTreino,
             arguments = listOf(
-                navArgument("treinoId") { type = NavType.StringType }
+                navArgument("treinoId") { type = NavType.StringType },
+                navArgument("tempoTreino") { type = NavType.StringType }
+
             )
         ) { backStackEntry ->
             ConcluiTreino(

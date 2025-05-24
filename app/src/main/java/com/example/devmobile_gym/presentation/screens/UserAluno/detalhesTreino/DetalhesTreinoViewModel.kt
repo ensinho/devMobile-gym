@@ -65,14 +65,23 @@ class DetalhesTreinoViewModel(
         cronometroJob?.cancel()
     }
 
+    fun getTreinoId() : String {
+        return (_treinoSelecionado.value?.id ?: "Erro ao receber o ID do treino").toString()
+    }
+
     fun finalizarTreino(): String {
         pausarCronometro()
         return "${_tempoEmHoras.value}h ${_tempoEmMinutos.value}min"
     }
 
+
     init {
         carregarTreino()
         iniciarCronometro()
+    }
+
+    fun getQuantidadeExercicios() : String {
+        return (_treinoSelecionado.value?.exercicios?.size ?: "Erro ao receber a quantidade de exercício").toString()
     }
 
     private fun carregarTreino() {

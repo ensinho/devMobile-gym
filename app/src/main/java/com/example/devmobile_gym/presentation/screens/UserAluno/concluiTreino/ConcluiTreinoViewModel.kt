@@ -12,6 +12,7 @@ import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlin.toString
 
 class ConcluiTreinoViewModel(
     savedStateHandle: SavedStateHandle
@@ -20,9 +21,19 @@ class ConcluiTreinoViewModel(
     private val treinoRepositoryModel: TreinoRepositoryModel = TreinoRepository()
 
     private val treinoId: String = savedStateHandle.get<String>("treinoId") ?: "-1"
+    private val tempoTreino: String = savedStateHandle.get<String>("tempoTreino") ?: "0"
 
     private val _treinoSelecionado = MutableStateFlow<Treino?>(null)
     val treinoSelecionado: StateFlow<Treino?> = _treinoSelecionado
+
+    private val _quantidadeExercicios = MutableStateFlow<String>("Carregando...")
+    val quantidadeExercicios: StateFlow<String> = _quantidadeExercicios
+
+    private val _nomeTreino = MutableStateFlow<String>("Carregando...")
+    val nomeTreino: StateFlow<String> = _nomeTreino
+
+    private val _tempoTreino = MutableStateFlow<String>(tempoTreino)
+    val tempo: StateFlow<String> = _tempoTreino
 
     init {
         carregarTreino()
@@ -32,10 +43,16 @@ class ConcluiTreinoViewModel(
         viewModelScope.launch {
             val treino = treinoRepositoryModel.getTreino(treinoId)
             _treinoSelecionado.value = treino
+
+            if (treino != null) {
+                _nomeTreino.value = treino.nome
+                _quantidadeExercicios.value = treino.exercicios.size.toString()
+            } else {
+                _nomeTreino.value = "Treino não encontrado"
+                _quantidadeExercicios.value = "0"
+            }
         }
     }
-
-
 
     companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
@@ -52,3 +69,4 @@ class ConcluiTreinoViewModel(
         }
     }
 }
+

@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -35,9 +37,12 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
         viewModelStoreOwner = backStackEntry,
         factory = ConcluiTreinoViewModel.Factory
     )
-    val treinoFinalizado = viewModel.treinoSelecionado
+    val tempoTreino by viewModel.tempo.collectAsState()
+    val nomeTreino by viewModel.nomeTreino.collectAsState()
+    val quantidadeExercicios by viewModel.quantidadeExercicios.collectAsState()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
 
     val selectedItemIndex = when (currentRoute) {
         AlunoRoutes.Home -> 0
@@ -47,8 +52,6 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
         AlunoRoutes.Profile -> 4
         else -> 0 // default
     }
-
-    val quantidadeExercicios = treinoFinalizado.value?.exercicios?.size ?: 0
 
     CustomScreenScaffold(
         navController = navController,
@@ -62,9 +65,9 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
                 modifier = Modifier.fillMaxSize()
             ){
                 Row (
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.weight(0.3f)
+                    modifier = Modifier.weight(0.5f)
                 ){
                     Column (
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -72,7 +75,32 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
 
                     ) {
                         Text(
-                            text = "$quantidadeExercicios",
+                            text = " Você concluiu o ",
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = nomeTreino,
+                            fontSize = 25.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF5D98DD)
+                        )
+
+                    }
+                }
+                Row (
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(0.4f)
+                ){
+                    Column (
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+
+                    ) {
+                        Text(
+                            text = quantidadeExercicios,
                             fontSize = 30.sp,
                             color = White
                         )
@@ -86,7 +114,7 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
 
                     Column {
                         Text(
-                            text = "1h 20min",
+                            text = tempoTreino,
                             fontSize = 30.sp,
                             color = White
                         )
@@ -102,7 +130,7 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
                 Row (
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.weight(0.09f)) {
+                    modifier = Modifier.weight(0.4f)) {
 
                     CustomButton(
                         text = "Concluir Treino",

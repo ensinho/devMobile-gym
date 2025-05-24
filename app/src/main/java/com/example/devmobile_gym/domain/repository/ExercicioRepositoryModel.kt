@@ -8,4 +8,5 @@ interface ExercicioRepositoryModel {
     suspend fun insertExercicio(exercicio: Exercicio)
     suspend fun getExerciciosOfTreino(treinoId: String): List<Exercicio>
     suspend fun getExerciciosByIds(ids: List<String>): List<Exercicio>
+    suspend fun getExercicioImageUrl(id: String): String?
 }

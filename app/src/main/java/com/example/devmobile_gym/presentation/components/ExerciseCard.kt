@@ -2,6 +2,7 @@ package com.example.devmobile_gym.presentation.components
 
 import android.widget.Space
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,8 +30,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePainter
+import coil3.compose.rememberAsyncImagePainter
 
 // thead da tabela
 //deixei global pq tem vários métodos que precisam acessar essa lista
@@ -38,7 +48,7 @@ private val thead: MutableList<String> = mutableListOf("SÉRIE", "ANTERIOR", "KG
 
 
 @Composable
-fun ExerciseCard(title: String, quantSeries: Int = 3, quantReps: Int = 12, peso: Int = 20) {
+fun ExerciseCard(title: String, url : String, quantSeries: Int = 3, quantReps: Int = 12, peso: Int = 20) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,7 +59,7 @@ fun ExerciseCard(title: String, quantSeries: Int = 3, quantReps: Int = 12, peso:
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ){
-            ExerciseTitle(title)
+            ExerciseTitle(title, url)
             ExerciseTHead()
             for (i in 0..<quantSeries) {
 
@@ -94,22 +104,55 @@ private fun TRowCell(trowInfo: MutableList<Int>) {
     }
 }
 @Composable
-private fun ExerciseTitle(title: String) {
+private fun ExerciseTitle(title: String, url: String) {
     Row(
         modifier = Modifier
             .padding(8.dp),
         horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically // Alinha o ícone e o texto ao centro verticalmente
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = Icons.Default.Info,
-            tint = Color(0xFF267FE7),
-            contentDescription = "Info",
+        Box(
             modifier = Modifier
-                .weight(1f)
-                .size(35.dp)
-                .padding(0.dp)
-        )
+                .size(50.dp)
+                .clip(CircleShape)
+                .background(Color.Gray.copy(alpha = 0.2f))
+                .border(1.dp, Color.White, CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            if (url.isNotBlank()) {
+                println("🔵 Tentando carregar imagem: $url")
+                AsyncImage(
+                    model = url,
+                    contentDescription = "Ícone do exercício",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(50.dp)  // Tamanho fixo de 64x64 dp
+                        .clip(CircleShape)
+                        .background(Color.Gray.copy(alpha = 0.2f))
+                        .border(1.dp, Color.White, CircleShape),
+
+                    onState = { state ->
+                        when (state) {
+                            is AsyncImagePainter.State.Loading -> println("🟡 Carregando imagem...")
+                            is AsyncImagePainter.State.Success -> println("✅ Imagem carregada com sucesso.")
+                            is AsyncImagePainter.State.Error -> println("🔴 Erro ao carregar imagem.")
+                            is AsyncImagePainter.State.Empty -> println("⚪ URL da imagem vazia.")
+                        }
+                    }
+
+                )
+            } else {
+                println("⚠️ URL da imagem está vazia. Exibindo fallback.")
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = "Fallback",
+                    tint = Color.Gray,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+        Spacer(Modifier.width(20.dp))
+
         Text(
             text = title,
             fontWeight = FontWeight.Bold,
@@ -119,6 +162,9 @@ private fun ExerciseTitle(title: String) {
         )
     }
 }
+
+
+
 @Composable
 private fun ExerciseTHead() {
     Row (
@@ -154,14 +200,10 @@ private fun ExerciseTHead() {
 }
 
 
+
 // Estrutura de dados para cada linha da tabela
 private data class EditableRow(val serie: String, val kg: String, val reps: String)
 
 
 
 
-@Preview (showBackground = true)
-@Composable
-private fun PreviewExerciseCard() {
-    ExerciseCard("Rosca Scott (Halteres)", 3, 12, 15)
-}

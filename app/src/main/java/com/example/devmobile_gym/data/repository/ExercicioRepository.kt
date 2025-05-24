@@ -48,6 +48,19 @@ class ExercicioRepository : ExercicioRepositoryModel {
         }
     }
 
+    override suspend fun getExercicioImageUrl(id: String): String? {
+        return try {
+            val exercicioSnapshot = exerciciosCollection.document(id).get().await()
+            if (!exercicioSnapshot.exists()) return null
+
+            val exercicio = exercicioSnapshot.toObject(Exercicio::class.java)
+            exercicio?.imagem // retorna a url da imagem do exercicio
+        } catch (e: Exception) {
+            Log.e("TreinoRepository", "Erro ao buscar treino por ID", e)
+            null
+        }
+    }
+
 
     override suspend fun getAllExercicios(): List<Exercicio> {
         return try {

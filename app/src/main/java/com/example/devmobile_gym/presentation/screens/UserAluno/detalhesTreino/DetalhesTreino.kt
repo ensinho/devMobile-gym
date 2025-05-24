@@ -1,5 +1,6 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,12 +12,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -30,17 +35,25 @@ import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 
 
+@SuppressLint("DefaultLocale")
 @Composable
-fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConclude: (String) -> Unit
+fun DetalhesTreinoScreen(
+    navController: NavHostController,
+    backStackEntry: NavBackStackEntry,
+    onBack: () -> Unit,
+    onConclude: (String) -> Unit
 ) {
     val viewModel: DetalhesTreinoViewModel = viewModel(
         viewModelStoreOwner = backStackEntry,
         factory = DetalhesTreinoViewModel.Factory
     )
-    val treino = viewModel.treinoSelecionado
+    val treino = viewModel.treinoSelecionado.collectAsState()
     val quantidadeExercicios = treino.value?.exercicios?.size ?: 0
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    val horas by viewModel.tempoEmHoras.collectAsState()
+    val minutos by viewModel.tempoEmMinutos.collectAsState()
 
     val selectedItemIndex = when (currentRoute) {
         AlunoRoutes.Home -> 0
@@ -51,7 +64,7 @@ fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBa
         else -> 0 // default
     }
 
-    if (treino == null) {
+    if (treino.value == null) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -83,17 +96,21 @@ fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBa
 
                 ) {
                     Column (
-                        modifier = Modifier.padding(end = 15.dp)
+                        modifier = Modifier.padding(end = 15.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ){
                         Text(
                             text = "Duração",
-                            fontSize = 13.sp,
+                            fontSize = 15.sp,
                             color = LightGray,
                         )
                         Text(
-                            text = "1h 30min",
-                            fontSize = 15.sp,
+                            text = String.format("%02dh %02dmin", horas, minutos),
+                            fontSize = 13.sp,
                             color = LightGray,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.headlineMedium
                         )
                     }
 
@@ -104,13 +121,15 @@ fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBa
                     ){
                         Text(
                             text = "Exercícios",
-                            fontSize = 13.sp,
+                            fontSize = 15.sp,
                             color = LightGray,
                         )
                         Text(
                             text = "$quantidadeExercicios",
-                            fontSize = 15.sp,
+                            fontSize = 13.sp,
                             color = LightGray,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.headlineMedium
                         )
                     }
 
@@ -128,10 +147,24 @@ fun DetalhesTreinoScreen(navController: NavHostController, backStackEntry: NavBa
                 ) {
                     treino.value?.let {
                         items(it.exercicios) { exercicio ->
-                            ExerciseCard(
-                                title = "",
-                            )
+                            val imagemUrl by produceState<String?>(initialValue = null, key1 = exercicio) {
+                                value = viewModel.getImagemExercicio(exercicio)
+                            }
+
+                            if (!imagemUrl.isNullOrBlank()) {
+                                ExerciseCard(
+                                    title = viewModel.getNomeExercicio(exercicio),
+                                    url = imagemUrl!!
+                                )
+                            } else {
+                                // imagem inválida ou ausente
+                                ExerciseCard(
+                                    title = viewModel.getNomeExercicio(exercicio),
+                                    url = ""
+                                )
+                            }
                         }
+
                     }
                 }
             }

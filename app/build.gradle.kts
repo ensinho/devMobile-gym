@@ -52,6 +52,10 @@ android {
 
 dependencies {
 
+    implementation("io.coil-kt.coil3:coil-compose:3.2.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.2.0")
+
+    // Gemini
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
     //noinspection UseTomlInstead
     implementation("com.github.jeziellago:compose-markdown:0.5.7")

@@ -118,7 +118,7 @@ fun AppNavHost() {
         composable(
             route = AlunoRoutes.ConcluirTreino,
             arguments = listOf(
-                navArgument("treinoId") { type = NavType.IntType }
+                navArgument("treinoId") { type = NavType.StringType }
             )
         ) { backStackEntry ->
             ConcluiTreino(

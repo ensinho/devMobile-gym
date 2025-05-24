@@ -1,14 +1,18 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.searchScreen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -16,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.devmobile_gym.presentation.components.BoxSeta
+import com.example.devmobile_gym.presentation.components.CustomExerciseSearchCard
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
@@ -24,6 +29,8 @@ import com.example.devmobile_gym.ui.theme.White
 @Composable
 fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewModel = viewModel()) {
     var search = viewModel.search.value
+    var exercicios = viewModel.exercicios.collectAsState()
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -48,23 +55,38 @@ fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewMo
             Column (
                 modifier = combinedModifier.fillMaxSize()
             ){
-                Text(
-                    text = "Buscar",
-                    fontSize = 30.sp,
-                    color = White
-                )
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier.padding(start = 10.dp, top = 10.dp)
+                ){
+                    Text(
+                        text = "Buscar",
+                        fontSize = 30.sp,
+                        color = White
+                    )
+                }
                 Spacer(Modifier.height(5.dp))
                 Row {
-
                     CustomTextField(
-                        label = "Busque máquinas ou exercícios",
+                        label = "Busque exercícios",
                         value = search,
                         onValueChange = viewModel::onSearchChange,
                         padding = 10,
                         modifier = Modifier
                     )
-
-                    BoxSeta()
+                }
+                LazyColumn {
+                    for (exercicio in exercicios.value) {
+                        item {
+                            CustomExerciseSearchCard(
+                                exercicio = exercicio.nome,
+                                description = "",
+                                url = exercicio.imagem
+                            )
+                            Spacer(Modifier.height(15.dp))
+                        }
+                    }
                 }
             }
         }

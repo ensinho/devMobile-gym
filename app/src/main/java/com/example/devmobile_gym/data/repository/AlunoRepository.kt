@@ -52,5 +52,30 @@ class AlunoRepository(
         }
     }
 
+    override suspend fun getHistory(): List<Treino> {
+        val user = auth.currentUser
+        val historicoTreinos  = mutableListOf<Treino>()
+
+        try {
+            val alunoRef = user?.let { db.collection("alunos").document(it.uid) }
+            val snapshot = alunoRef?.get()?.await()
+
+            val listaTreinosIds = snapshot?.let { it.get("historico") as? List<String> } ?: emptyList()
+
+            for (id in listaTreinosIds) {
+                val treinoSnapshot = db.collection("treinos").document(id).get().await()
+                val treino = treinoSnapshot.toObject(Treino::class.java)
+                if (treino != null) {
+                    historicoTreinos.add(treino)
+                }
+            }
+
+            return historicoTreinos
+        } catch (e: Exception) {
+            Log.e("Firestore", "Erro ao obter histórico", e)
+            return emptyList()
+        }
+    }
+
 
 }

@@ -1,15 +1,21 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.historico
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -44,11 +50,26 @@ fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewMo
             LazyColumn(
                 modifier = combinedModifier
             ) {
+                item {
+                    Column (
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ){
+                        Text(
+                            "Histórico de Treinos",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp,
+                            modifier = Modifier.padding(start = 16.dp, top = 20.dp, bottom = 20.dp)
+                        )
+                    }
+                }
 
                 items(treinos) { treino ->
                     CustomCard(
                         treino = treino.nome,
-                        description = treino.exercicios.map { "it.nome" },
+                        description = treino.exercicios.map { exercicio ->
+                            viewModel.getNomeExercicio(exercicio)
+                        },
                         buttonText = "Iniciar Treino",
                         needButton = false,
                         onButtonClick = { /* nao precisa de botao */ },

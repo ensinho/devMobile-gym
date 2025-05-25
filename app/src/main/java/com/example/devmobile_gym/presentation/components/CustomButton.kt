@@ -22,16 +22,21 @@ fun CustomButton(
     text: String,
     onClick: () -> Unit,
     backgroundColor: Color = Color(0xFF5D98DD),
-    fillWidth: Boolean = true
+    fillWidth: Boolean = true,
+    enabled: Boolean = true // <- novo parâmetro
 ) {
     val buttonModifier = Modifier
         .then(if (fillWidth) Modifier.fillMaxWidth().padding(8.dp) else modifier)
 
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = backgroundColor,
+            disabledContainerColor = Color.Gray // cor quando desabilitado
+        ),
         shape = RoundedCornerShape(8.dp),
-        modifier = buttonModifier
+        modifier = buttonModifier,
+        enabled = enabled // <- usa o parâmetro aqui
     ) {
         Text(
             text = text,

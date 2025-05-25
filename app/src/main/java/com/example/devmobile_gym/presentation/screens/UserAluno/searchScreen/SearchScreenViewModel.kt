@@ -1,5 +1,6 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.searchScreen
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,10 +17,14 @@ class SearchScreenViewModel (
     private val repository: ExercicioRepositoryModel = ExercicioRepository()
 
 ) : ViewModel(){
-    var search = mutableStateOf("")
-        private set
-    private val _exercicios = MutableStateFlow<List<Exercicio>>(emptyList())
-    val exercicios : StateFlow<List<Exercicio>> = _exercicios.asStateFlow()
+
+    private val _search = MutableStateFlow("")
+    val search: StateFlow<String> = _search.asStateFlow()
+
+    private val _exerciciosFiltrados = mutableStateOf<List<Exercicio>>(emptyList())
+    val exerciciosFiltrados: State<List<Exercicio>> = _exerciciosFiltrados
+
+    private val _todosExercicios = MutableStateFlow<List<Exercicio>>(emptyList())
 
     init {
         viewModelScope.launch {
@@ -27,11 +32,25 @@ class SearchScreenViewModel (
         }
     }
 
+    private fun filtrarExercicios(texto: String) {
+        val todos = _todosExercicios.value
+        _exerciciosFiltrados.value = if (texto.isBlank()) {
+            todos
+        } else {
+            todos.filter {
+                it.nome.contains(texto, ignoreCase = true) ||
+                        it.grupoMuscular.contains(texto, ignoreCase = true)
+            }
+        }
+    }
+
     fun onSearchChange(newSearch: String) {
-        search.value = newSearch
+        _search.value = newSearch
+        filtrarExercicios(newSearch)
     }
 
     private suspend fun getExercicios() {
-        _exercicios.value = repository.getAllExercicios()
+        _todosExercicios.value = repository.getAllExercicios()
+        _exerciciosFiltrados.value = _todosExercicios.value
     }
 }

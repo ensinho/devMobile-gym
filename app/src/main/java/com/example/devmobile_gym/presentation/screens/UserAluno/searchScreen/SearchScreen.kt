@@ -28,8 +28,8 @@ import com.example.devmobile_gym.ui.theme.White
 
 @Composable
 fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewModel = viewModel()) {
-    var search = viewModel.search.value
-    var exercicios = viewModel.exercicios.collectAsState()
+    val search by viewModel.search.collectAsState() // busca por exercicio
+    val exerciciosFiltrados by viewModel.exerciciosFiltrados // exercicios filtrados de acordo com a busca
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -77,7 +77,7 @@ fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewMo
                     )
                 }
                 LazyColumn {
-                    for (exercicio in exercicios.value) {
+                    for (exercicio in exerciciosFiltrados) {
                         item {
                             CustomExerciseSearchCard(
                                 exercicio = exercicio.nome,

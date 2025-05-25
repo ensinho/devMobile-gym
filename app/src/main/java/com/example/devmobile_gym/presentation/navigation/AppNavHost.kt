@@ -125,9 +125,6 @@ fun AppNavHost() {
                 onBack = {
                 navController.popBackStack()
                 },
-                onConclude = {
-                    navController.navigate(AlunoRoutes.Home)
-                },
                 navController = navController
             )
         }

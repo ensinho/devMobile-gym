@@ -32,13 +32,14 @@ fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewMo
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val selectedItemIndex = when (currentRoute) {
-        AlunoRoutes.Home -> 0
-        AlunoRoutes.Search -> 1
-        AlunoRoutes.QrCode -> 2
-        AlunoRoutes.Chatbot -> 3
-        AlunoRoutes.Profile -> 4
-        else -> 0 // default
+    val selectedItemIndex = when {
+        currentRoute?.startsWith(AlunoRoutes.Home) == true -> 0
+        currentRoute?.startsWith(AlunoRoutes.Search) == true -> 1
+        currentRoute?.startsWith(AlunoRoutes.QrCode) == true -> 2
+        currentRoute?.startsWith(AlunoRoutes.Chatbot) == true -> 3
+        currentRoute?.startsWith(AlunoRoutes.Profile) == true ||
+                currentRoute?.startsWith(AlunoRoutes.Historico) == true -> 4
+        else -> 0
     }
 
     CustomScreenScaffold(

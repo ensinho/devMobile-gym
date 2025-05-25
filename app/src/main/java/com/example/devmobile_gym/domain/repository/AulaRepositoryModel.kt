@@ -6,4 +6,5 @@ interface AulaRepositoryModel {
     suspend fun getAulas():List<Aula?>
     suspend fun createAula(aula: Aula) : Boolean
     suspend fun deleteAula(aulaId: String) : Boolean
+    suspend fun incrementQuantAlunos(aulaId: String)
 }

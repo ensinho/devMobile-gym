@@ -64,12 +64,18 @@ fun ShowAulas(onBack: () -> Unit, navController: NavHostController) {
                 }
 
                 itemsIndexed(aulas) { index, aula ->
-                    aula?.aula?.let {
+                    aula?.let {
                         ClassCardAluno(
-                            data = aula.getDataFormatada(),
-                            aula = it,
-                            professor = aula.professor,
-                            hora = aula.getHoraFormatada(),
+                            idAula = it.id,
+                            data = it.getDataFormatada(),
+                            aula = it.aula,
+                            professor = it.professor,
+                            hora = it.getHoraFormatada(),
+                            quantAtual = it.quantidade_alunos,
+                            quantMaxima = it.quantidade_maxima_alunos,
+                            onInscricaoClick = { aulaId ->
+                                viewmodel.inscreverAluno(aulaId)
+                            }
                         )
                     }
                 }

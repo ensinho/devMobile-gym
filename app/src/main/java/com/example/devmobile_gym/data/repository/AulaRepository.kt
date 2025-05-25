@@ -55,5 +55,27 @@ class AulaRepository : AulaRepositoryModel {
         }
     }
 
+    override suspend fun incrementQuantAlunos(id: String) {
+        try {
+            val docRef = aulasCollection.document(id)
+            val snapshot = docRef.get().await()
+
+            // Obter valores atuais
+            val quantAtual = snapshot.getLong("quantidade_alunos") ?: 0
+            val quantMaxima = snapshot.getLong("quantidade_maxima_alunos") ?: 15
+
+            // Verificar limite máximo
+            if (quantAtual >= quantMaxima) {
+                throw Exception("A aula já atingiu o limite máximo de alunos")
+            }
+
+            // Atualizar usando operação atômica
+            docRef.update("quantidade_alunos", FieldValue.increment(1)).await()
+
+        } catch (e: Exception) {
+            Log.e("Firestore", "Erro ao incrementar alunos: ${e.message}")
+            throw e // Re-lançar para tratamento posterior
+        }
+    }
 
 }

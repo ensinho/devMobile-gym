@@ -32,14 +32,20 @@ class AlunoRepository(
             val alunoRef = db.collection("alunos").document(user.uid)
             val snapshot = alunoRef.get().await()
 
+            //  máximo 20 treinos
+            val limite = 20
             // Recupera o array atual de histórico (pode ser null)
             val historicoAtual = snapshot.get("historico") as? List<String> ?: emptyList()
 
-            // Cria nova lista com o treinoId adicionado (permitindo duplicatas)
-            val novoHistorico = historicoAtual + treinoId
+            // Se atingir o limite, remove o primeiro antes de adicionar o novo
+            val novoHistorico = (
+                    if (historicoAtual.size >= limite) historicoAtual.drop(1) else historicoAtual
+                    ) + treinoId
 
-            // Atualiza o campo "historico" com a nova lista
+            // Atualiza o Firestore com o novo histórico
             alunoRef.update("historico", novoHistorico).await()
+
+
 
         } catch (e: Exception) {
             Log.e("Firestore", "Erro ao adicionar treino ao histórico", e)

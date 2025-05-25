@@ -7,4 +7,5 @@ import com.example.devmobile_gym.domain.model.Usuario.Aluno
 interface AlunoRepositoryModel {
     suspend fun getAlunoLogado(): Aluno?
     suspend fun addToHistory(treino: Treino)
+    suspend fun getHistory() : List<Treino>
 }

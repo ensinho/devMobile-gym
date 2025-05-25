@@ -22,11 +22,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.devmobile_gym.presentation.components.CustomCard
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewModel: HistoricoScreenViewModel = viewModel()) {
 
-    val treinos by viewModel.treinos.collectAsState()
+    val treinosComData by viewModel.treinos.collectAsState()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -64,17 +66,20 @@ fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewMo
                     }
                 }
 
-                items(treinos) { treino ->
+                items(treinosComData) { treinoComData ->
+                    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    val dataFormatada = formatter.format(treinoComData.dataRealizacao)
                     CustomCard(
-                        treino = treino.nome,
-                        description = treino.exercicios.map { exercicio ->
+                        treino = treinoComData.treino.nome,
+                        description = treinoComData.treino.exercicios.map { exercicio ->
                             viewModel.getNomeExercicio(exercicio)
                         },
                         buttonText = "Iniciar Treino",
                         needButton = false,
                         onButtonClick = { /* nao precisa de botao */ },
                         editButton = {},
-                        deleteButton = {}
+                        deleteButton = {},
+                        data = dataFormatada
                     )
                     Spacer(Modifier.height(8.dp))
                 }

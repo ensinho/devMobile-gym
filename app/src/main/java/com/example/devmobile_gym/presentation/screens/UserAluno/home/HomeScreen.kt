@@ -18,6 +18,7 @@ import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomCard
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -41,6 +42,11 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = view
         AlunoRoutes.Profile -> 4
         else -> 0 // default
     }
+
+    LaunchedEffect(treinos) {
+        viewModel.loadData()
+    }
+
 
     CustomScreenScaffold (
         navController = navController,

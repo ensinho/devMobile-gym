@@ -26,7 +26,8 @@ fun CustomCard(
     onButtonClick: () -> Unit,
     needButton: Boolean = true,
     editButton: () -> Unit,
-    deleteButton: () -> Unit
+    deleteButton: () -> Unit,
+    data: String = ""
 ) {
     var expanded by remember { mutableStateOf(false) }
     var desc: String
@@ -104,6 +105,14 @@ fun CustomCard(
 
                 }
 
+            }
+
+            if (data != "") {
+                Text(
+                    text = data,
+                    fontSize = 15.sp,
+                    color = Color(0xFFAAAEB6)
+                )
             }
 
         }

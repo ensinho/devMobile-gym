@@ -6,6 +6,7 @@ import com.example.devmobile_gym.data.repository.AlunoRepository
 import com.example.devmobile_gym.data.repository.ExercicioRepository
 import com.example.devmobile_gym.data.repository.TreinoRepository
 import com.example.devmobile_gym.domain.model.Treino
+import com.example.devmobile_gym.domain.model.TreinoComData
 import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
 import com.example.devmobile_gym.domain.repository.ExercicioRepositoryModel
 import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
@@ -19,8 +20,8 @@ class HistoricoScreenViewModel () : ViewModel() {
     private val alunoRepository : AlunoRepositoryModel = AlunoRepository()
     private val exerciciosRepository : ExercicioRepositoryModel = ExercicioRepository()
 
-    private val _treinos = MutableStateFlow<List<Treino>>(emptyList())
-    val treinos: StateFlow<List<Treino>> = _treinos.asStateFlow()
+    private val _treinos = MutableStateFlow<List<TreinoComData>>(emptyList())
+    val treinos: StateFlow<List<TreinoComData>> = _treinos.asStateFlow()
 
     private val _nomesExercicios = MutableStateFlow<Map<String, String>>(emptyMap())
 

@@ -2,6 +2,7 @@ package com.example.devmobile_gym.data.repository
 
 import android.util.Log
 import com.example.devmobile_gym.domain.model.Treino
+import com.example.devmobile_gym.domain.model.TreinoComData
 import com.example.devmobile_gym.domain.model.Usuario.Aluno
 import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
 import com.google.firebase.auth.FirebaseAuth
@@ -32,50 +33,61 @@ class AlunoRepository(
             val alunoRef = db.collection("alunos").document(user.uid)
             val snapshot = alunoRef.get().await()
 
-            //  máximo 20 treinos
             val limite = 20
-            // Recupera o array atual de histórico (pode ser null)
-            val historicoAtual = snapshot.get("historico") as? List<String> ?: emptyList()
 
-            // Se atingir o limite, remove o primeiro antes de adicionar o novo
+            // Histórico atual como lista de maps
+            val historicoAtual = snapshot.get("historico") as? List<Map<String, Any>> ?: emptyList()
+
+            val novoTreino = mapOf(
+                "id" to treinoId,
+                "data" to com.google.firebase.Timestamp.now()
+            )
+
             val novoHistorico = (
                     if (historicoAtual.size >= limite) historicoAtual.drop(1) else historicoAtual
-                    ) + treinoId
+                    ) + novoTreino
 
-            // Atualiza o Firestore com o novo histórico
             alunoRef.update("historico", novoHistorico).await()
-
-
 
         } catch (e: Exception) {
             Log.e("Firestore", "Erro ao adicionar treino ao histórico", e)
         }
     }
 
-    override suspend fun getHistory(): List<Treino> {
-        val user = auth.currentUser
-        val historicoTreinos  = mutableListOf<Treino>()
+
+    override suspend fun getHistory(): List<TreinoComData> {
+        val user = auth.currentUser ?: return emptyList()
+        val historicoTreinos = mutableListOf<TreinoComData>()
 
         try {
-            val alunoRef = user?.let { db.collection("alunos").document(it.uid) }
-            val snapshot = alunoRef?.get()?.await()
+            val alunoRef = db.collection("alunos").document(user.uid)
+            val snapshot = alunoRef.get().await()
 
-            val listaTreinosIds = snapshot?.let { it.get("historico") as? List<String> } ?: emptyList()
+            // Lista de objetos com id + data
+            val listaTreinosInfo = snapshot.get("historico") as? List<Map<String, Any>> ?: emptyList()
 
-            for (id in listaTreinosIds) {
-                val treinoSnapshot = db.collection("treinos").document(id).get().await()
+            for (info in listaTreinosInfo) {
+                val treinoId = info["id"] as? String ?: continue
+                val dataTimestamp = info["data"] as? com.google.firebase.Timestamp ?: continue
+
+                val treinoSnapshot = db.collection("treinos").document(treinoId).get().await()
                 val treino = treinoSnapshot.toObject(Treino::class.java)
+
                 if (treino != null) {
-                    historicoTreinos.add(treino)
+                    historicoTreinos.add(TreinoComData(treino, dataTimestamp.toDate()))
                 }
             }
 
             return historicoTreinos
+
         } catch (e: Exception) {
             Log.e("Firestore", "Erro ao obter histórico", e)
             return emptyList()
         }
     }
+
+
+
 
 
 }

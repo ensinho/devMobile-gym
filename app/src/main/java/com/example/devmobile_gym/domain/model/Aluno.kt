@@ -9,7 +9,7 @@ data class Aluno(
 
     // geradas ao treinar
     val diasTreinados: List<String> = emptyList(),
-    val historico: List<String> = emptyList(), // armazena os ids dos treinos
+    val historico: List<TreinoComData> = emptyList(), // armazena os ids dos treinos
     val ultimoDiaTreinado: String = "",
     val exercicioFavorito: String = "",
 

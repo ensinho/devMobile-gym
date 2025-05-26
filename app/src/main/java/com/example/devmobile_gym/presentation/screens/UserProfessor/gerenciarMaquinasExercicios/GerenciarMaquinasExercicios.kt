@@ -83,7 +83,7 @@ fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewMode
                     )
                     IconButton(
                         onClick = {
-                            navController.navigate(ProfessorRoutes.AdicionarNovaMaquina)
+                            navController.navigate(ProfessorRoutes.AdicionarExercicio)
                             //navController.navigate("${ProfessorRoutes.CriarTreino}/${alunoSelecionado?.id}")
                         },
                         modifier = Modifier.size(35.dp)
@@ -127,7 +127,7 @@ fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewMode
                             description = grupoMuscular,
                             buttonText = "",
                             onButtonClick = {},
-                            editButton = { navController.navigate(ProfessorRoutes.AdicionarNovaMaquina)},
+                            editButton = { navController.navigate("${ProfessorRoutes.EditarExercicio}/${MaqExerc.id}")},
                             deleteButton = {viewModel.removerExercicio(MaqExerc.id) }
                         )
                     }

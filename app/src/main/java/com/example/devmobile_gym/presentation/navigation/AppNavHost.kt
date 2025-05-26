@@ -28,6 +28,8 @@ import com.example.devmobile_gym.presentation.screens.UserProfessor.adicionaEdit
 import com.example.devmobile_gym.presentation.screens.UserProfessor.adicionaMaquinaExercicio.AdicionaMaquinaScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.home.ProfessorHomeScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.CriarTreinoScreen
+import com.example.devmobile_gym.presentation.screens.UserProfessor.editarExercicio.adicionarExercicioScreen
+import com.example.devmobile_gym.presentation.screens.UserProfessor.editarExercicio.editarExercicioScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.editarTreino.EditarTreinoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciarMaquinasExercicios.GerenciarMaquinasExerciciosScreen
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
@@ -241,13 +243,17 @@ fun AppNavHost() {
         }
 
         // PROFESSOR chatbot
-        composable(ProfessorRoutes.Chatbot) {
+        composable(ProfessorRoutes.Chatbot
+
+        ) {
             ProfessorChatbotScreen(
                 navController = navController
             )
         }
 
         composable(ProfessorRoutes.Gerenciar) {
+
+
             GerenciarMaquinasExerciciosScreen(
                 onBack = {
                     navController.popBackStack()
@@ -255,7 +261,6 @@ fun AppNavHost() {
                 navController = navController
             )
         }
-
         composable(ProfessorRoutes.AdicionarNovaMaquina) {
             AdicionaMaquinaScreen(
                 onBack = {
@@ -265,6 +270,7 @@ fun AppNavHost() {
                 onConclude = { navController.popBackStack() }
             )
         }
+
 
         composable(ProfessorRoutes.AdicionaEditaAula) {
             AdicionaEditaAula(
@@ -283,6 +289,34 @@ fun AppNavHost() {
                 navController = navController,
                 backStackEntry = backStackEntry,
                 onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = ProfessorRoutes.EditarExercicio + "/{MaqExerc.id}", // Rota com parâmetro
+            arguments = listOf(
+                navArgument("MaqExerc.id") {
+                    type = NavType.StringType // Tipo do parâmetro
+                }
+            )
+        ) {backStackEntry ->
+            editarExercicioScreen(
+                backStackEntry = backStackEntry,
+                onBack = {
+                    navController.popBackStack()
+                },
+                navController = navController,
+                onConclude = { navController.navigate(ProfessorRoutes.Gerenciar) }
+            )
+        }
+
+        composable(ProfessorRoutes.AdicionarExercicio) {
+            adicionarExercicioScreen(
+                onBack = {
+                    navController.popBackStack()
+                },
+                navController = navController,
+                onConclude = { navController.navigate(ProfessorRoutes.Gerenciar) }
             )
         }
 

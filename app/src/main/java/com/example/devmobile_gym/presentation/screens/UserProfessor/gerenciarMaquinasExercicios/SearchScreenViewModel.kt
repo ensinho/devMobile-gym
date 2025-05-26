@@ -18,7 +18,7 @@ import kotlinx.coroutines.tasks.await
 class GerenciarMaquinasExerciciosViewModel (
     private val repository: ExercicioRepositoryModel = ExercicioRepository()
 ) : ViewModel(){
-    private val db = FirebaseFirestore.getInstance()
+
     private val _search = MutableStateFlow("")
     val search: StateFlow<String> = _search.asStateFlow()
 

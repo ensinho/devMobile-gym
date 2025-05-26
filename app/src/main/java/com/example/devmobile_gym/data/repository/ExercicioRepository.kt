@@ -82,10 +82,13 @@ class ExercicioRepository : ExercicioRepositoryModel {
 
     override suspend fun insertExercicio(exercicio: Exercicio) {
         try {
-            exerciciosCollection.add(exercicio).await()
+            val docRef = exerciciosCollection.add(exercicio).await()
+
+            exerciciosCollection.document(docRef.id).update("id", docRef.id).await()
+
+            Log.d("Firestore", "Exercício inserido com ID: ${docRef.id}")
         } catch (e: Exception) {
-            e.printStackTrace()
-            throw e
+            Log.e("Firestore", "Erro ao inserir exercício: ${e.message}")
         }
     }
 
@@ -95,11 +98,11 @@ class ExercicioRepository : ExercicioRepositoryModel {
         return getExerciciosByIds(ids)
     }
 
-    override suspend fun deletarExercicio(exercicioId: String): Boolean {
+    override suspend fun deletarExercicio(exercicioID: String): Boolean {
         return try {
             val db = FirebaseFirestore.getInstance()
             db.collection("exercicios")
-                .document(exercicioId)
+                .document(exercicioID)
                 .delete()
                 .await()
             true
@@ -107,6 +110,21 @@ class ExercicioRepository : ExercicioRepositoryModel {
             e.printStackTrace()
             false
         }
+    }
+    override suspend fun updateExercicio(exercicioID: String,newExercicioName : String, newGrupoMuscular : String){
+        try {
+            val exercicioMap = mapOf(
+                "nome" to newExercicioName,
+                "grupoMuscular" to newGrupoMuscular
+            )
+
+            exerciciosCollection.document(exercicioID).update(exercicioMap).await()
+            Log.d("Firestore", "exercicio atualizado com sucesso")
+        } catch (e: Exception) {
+            Log.e("Firestore", "Erro ao atualizar exercicio: ${e.message}")
+        }
+
+
     }
 
 }

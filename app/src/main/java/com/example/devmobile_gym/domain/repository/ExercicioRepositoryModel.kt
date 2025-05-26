@@ -10,4 +10,6 @@ interface ExercicioRepositoryModel {
     suspend fun getExerciciosByIds(ids: List<String>): List<Exercicio>
     suspend fun getExercicioImageUrl(id: String): String?
     suspend fun deletarExercicio(exercicioID : String): Boolean
+    suspend fun updateExercicio(exercicioID : String, newExercicioName : String, newGrupoMuscular : String)
+
 }

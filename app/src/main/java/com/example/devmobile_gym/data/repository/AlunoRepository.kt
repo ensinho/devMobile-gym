@@ -20,7 +20,7 @@ class AlunoRepository(
 
     override suspend fun getAlunoLogado(): Aluno? {
         val user = auth.currentUser ?: return null
-        val documentSnapshot = db.collection("Aluno").document(user.uid).get().await()
+        val documentSnapshot = db.collection("alunos").document(user.uid).get().await()
 
         if (!documentSnapshot.exists()) return null
         val aluno = documentSnapshot.toObject(Aluno::class.java)

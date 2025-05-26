@@ -28,8 +28,8 @@ import com.example.devmobile_gym.presentation.screens.UserProfessor.adicionaEdit
 import com.example.devmobile_gym.presentation.screens.UserProfessor.adicionaMaquinaExercicio.AdicionaMaquinaScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.home.ProfessorHomeScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.CriarTreinoScreen
+import com.example.devmobile_gym.presentation.screens.UserProfessor.editarExercicio.EditarExercicioScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.editarExercicio.adicionarExercicioScreen
-import com.example.devmobile_gym.presentation.screens.UserProfessor.editarExercicio.editarExercicioScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.editarTreino.EditarTreinoScreen
 import com.example.devmobile_gym.presentation.screens.UserProfessor.gerenciarMaquinasExercicios.GerenciarMaquinasExerciciosScreen
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
@@ -300,7 +300,7 @@ fun AppNavHost() {
                 }
             )
         ) {backStackEntry ->
-            editarExercicioScreen(
+            EditarExercicioScreen(
                 backStackEntry = backStackEntry,
                 onBack = {
                     navController.popBackStack()

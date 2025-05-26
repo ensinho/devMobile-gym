@@ -22,23 +22,29 @@ fun ButtonPersonalizado(
     text: String,
     onClick: () -> Unit,
     backgroundColor: Color = Color(0xFF5D98DD),
-    fillWidth: Boolean = true
+    fillWidth: Boolean = true,
+    enabled: Boolean = true  // Novo parâmetro com valor padrão true
 ) {
     val buttonModifier = Modifier
-        .then(if (fillWidth) Modifier.padding(8.dp) else modifier)
+        .then(if (fillWidth) Modifier.fillMaxWidth() else modifier)
+        .padding(8.dp)
 
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = backgroundColor,
+            disabledContainerColor = Color.Gray  // Cor quando desabilitado
+        ),
         shape = RoundedCornerShape(60.dp),
-        modifier = buttonModifier
+        modifier = buttonModifier,
+        enabled = enabled  // Passando o parâmetro para o Button
     ) {
         Text(
             text = text,
             textAlign = TextAlign.Center,
             color = Color.White,
             fontWeight = FontWeight.Bold,
-            fontSize = 9.sp
+            fontSize = 10.sp
         )
     }
 }

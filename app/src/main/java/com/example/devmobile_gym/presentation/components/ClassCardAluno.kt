@@ -29,11 +29,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 
 @Composable
-fun ClassCardAluno(data: String, aula: String, professor: String, hora: String) {
-
-    var contador by remember { mutableStateOf(0) }
-
-
+fun ClassCardAluno(
+    idAula: String,
+    data: String,
+    aula: String,
+    professor: String,
+    hora: String,
+    quantAtual: Int,
+    quantMaxima: Int,
+    enabled: Boolean = true,
+    onInscricaoClick: (String) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,7 +54,6 @@ fun ClassCardAluno(data: String, aula: String, professor: String, hora: String) 
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // Coluna com os textos à esquerda
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -69,35 +74,23 @@ fun ClassCardAluno(data: String, aula: String, professor: String, hora: String) 
                 )
             }
 
-            // Coluna com os botões à direita
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.SpaceEvenly,
-
-            ) {
-
-
+            Column(horizontalAlignment = Alignment.End) {
                 ButtonPersonalizado(
-                    text = "Tenho interresse",
-                    onClick = { contador += 1},
-                    backgroundColor = Color(0xFF5D98DD),
+                    text = "Tenho interesse",
+                    onClick = { onInscricaoClick(idAula) },
+                    backgroundColor = if (quantAtual >= quantMaxima) Color.Gray else Color(0xFF5D98DD),
+                    enabled = (quantAtual < quantMaxima) || enabled,
                     fillWidth = false,
                     modifier = Modifier.width(130.dp)
                 )
 
-                Text(text = "$contador/15", Modifier.width(75.dp), color = Color.White, fontWeight = Bold)
+                Text(
+                    text = "$quantAtual/$quantMaxima",
+                    modifier = Modifier.width(75.dp),
+                    color = Color.White,
+                    fontWeight = Bold
+                )
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewClassCard() {
-    ClassCardAluno(
-        data = "31/01/2003",
-        aula = "Jiu-jitsu",
-        professor = "Ítalo",
-        hora = "19h30",
-    )
 }

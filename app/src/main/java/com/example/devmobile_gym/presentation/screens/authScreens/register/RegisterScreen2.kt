@@ -32,6 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.devmobile_gym.R
 import com.example.devmobile_gym.domain.model.Usuario
+import com.example.devmobile_gym.presentation.components.CustomPasswordTextField
 import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.presentation.navigation.AuthRoutes
@@ -88,7 +89,7 @@ fun RegisterScreen2(
             color = Color.White
         )
 
-        CustomTextField(
+        CustomPasswordTextField(
             label = "Senha",
             value = senha, // Segurança adicional,
             onValueChange = registerViewModel::onSenhaChange,
@@ -96,7 +97,7 @@ fun RegisterScreen2(
             modifier = Modifier
         )
 
-        CustomTextField(
+        CustomPasswordTextField(
             label = "Confirme sua senha",
             value = confirmarSenha, // Segurança adicional,
             onValueChange = registerViewModel::onConfirmaSenhaChange,

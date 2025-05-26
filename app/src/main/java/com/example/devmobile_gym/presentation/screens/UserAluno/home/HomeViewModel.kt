@@ -44,7 +44,7 @@ class HomeViewModel (
         return _nomesExercicios.value[id] ?: "Exercício não encontrado"
     }
 
-    private fun loadData() {
+    fun loadData() {
         viewModelScope.launch {
 
             // 1. Carrega todos os exercícios e mapeia nomes por ID
@@ -54,6 +54,7 @@ class HomeViewModel (
             // carrega os treinos
             val listaTreinos = treinoRepository.getTreinos()
             _treinos.value = listaTreinos
+            println("Treinos carregados: ${_treinos.value}")
 
 
             println("Exercícios carregados: ${_nomesExercicios.value}")

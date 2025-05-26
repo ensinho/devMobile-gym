@@ -67,7 +67,9 @@ class TreinoRepository(
 
 
     override suspend fun getTreinos(): List<Treino> {
-        val user = auth.currentUser ?: return emptyList()
+        val user = auth.currentUser
+        Log.d("TreinoRepository", "Usuário atual: ${user?.uid}")
+        if (user == null) return emptyList()
 
         return try {
             val documentSnapshot = db.collection("alunos").document(user.uid).get().await()
@@ -80,7 +82,15 @@ class TreinoRepository(
             for (treinoId in treinosRef) {
                 val treinoSnapshot = treinoCollection.document(treinoId).get().await()
                 if (treinoSnapshot.exists()) {
-                    treinoSnapshot.toObject(Treino::class.java)?.let { treinos.add(it) }
+//                    treinoSnapshot.toObject(Treino::class.java)?.let { treinos.add(it) }
+                    val treino = treinoSnapshot.toObject(Treino::class.java)
+                    if (treino == null) {
+                        Log.e("Firestore", "Erro ao converter treino: ${treinoSnapshot.id}")
+                    } else {
+                        Log.d("Firestore", "Treino convertido: $treino")
+                        treinos.add(treino)
+                    }
+
                 }
             }
 

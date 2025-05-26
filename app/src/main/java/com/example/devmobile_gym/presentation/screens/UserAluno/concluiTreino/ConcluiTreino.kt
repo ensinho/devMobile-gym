@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,7 +32,10 @@ import com.example.devmobile_gym.ui.theme.White
 // futuramente, o view model desse componente vai chamar uma função que adiciona o treino finalizado
 // na lista de treinos finalizados do histórico do aluno.
 @Composable
-fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStackEntry, onBack: () -> Unit, onConclude: () -> Unit
+fun ConcluiTreino(
+    navController: NavHostController,
+    backStackEntry: NavBackStackEntry,
+    onBack: () -> Unit
 ) {
     val viewModel: ConcluiTreinoViewModel = viewModel(
         viewModelStoreOwner = backStackEntry,
@@ -41,6 +45,7 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
     val nomeTreino by viewModel.nomeTreino.collectAsState()
     val quantidadeExercicios by viewModel.quantidadeExercicios.collectAsState()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
 
@@ -133,9 +138,17 @@ fun ConcluiTreino(navController: NavHostController, backStackEntry: NavBackStack
                     modifier = Modifier.weight(0.4f)) {
 
                     CustomButton(
-                        text = "Concluir Treino",
-                        onClick = { onConclude() }
+                        text = if (isLoading) "Salvando..." else "Concluir Treino",
+                        enabled = !isLoading,
+                        onClick = {
+                            viewModel.addToHistory(
+                                onSuccess = {
+                                    navController.navigate(AlunoRoutes.Home)
+                                }
+                            )
+                        }
                     )
+
                 }
             }
         }

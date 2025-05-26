@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.devmobile_gym.R
+import com.example.devmobile_gym.presentation.components.CustomPasswordTextField
 import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.presentation.navigation.AuthRoutes
@@ -80,7 +81,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), authViewModel: AuthView
         Text(text = "Insira suas informações e acesse sua conta", color = Color.White)
 
         CustomTextField(label = "Email", value = email, onValueChange = viewModel::onEmailChange, padding = 10, modifier = Modifier)
-        CustomTextField(label = "Senha", value = senha, onValueChange = viewModel::onSenhaChange, padding = 10, modifier = Modifier)
+        CustomPasswordTextField(label = "Senha", value = senha, onValueChange = viewModel::onSenhaChange, padding = 10, modifier = Modifier)
 
 
         if (authState.value is AuthState.Error) {

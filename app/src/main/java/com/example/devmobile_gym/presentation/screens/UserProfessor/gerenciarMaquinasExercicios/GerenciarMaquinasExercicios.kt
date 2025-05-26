@@ -123,12 +123,12 @@ fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewMode
                         CustomCard(
                             isAdm = true,
                             needButton = false,
-                            treino = MaqExerc.nome,
+                            treino = MaqExerc.nome.toString(),
                             description = grupoMuscular,
                             buttonText = "",
                             onButtonClick = {},
                             editButton = { navController.navigate("${ProfessorRoutes.EditarExercicio}/${MaqExerc.id}")},
-                            deleteButton = {viewModel.removerExercicio(MaqExerc.id) }
+                            deleteButton = {viewModel.removerExercicio(MaqExerc.id.toString()) }
                         )
                     }
 

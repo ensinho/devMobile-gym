@@ -30,4 +30,5 @@ object AuthRoutes {
     const val Login = "login"
     const val Register = "register"
     const val Register2 = "register2/{email}/{nome}"  // Adicione o parâmetro na rota
+    const val QrCode = "qrcode"
 }

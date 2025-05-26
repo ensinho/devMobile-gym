@@ -79,7 +79,7 @@ class editarExercicioViewModel(
         val exercicio = repository.getExercicio(exercicioID)
         exercicio?.let {
             _exercicioSelecionado.value = it
-            _novoNome.value = it.nome
+            _novoNome.value = it.nome.toString()
             _novoGrupoMuscular.value = it.grupoMuscular
         }
     }

@@ -38,7 +38,7 @@ class SearchScreenViewModel (
             todos
         } else {
             todos.filter {
-                it.nome.contains(texto, ignoreCase = true) ||
+                it.nome.toString().contains(texto, ignoreCase = true) ||
                         it.grupoMuscular.contains(texto, ignoreCase = true)
             }
         }

@@ -3,7 +3,9 @@ package com.example.devmobile_gym.navigation
 import com.example.devmobile_gym.presentation.screens.authScreens.register.RegisterScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,6 +14,7 @@ import androidx.navigation.navArgument
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.presentation.navigation.AuthRoutes
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
+import com.example.devmobile_gym.presentation.screens.QrCodeScreen.QRCodeScreen
 import com.example.devmobile_gym.presentation.screens.UserAluno.AulasFucionais.ShowAulas
 import com.example.devmobile_gym.presentation.screens.UserAluno.concluiTreino.ConcluiTreino
 import com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino.DetalhesTreinoScreen
@@ -38,7 +41,10 @@ import com.example.devmobile_gym.presentation.screens.chatbotScreens.ProfessorCh
 import java.net.URLDecoder
 
 @Composable
-fun AppNavHost() {
+fun AppNavHost(
+            navController: NavHostController,
+            onQRCodeScanned: (String) -> Unit
+) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = AuthRoutes.Login) {
@@ -134,6 +140,19 @@ fun AppNavHost() {
         // ALUNO BUSCA
         composable(AlunoRoutes.Search) {
             SearchScreen(navController = navController)
+        }
+
+        //ALUNO USA QRCODE
+        composable(AlunoRoutes.QrCode) {
+            QRCodeScreen(
+                navController = navController,
+                onQRCodeScanned = { result ->
+                    // Aqui você processa o resultado do QR code e navega
+                    // para a tela apropriada com o resultado
+                    onQRCodeScanned(result) // Passa o resultado para a MainActivity
+                    navController.popBackStack() // Volta para a tela anterior após a leitura
+                }
+            )
         }
 
 //        // ALUNO chatbot

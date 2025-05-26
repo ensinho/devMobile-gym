@@ -64,7 +64,7 @@ class GerenciaAlunoViewModel(
     suspend fun loadData() {
         try {
             val todos = exerciciosRepository.getAllExercicios()
-            _nomesExercicios.value = todos.associateBy({ it.id }, { it.nome })
+            _nomesExercicios.value = todos.associateBy({ it.id.toString() }, { it.nome.toString() })
 
             _isLoading.value = true
             val aluno = getAlunoById(alunoId)

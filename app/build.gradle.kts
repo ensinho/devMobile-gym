@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 // Arquivo: app/build.gradle.kts
 
 plugins {
@@ -54,6 +56,8 @@ dependencies {
 
     implementation("io.coil-kt.coil3:coil-compose:3.2.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.2.0")
+    implementation("com.google.guava:guava:31.0.1-android")
+
 
     // Gemini
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
@@ -107,6 +111,17 @@ dependencies {
     //implementation("com.google.dagger:hilt-android:2.51")
     //kapt("com.google.dagger:hilt-compiler:2.51")
 
+    // CameraX
+    implementation("androidx.camera:camera-camera2:1.3.1")
+    implementation("androidx.camera:camera-lifecycle:1.3.1")
+    implementation("androidx.camera:camera-view:1.3.1")
+
+    // ML Kit para leitura de QR code (Google)
+    implementation ("com.google.mlkit:barcode-scanning:17.3.0")
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
+    // Para usar as coroutines no Firebase (necessário para `await()` )
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 
 }
 

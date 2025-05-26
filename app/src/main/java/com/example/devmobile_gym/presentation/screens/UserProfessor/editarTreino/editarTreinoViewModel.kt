@@ -82,7 +82,7 @@ class EditarTreinoViewModel(
             todos
         } else {
             todos.filter {
-                it.nome.contains(texto, ignoreCase = true) ||
+                it.nome.toString().contains(texto, ignoreCase = true) ||
                         it.grupoMuscular.contains(texto, ignoreCase = true)
             }
         }
@@ -111,7 +111,7 @@ class EditarTreinoViewModel(
                 treinoRepository.updateTreino(
                     treinoId = treinoId,
                     nome = _titulo.value,
-                    exercicios = _exerciciosAdicionados.value.map { it.id } // pega só os IDs
+                    exercicios = _exerciciosAdicionados.value.map { it.id.toString() } // pega só os IDs
                 )
                 onSuccess()
             } catch (e: Exception) {

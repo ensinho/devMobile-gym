@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlin.plus
 
 class CriarTreinoViewModel(
     savedStateHandle: SavedStateHandle,
@@ -89,8 +90,13 @@ class CriarTreinoViewModel(
     fun adicionarExercicio(novoExercicio: Exercicio) {
         val listaAtual = _exerciciosAdicionados.value
         val novoId = novoExercicio.id
+        if (novoId == null) {
+            // Handle the case where id is null, e.g., log an error, show a message, or simply return
+            _status.value = "Erro: Exercício com ID nulo não pode ser adicionado."
+            return
+        }
         if (listaAtual.contains(novoId)) return
-        val novaLista = listaAtual + novoId
+        val novaLista = listaAtual + novoId // novoId is now smart-cast to String
         _exerciciosAdicionados.value = novaLista
     }
 
@@ -108,7 +114,7 @@ class CriarTreinoViewModel(
             todos
         } else {
             todos.filter {
-                it.nome.contains(texto, ignoreCase = true) ||
+                it.nome.toString().contains(texto, ignoreCase = true) ||
                         it.grupoMuscular.contains(texto, ignoreCase = true)
             }
         }

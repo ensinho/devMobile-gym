@@ -80,9 +80,9 @@ fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewMo
                     for (exercicio in exerciciosFiltrados) {
                         item {
                             CustomExerciseSearchCard(
-                                exercicio = exercicio.nome,
+                                exercicio = exercicio.nome.toString(),
                                 description = "",
-                                url = exercicio.imagem
+                                url = exercicio.imagem.toString()
                             )
                             Spacer(Modifier.height(15.dp))
                         }

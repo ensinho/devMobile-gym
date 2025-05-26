@@ -33,7 +33,7 @@ class HistoricoScreenViewModel () : ViewModel() {
         viewModelScope.launch {
             // 1. Carrega todos os exercícios e mapeia nomes por ID
             val todosExercicios = exerciciosRepository.getAllExercicios()
-            _nomesExercicios.value = todosExercicios.associateBy({ it.id }, { it.nome })
+            _nomesExercicios.value = todosExercicios.associateBy({ it.id.toString() }, { it.nome.toString() })
 
             val listaTreinos = alunoRepository.getHistory()
             _treinos.value = listaTreinos

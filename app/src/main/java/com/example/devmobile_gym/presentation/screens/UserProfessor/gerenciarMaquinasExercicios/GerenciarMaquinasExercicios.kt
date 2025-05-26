@@ -128,7 +128,7 @@ fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewMode
                             buttonText = "",
                             onButtonClick = {},
                             editButton = { navController.navigate(ProfessorRoutes.AdicionarNovaMaquina)},
-                            deleteButton = {}
+                            deleteButton = {viewModel.removerExercicio(MaqExerc.id) }
                         )
                     }
 

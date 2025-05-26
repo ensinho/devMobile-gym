@@ -95,4 +95,18 @@ class ExercicioRepository : ExercicioRepositoryModel {
         return getExerciciosByIds(ids)
     }
 
+    override suspend fun deletarExercicio(exercicioId: String): Boolean {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            db.collection("exercicios")
+                .document(exercicioId)
+                .delete()
+                .await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
 }

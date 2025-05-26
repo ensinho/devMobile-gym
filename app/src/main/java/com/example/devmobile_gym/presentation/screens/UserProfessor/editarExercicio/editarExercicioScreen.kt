@@ -39,7 +39,7 @@ import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 // na lista de treinos finalizados do histórico do aluno.
 // TODO: refatorar o nome das funções composable
 @Composable
-fun editarExercicioScreen(
+fun EditarExercicioScreen(
     navController: NavHostController,
     onBack: () -> Unit,
     onConclude: () -> Unit,

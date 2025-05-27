@@ -2,15 +2,12 @@ package com.example.devmobile_gym.data.repository
 
 import android.util.Log
 import com.example.devmobile_gym.domain.model.Aula
-import com.example.devmobile_gym.domain.model.Exercicio
 import com.example.devmobile_gym.domain.repository.AulaRepositoryModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.tasks.await
-import com.google.firebase.firestore.ktx.toObjects
-import java.util.Date
+
 
 class AulaRepository : AulaRepositoryModel {
     private val db = FirebaseFirestore.getInstance()
@@ -75,6 +72,31 @@ class AulaRepository : AulaRepositoryModel {
         } catch (e: Exception) {
             Log.e("Firestore", "Erro ao incrementar alunos: ${e.message}")
             throw e // Re-lançar para tratamento posterior
+        }
+    }
+    //metodo busca aula por id
+    override suspend fun getAula(aulaId: String): Aula?{
+        return try {
+            val aulaSnapshot = aulasCollection.document(aulaId).get().await()
+            if (!aulaSnapshot.exists()) return null
+
+            aulaSnapshot.toObject(Aula::class.java)
+        } catch (e: Exception) {
+            Log.e("AulaRepository", "Erro ao buscar aula por ID", e)
+            null
+        }
+    }
+    override suspend fun inserirAluno(aulaID: String, alunoID: String) {
+        try {
+            val docRef = aulasCollection.document(aulaID)
+            // Adiciona aluno à lista (sem duplicatas) e incrementa contador
+            docRef.update("inscritos", FieldValue.arrayUnion(alunoID)).await()
+            docRef.update("quantidade_alunos", FieldValue.increment(1)).await()
+
+            Log.d("AulaRepository", "Aluno $alunoID inserido na aula $aulaID com sucesso")
+        } catch (e: Exception) {
+            Log.e("AulaRepository", "Erro ao inserir aluno na aula", e)
+            throw e
         }
     }
 

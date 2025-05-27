@@ -1,11 +1,14 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.AulasFucionais
 
+
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.devmobile_gym.data.repository.AlunoRepository
 import com.example.devmobile_gym.data.repository.AulaRepository
 import com.example.devmobile_gym.domain.model.Aula
+import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
 import com.example.devmobile_gym.domain.repository.AulaRepositoryModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +18,7 @@ import kotlinx.coroutines.launch
 
 class AulasViewModel(
     private val repository: AulaRepositoryModel = AulaRepository(),
+    private val alunoRepository: AlunoRepositoryModel = AlunoRepository(),
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ): ViewModel() {
 
@@ -27,6 +31,8 @@ class AulasViewModel(
     private val _quantidadeMax = MutableStateFlow<Int>(0)
     val quantidadeMax : StateFlow<Int> = _quantidadeMax.asStateFlow()
 
+    private val _novaQuantidade = mutableStateOf("")
+    val novaQuantidade: MutableState<String> = _novaQuantidade
 
     init{
         viewModelScope.launch {
@@ -34,24 +40,46 @@ class AulasViewModel(
         }
     }
 
-    suspend fun carregaAulas(){
-        _aulas.value = repository.getAulas()
+    fun onNovaQuantidadeChange(novaQuantidade: String) {
+        _novaQuantidade.value = novaQuantidade
     }
 
-    fun inscreverAluno(idAula: String) {
+
+    suspend fun carregaAulas(){//
+        _aulas.value = repository.getAulas()
+
+
+    }
+
+    fun inscreverAluno(idAula: String, idAluno : String) {
+//        viewModelScope.launch {
+//            try {
+//                repository.incrementQuantAlunos(idAula)
+//                // Atualizar UI ou mostrar sucesso
+//            } catch (e: Exception) {
+//                // Tratar erro (ex: mostrar Snackbar)
+//                _uiState.value = "Erro na inscrição"
+//            }
+//        }
         viewModelScope.launch {
             try {
-                repository.incrementQuantAlunos(idAula)
-                // Atualizar UI ou mostrar sucesso
-            } catch (e: Exception) {
-                // Tratar erro (ex: mostrar Snackbar)
-                _uiState.value = "Erro na inscrição"
+                val aula = repository.getAula(idAula)
+                if (aula != null) {
+                    if (idAluno.toString() in aula.inscritos){
+                        //TODO() função para acionar mecanismo de tratamento caso já inscrito na aula
+                    }
+                    }else{
+                        aula.inserirAluno()
+                }
+                }
             }
         }
     }
 
-    fun isInscrito(aula: Aula): Boolean {
-        val userId = auth.currentUser?.uid ?: return false
-        return aula.inscritos.contains(userId)
-    }
-}
+//    suspend fun isInscrito(aula: Aula): Boolean {
+////        val userId = auth.currentUser?.uid ?: return false
+////        return aula.inscritos.contains(userId)
+//        val usuarioLogado = alunoRepository.getAlunoLogado()
+//        if (usuarioLogado != null && ) {
+//    }
+//}

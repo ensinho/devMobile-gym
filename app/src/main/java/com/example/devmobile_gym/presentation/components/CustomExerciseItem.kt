@@ -42,11 +42,10 @@ import com.example.devmobile_gym.R
 fun CustomExerciseItem(
     exercise: String,
     description: String,
-    addExerciseToTreino: () -> Unit,
-    removeExerciseFromTreino: () -> Unit
+    isIncluded: Boolean,
+    onToggle: () -> Unit
 ) {
-    var isIncluded by remember { mutableStateOf(false) }
-    Card (
+    Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(2.dp)
@@ -54,15 +53,17 @@ fun CustomExerciseItem(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF2E3238))
     ) {
-        Row (
-            modifier = Modifier.padding(12.dp).fillMaxWidth(),
+        Row(
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            Column (
+        ) {
+            Column(
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center
-            ){
+            ) {
                 Text(
                     text = exercise,
                     fontSize = 22.sp,
@@ -76,33 +77,22 @@ fun CustomExerciseItem(
                     color = Color(0xFFAAAEB6),
                     modifier = Modifier.padding(start = 10.dp)
                 )
-
             }
 
-            IconButton(
-                onClick = {
-                    if (isIncluded) {
-                        removeExerciseFromTreino()
-                    } else {
-                        addExerciseToTreino()
-                    }
-
-                    // altera o valor da variavel isIncluded para a próxima interação.
-                    isIncluded = !isIncluded
-                }
-            ) {
+            IconButton(onClick = onToggle) {
                 Icon(
-                    painter = painterResource(id = if (isIncluded) R.drawable.remove_item else R.drawable.add_circle_item),
-                    contentDescription = "Adicionar",
+                    painter = painterResource(
+                        id = if (isIncluded) R.drawable.remove_item else R.drawable.add_circle_item
+                    ),
+                    contentDescription = if (isIncluded) "Remover" else "Adicionar",
                     tint = if (isIncluded) Color.Red else Color.Green,
                     modifier = Modifier.size(35.dp)
                 )
             }
-
-
         }
     }
 }
+
 
 //@Preview
 //@Composable

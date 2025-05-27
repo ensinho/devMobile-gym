@@ -124,11 +124,18 @@ fun EditarTreinoScreen(
                 ) {
                     items(exerciciosFiltrados) { exercicio ->
                         CustomExerciseItem(
-                            exercise = exercicio.nome.toString(),
+                            exercise = exercicio.nome ?: "Sem nome",
                             description = exercicio.grupoMuscular,
-                            addExerciseToTreino = { viewModel.adicionarExercicio(exercicio) },
-                            removeExerciseFromTreino = { viewModel.removerExercicio(exercicio) }
+                            isIncluded = exerciciosAdicionados.any { it.id == exercicio.id },
+                            onToggle = {
+                                if (viewModel.isExercicioIncluido(exercicio)) {
+                                    viewModel.removerExercicio(exercicio)
+                                } else {
+                                    viewModel.adicionarExercicio(exercicio)
+                                }
+                            }
                         )
+
                     }
                 }
 

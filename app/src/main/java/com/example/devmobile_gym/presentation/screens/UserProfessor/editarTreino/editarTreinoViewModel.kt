@@ -65,15 +65,14 @@ class EditarTreinoViewModel(
         }
     }
 
-    fun onSearchChange(novoTexto: String) {
-        _search.value = novoTexto
-        filtrarExercicios(novoTexto)
+    fun isExercicioIncluido(exercicio: Exercicio): Boolean {
+        return _exerciciosAdicionados.value.any { it.id == exercicio.id }
     }
 
 
-    fun contemExercicio(exercicioId : String) : Boolean {
-        return exerciciosAdicionados.value.any { it.id == exercicioId }
-        // retorna true se pelo menos um exercicio tiver o id de busca
+    fun onSearchChange(novoTexto: String) {
+        _search.value = novoTexto
+        filtrarExercicios(novoTexto)
     }
 
     private fun filtrarExercicios(texto: String) {
@@ -91,7 +90,7 @@ class EditarTreinoViewModel(
     fun adicionarExercicio(novoExercicio: Exercicio) {
         val conjuntoAtual = _exerciciosAdicionados.value
         if (conjuntoAtual.contains(novoExercicio)) return
-        _exerciciosAdicionados.value = conjuntoAtual + novoExercicio
+        _exerciciosAdicionados.value = (conjuntoAtual + novoExercicio).toSet()
     }
 
     fun editarTreino(onSuccess: () -> Unit) {
@@ -126,7 +125,7 @@ class EditarTreinoViewModel(
 
 
     fun removerExercicio(exercicio: Exercicio) {
-        _exerciciosAdicionados.value = _exerciciosAdicionados.value - exercicio
+        _exerciciosAdicionados.value = (_exerciciosAdicionados.value - exercicio).toSet()
     }
 
 

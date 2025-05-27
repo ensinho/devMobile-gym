@@ -100,6 +100,11 @@ class CriarTreinoViewModel(
         _exerciciosAdicionados.value = novaLista
     }
 
+    fun isExercicioIncluido(exercicio: Exercicio): Boolean {
+        return _exerciciosAdicionados.value.contains(exercicio.id)
+    }
+
+
     fun removerExercicio(exercicio: Exercicio) {
         val idParaRemover = exercicio.id
         _exerciciosAdicionados.value = _exerciciosAdicionados.value.filter { it != idParaRemover }

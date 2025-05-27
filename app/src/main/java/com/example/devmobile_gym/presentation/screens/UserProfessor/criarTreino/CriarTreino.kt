@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -110,11 +111,18 @@ fun CriarTreinoScreen(navController: NavHostController, backStackEntry: NavBackS
                     ) {
                         items(exerciciosFiltrados) { exercicio ->
                             CustomExerciseItem(
-                                exercise = exercicio.nome.toString(),
+                                exercise = exercicio.nome ?: "Sem nome",
                                 description = exercicio.grupoMuscular,
-                                addExerciseToTreino = { viewModel.adicionarExercicio(exercicio) },
-                                removeExerciseFromTreino = { viewModel.removerExercicio(exercicio) }
+                                isIncluded = exerciciosAdicionados.any { it == exercicio.id },
+                                onToggle = {
+                                    if (viewModel.isExercicioIncluido(exercicio)) {
+                                        viewModel.removerExercicio(exercicio)
+                                    } else {
+                                        viewModel.adicionarExercicio(exercicio)
+                                    }
+                                }
                             )
+
                         }
                     }
 

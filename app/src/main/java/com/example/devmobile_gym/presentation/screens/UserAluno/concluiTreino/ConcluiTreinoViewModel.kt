@@ -9,9 +9,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.devmobile_gym.data.repository.AlunoRepository
 import com.example.devmobile_gym.data.repository.TreinoRepository
+import com.example.devmobile_gym.data.repository.UserWorkoutsRepository
+import com.example.devmobile_gym.domain.model.Exercicio
 import com.example.devmobile_gym.domain.model.Treino
+import com.example.devmobile_gym.domain.model.UserWorkouts
 import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
 import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
+import com.example.devmobile_gym.domain.repository.UserWorkoutsRepositoryModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,6 +29,8 @@ class ConcluiTreinoViewModel(
 
     private val treinoRepositoryModel: TreinoRepositoryModel = TreinoRepository()
     private val alunoRepositoryModel: AlunoRepositoryModel = AlunoRepository()
+    private val auth : FirebaseAuth = FirebaseAuth.getInstance()
+    private val userWorkoutsRepository: UserWorkoutsRepositoryModel = UserWorkoutsRepository()
 
     private val treinoId: String = savedStateHandle.get<String>("treinoId") ?: "-1"
     private val tempoTreino: String = savedStateHandle.get<String>("tempoTreino") ?: "0"
@@ -60,6 +67,17 @@ class ConcluiTreinoViewModel(
                 _quantidadeExercicios.value = "0"
             }
         }
+    }
+
+    private fun getUserId() : String {
+        val userId = auth.currentUser?.uid
+        Log.d("getUserId", "User ID: $userId")
+        return userId ?: throw IllegalStateException("User ID is null. User might not be authenticated.")
+    }
+
+    suspend fun getCurrentUserWorkouts(): UserWorkouts? {
+        val userId = getUserId()
+        return userWorkoutsRepository.obterStreakPorUserId(userId)
     }
 
     fun addToHistory(onSuccess: () -> Unit) {

@@ -1,6 +1,7 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.concluiTreino
 
-import androidx.compose.foundation.background
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,12 +25,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
+import com.example.devmobile_gym.presentation.screens.UserAluno.StreakViewModel
 import com.example.devmobile_gym.presentation.screens.detalhesTreino.ConcluiTreinoViewModel
 import com.example.devmobile_gym.ui.theme.White
+import androidx.compose.runtime.rememberCoroutineScope // Importe isso
+import kotlinx.coroutines.launch // Importe isso
 
-// ao concluir o treino, não leva info de uma tela pra outra
-// futuramente, o view model desse componente vai chamar uma função que adiciona o treino finalizado
-// na lista de treinos finalizados do histórico do aluno.
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ConcluiTreino(
     navController: NavHostController,
@@ -41,13 +42,15 @@ fun ConcluiTreino(
         viewModelStoreOwner = backStackEntry,
         factory = ConcluiTreinoViewModel.Factory
     )
+    val streakViewModel: StreakViewModel = viewModel()
+    val coroutineScope = rememberCoroutineScope() // Cria um CoroutineScope aqui
+
     val tempoTreino by viewModel.tempo.collectAsState()
     val nomeTreino by viewModel.nomeTreino.collectAsState()
     val quantidadeExercicios by viewModel.quantidadeExercicios.collectAsState()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-
 
     val selectedItemIndex = when (currentRoute) {
         AlunoRoutes.Home -> 0
@@ -63,11 +66,11 @@ fun ConcluiTreino(
         needToGoBack = true,
         onBackClick = { onBack() },
         selectedItemIndex = selectedItemIndex,
-        { innerModifier ->
+        content = {
             Column (
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize()
+                modifier = it.fillMaxSize() // Usa o modifier passado pelo scaffold
             ){
                 Row (
                     horizontalArrangement = Arrangement.Center,
@@ -77,7 +80,6 @@ fun ConcluiTreino(
                     Column (
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
-
                     ) {
                         Text(
                             text = " Você concluiu o ",
@@ -91,7 +93,6 @@ fun ConcluiTreino(
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF5D98DD)
                         )
-
                     }
                 }
                 Row (
@@ -102,7 +103,6 @@ fun ConcluiTreino(
                     Column (
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
-
                     ) {
                         Text(
                             text = quantidadeExercicios,
@@ -130,7 +130,6 @@ fun ConcluiTreino(
                         )
                     }
                 }
-        //            Spacer(Modifier.fillMaxSize(0.3f))
 
                 Row (
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -141,17 +140,27 @@ fun ConcluiTreino(
                         text = if (isLoading) "Salvando..." else "Concluir Treino",
                         enabled = !isLoading,
                         onClick = {
-                            viewModel.addToHistory(
-                                onSuccess = {
-                                    navController.navigate(AlunoRoutes.Home)
-                                }
-                            )
+                            coroutineScope.launch {
+                                // Obtendo o UserWorkouts ANTES de chamar addToHistory
+                                val currentUserWorkouts = viewModel.getCurrentUserWorkouts()
+
+                                // Chamando addToHistory
+                                viewModel.addToHistory(
+                                    onSuccess = {
+                                        // O sucesso do addToHistory não impede que o streak seja atualizado
+                                        if (currentUserWorkouts != null) {
+                                            streakViewModel.updateStreak(currentUserWorkouts)
+                                        } else {
+                                            android.util.Log.e("ConcluiTreino", "Falha ao obter UserWorkouts para atualização de streak.")
+                                        }
+                                        navController.navigate(AlunoRoutes.Home)
+                                    }
+                                )
+                            }
                         }
                     )
-
                 }
             }
         }
-    ) { /* Handle menu click */ }
+    ) { /* Handle menu click, se houver */ }
 }
-

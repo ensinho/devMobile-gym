@@ -1,5 +1,7 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,22 +19,32 @@ import com.example.devmobile_gym.presentation.components.CustomCalendario
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomCard
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.devmobile_gym.presentation.components.WeeklyCalendar
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
+import com.example.devmobile_gym.presentation.screens.UserAluno.StreakViewModel
 import com.example.devmobile_gym.ui.theme.White
+import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = viewModel(), onNavigateToTreino: (String) -> Unit, onNavigateToAulas: () -> Unit) {
     val treinos by viewModel.treinos.collectAsState()
-
+    val userWorkouts by viewModel.currentUserWorkouts.collectAsState()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    val userId = viewModel.getUserId()
+    val coroutineScope = rememberCoroutineScope() // Cria um CoroutineScope aqui
 
     val selectedItemIndex = when (currentRoute) {
         AlunoRoutes.Home -> 0
@@ -47,20 +59,40 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = view
         viewModel.loadData()
     }
 
+    LaunchedEffect(userId) {
+        if (userId.isNotEmpty()) {
+            viewModel.loadData() // Carrega os treinos
+            viewModel.loadCurrentUserWorkouts(userId) // Carrega os dados do streak
+        }
+    }
+
 
     CustomScreenScaffold (
         navController = navController,
         onBackClick = { /* Handle back click */ },
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
-            val combinedModifier = innerModifier.padding(1.dp)
+            val combinedModifier = innerModifier.padding(2.dp)
 
             LazyColumn(
-                modifier = combinedModifier
+                modifier = combinedModifier.padding(top = 5.dp)
             ) {
                 item {
-                    CustomCalendario()
-                    Spacer(Modifier.height(16.dp))
+                    // Exibir um indicador de carregamento ou o calendário quando os dados estiverem prontos
+                    userWorkouts?.let { workouts ->
+                        // Passa a lista de strings de workoutDates para o WeeklyCalendar
+                        WeeklyCalendar(workouts.workoutDates)
+                    } ?: run {
+                        // Opcional: mostrar um carregador ou uma mensagem enquanto os dados são carregados/se não forem encontrados
+                        Box(
+                            modifier = Modifier.fillMaxWidth().height(80.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator() // Ou Text("Carregando calendário...")
+                        }
+                    }
+
+                    Spacer(Modifier.height(5.dp))
                     CustomButton(
                         text = "Aulas & Funcionais",
                         onClick = { onNavigateToAulas() }

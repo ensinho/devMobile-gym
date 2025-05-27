@@ -56,7 +56,7 @@ class StreakViewModel (
         }
     }
 
-    fun getUserStreak(userId: String) {
+    fun getUserStreak(userId: String)  {
         viewModelScope.launch {
             // 1. Define o estado como Carregando antes de iniciar a busca
             _streakUiState.value = StreakUiState.Loading
@@ -82,6 +82,15 @@ class StreakViewModel (
                 _streakUiState.value = StreakUiState.Error("Não foi possível carregar o streak. ${e.localizedMessage ?: "Erro desconhecido"}")
                 Log.e("StreakViewModel", "Erro inesperado ao obter streak do usuário", e)
             }
+        }
+    }
+
+    suspend fun fetchUserWorkoutsDirectly(userId: String): UserWorkouts? {
+        return try {
+            repository.obterStreakPorUserId(userId)
+        } catch (e: Exception) {
+            Log.e("StreakViewModel", "Erro ao buscar UserWorkouts diretamente para userId: $userId", e)
+            null // Retorna null em caso de erro
         }
     }
 

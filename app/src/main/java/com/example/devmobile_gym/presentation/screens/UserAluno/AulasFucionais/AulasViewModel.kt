@@ -31,8 +31,8 @@ class AulasViewModel(
     private val _quantidadeMax = MutableStateFlow<Int>(0)
     val quantidadeMax : StateFlow<Int> = _quantidadeMax.asStateFlow()
 
-    private val _novaQuantidade = mutableStateOf("")
-    val novaQuantidade: MutableState<String> = _novaQuantidade
+    private val _novaQuantidade = MutableStateFlow<String>("")
+    val novaQuantidade: StateFlow<String> = _novaQuantidade
 
     init{
         viewModelScope.launch {
@@ -65,16 +65,16 @@ class AulasViewModel(
             try {
                 val aula = repository.getAula(idAula)
                 if (aula != null) {
-                    if (idAluno.toString() in aula.inscritos){
-                        //TODO() função para acionar mecanismo de tratamento caso já inscrito na aula
+                    if (!aula.inscritos.contains(idAluno)){
+                        repository.inserirAluno(idAula, idAluno)
                     }
-                    }else{
-                        aula.inserirAluno()
+
                 }
-                }
+                }catch (e: Exception) {
             }
         }
     }
+}
 
 //    suspend fun isInscrito(aula: Aula): Boolean {
 ////        val userId = auth.currentUser?.uid ?: return false
@@ -82,4 +82,3 @@ class AulasViewModel(
 //        val usuarioLogado = alunoRepository.getAlunoLogado()
 //        if (usuarioLogado != null && ) {
 //    }
-//}

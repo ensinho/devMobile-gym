@@ -8,6 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.devmobile_gym.data.repository.UserWorkoutsRepository
 import com.example.devmobile_gym.domain.model.UserWorkouts
 import com.example.devmobile_gym.domain.repository.UserWorkoutsRepositoryModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -16,6 +19,8 @@ class StreakViewModel (
     private val repository: UserWorkoutsRepositoryModel = UserWorkoutsRepository()
 ) : ViewModel() {
 
+    private val _streakUiState = MutableStateFlow<StreakUiState>(StreakUiState.Loading)
+    val streakUiState: StateFlow<StreakUiState> = _streakUiState.asStateFlow()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateStreak(userWorkouts: UserWorkouts) {
@@ -51,6 +56,35 @@ class StreakViewModel (
         }
     }
 
+    fun getUserStreak(userId: String) {
+        viewModelScope.launch {
+            // 1. Define o estado como Carregando antes de iniciar a busca
+            _streakUiState.value = StreakUiState.Loading
+            Log.d("StreakViewModel", "Iniciando busca do streak para userId: $userId")
+
+            try {
+                // 2. Chama a função do repositório
+                val userWorkouts = repository.obterStreakPorUserId(userId)
+
+                // 3. Verifica o resultado do repositório
+                if (userWorkouts != null) {
+                    // Sucesso: o streak foi encontrado
+                    _streakUiState.value = StreakUiState.Success(userWorkouts)
+                    Log.d("StreakViewModel", "Streak do usuário obtido com sucesso: $userWorkouts")
+                } else {
+                    // Streak não encontrado ou ocorreu um erro silencioso no repositório
+                    // O repositório já loga se foi 'não encontrado' ou 'erro', então aqui tratamos como 'não encontrado' para a UI.
+                    _streakUiState.value = StreakUiState.NotFound
+                    Log.w("StreakViewModel", "Nenhum streak encontrado para userId: $userId (ou erro silencioso no repositório)")
+                }
+            } catch (e: Exception) {
+                // 4. Captura qualquer exceção que possa ter sido lançada (erros inesperados)
+                _streakUiState.value = StreakUiState.Error("Não foi possível carregar o streak. ${e.localizedMessage ?: "Erro desconhecido"}")
+                Log.e("StreakViewModel", "Erro inesperado ao obter streak do usuário", e)
+            }
+        }
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calcularStreakConsecutivo(workoutDates: List<LocalDate>, today: LocalDate = LocalDate.now()): Int {
@@ -76,6 +110,12 @@ class StreakViewModel (
         return streak
     }
 
+}
 
-
+// Em um arquivo separado ou dentro do seu ViewModel, fora da classe
+sealed class StreakUiState {
+    object Loading : StreakUiState() // Indica que a operação está em andamento
+    data class Success(val userWorkouts: UserWorkouts) : StreakUiState() // Sucesso com os dados do streak
+    object NotFound : StreakUiState() // O streak não foi encontrado para o usuário
+    data class Error(val message: String) : StreakUiState() // Ocorreu um erro
 }

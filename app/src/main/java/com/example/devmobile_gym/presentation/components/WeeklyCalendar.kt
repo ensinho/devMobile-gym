@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import java.time.DayOfWeek
 import java.time.LocalDate
 
-
+// Define as cores fora da função Composable para evitar recriação desnecessária
 private val BackgroundColor = Color(0xFF3B3B3B)
 private val WorkoutDayColor = Color(0xFF267FE7)
 private val RestDayColor = Color(0xFFEDEFF1)
@@ -31,14 +31,16 @@ private val RestDayColor = Color(0xFFEDEFF1)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WeeklyCalendar(
-    workoutDates: List<String>
+    workoutDates: List<String> // Recebe a lista de datas de treino como String
 ) {
     val today = LocalDate.now()
-    val startOfWeek = today.with(DayOfWeek.MONDAY)
-    val weekDates = (0..6).map { startOfWeek.plusDays(it.toLong()) }
+    val startOfWeek = today.with(DayOfWeek.MONDAY) // Assume que a semana começa na segunda
+    val weekDates = (0..6).map { startOfWeek.plusDays(it.toLong()) } // Gera as 7 datas da semana
 
+    // Converte a lista de strings para um Set para buscas mais eficientes
     val workoutDateSet = workoutDates.toSet()
 
+    // Mapeamento de DayOfWeek para nomes em português
     val dayOfWeekMap = mapOf(
         DayOfWeek.MONDAY to "SEG",
         DayOfWeek.TUESDAY to "TER",
@@ -49,36 +51,48 @@ fun WeeklyCalendar(
         DayOfWeek.SUNDAY to "DOM"
     )
 
-    Row(
+    // O Box externo é para centralizar o calendário horizontalmente
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(BackgroundColor)
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(horizontal = 16.dp), // Padding ao redor de todo o componente
+        contentAlignment = Alignment.Center // Centraliza o conteúdo dentro deste Box
     ) {
-        weekDates.forEach { date ->
-            val isWorkoutDay = workoutDateSet.contains(date.toString())
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .padding(horizontal = 4.dp)
-            ) {
-                Text(
-                    text = dayOfWeekMap[date.dayOfWeek] ?: date.dayOfWeek.name.take(3), // Use mapped Portuguese name or fallback
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White
-                )
-                Box(
+        Row(
+            modifier = Modifier
+                .fillMaxWidth() // Permite que o Row interno ocupe a largura disponível do Box
+                .background(BackgroundColor, MaterialTheme.shapes.medium) // Fundo com bordas arredondadas
+                .clip(MaterialTheme.shapes.medium) // Garante que o clip aplique as bordas
+                .padding(8.dp), // Padding interno para o conteúdo do calendário
+            horizontalArrangement = Arrangement.SpaceBetween, // Espaça os dias igualmente
+            verticalAlignment = Alignment.CenterVertically // Centraliza verticalmente o conteúdo de cada dia
+        ) {
+            weekDates.forEach { date ->
+                // Verifica se a data atual da semana está na lista de dias de treino
+                val isWorkoutDay = workoutDateSet.contains(date.toString())
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .size(36.dp)
-                        .clip(CircleShape)
-                        .background(if (isWorkoutDay) WorkoutDayColor else RestDayColor),
-                    contentAlignment = Alignment.Center
+                        .weight(1f) // Faz com que cada coluna ocupe espaço igual
+                        .padding(horizontal = 2.dp, vertical = 4.dp) // Ajuste fino do padding interno
                 ) {
                     Text(
-                        text = date.dayOfMonth.toString(),
-                        color = if (isWorkoutDay) Color.White else Color.Black
+                        text = dayOfWeekMap[date.dayOfWeek] ?: date.dayOfWeek.name.take(3),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White
                     )
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp) // Tamanho do círculo do dia
+                            .clip(CircleShape) // Borda circular para o dia
+                            .background(if (isWorkoutDay) WorkoutDayColor else RestDayColor), // Cor de fundo baseada se é dia de treino
+                        contentAlignment = Alignment.Center // Centraliza o texto do número do dia
+                    ) {
+                        Text(
+                            text = date.dayOfMonth.toString(),
+                            color = if (isWorkoutDay) Color.White else Color.Black // Cor do número do dia
+                        )
+                    }
                 }
             }
         }
@@ -95,8 +109,7 @@ fun PreviewWeeklyCalendar() {
         today,
         today.minusDays(1),
         today.minusDays(5)
-    ).map { it.toString() }
+    ).map { it.toString() } // Converta para String para o preview
 
     WeeklyCalendar(workoutDates = mockWorkoutDates)
 }
-

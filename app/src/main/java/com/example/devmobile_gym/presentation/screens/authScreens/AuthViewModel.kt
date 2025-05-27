@@ -1,23 +1,30 @@
 package com.example.devmobile_gym.presentation.screens.authScreens
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.devmobile_gym.data.repository.UserWorkoutsRepository
 import com.example.devmobile_gym.domain.model.Aluno
 import com.example.devmobile_gym.domain.model.Professor
+import com.example.devmobile_gym.domain.model.UserWorkouts
 import com.example.devmobile_gym.domain.model.Usuario
+import com.example.devmobile_gym.domain.repository.UserWorkoutsRepositoryModel
 import com.example.devmobile_gym.presentation.screens.authScreens.register.RegisterViewModel
 import com.example.devmobile_gym.utils.isProfessorEmail
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
 
     val auth : FirebaseAuth = FirebaseAuth.getInstance()
     private val db : FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val streakRepository : UserWorkoutsRepositoryModel = UserWorkoutsRepository()
 
     private val _authState = MutableLiveData<AuthState>()
     val authState : MutableLiveData<AuthState> = _authState
@@ -124,16 +131,30 @@ class AuthViewModel : ViewModel() {
                 auth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            // Garanta que o usuário foi criado
                             val user = auth.currentUser ?: run {
                                 _authState.value = AuthState.Error("Usuário não criado")
                                 return@addOnCompleteListener
                             }
-                            val usuario = createUserInstance(user, nome)
 
-                            when (usuario){
-                                is Usuario.Aluno -> saveToFirestore(usuario, "alunos")
-                                is Usuario.Professor -> saveToFirestore(usuario, "professores")
+                            // Lançar uma coroutine para criar o streak e salvar o usuário
+                            viewModelScope.launch {
+                                try {
+                                    streakRepository.criarStreak(userId = user.uid)
+                                    Log.d("SignupViewModel", "Streak inicializado com sucesso ")
+
+                                    val usuario = createUserInstance(user, nome)
+                                    when (usuario){
+                                        is Usuario.Aluno -> saveToFirestore(usuario, "alunos")
+                                        is Usuario.Professor -> saveToFirestore(usuario, "professores")
+                                    }
+                                    Log.d("SignupViewModel", "Usuário criado com sucesso ")
+                                } catch (e: Exception) {
+                                    Log.e("SignupViewModel", "Erro ao criar streak ou salvar usuário: ", e)
+                                    // Se a criação do streak ou o salvamento do usuário falhar
+                                    // definir o estado de erro aqui.
+                                    _authState.value = AuthState.Error("Erro ao finalizar o cadastro. Tente novamente.")
+                                    auth.currentUser?.delete()
+                                }
                             }
                         } else {
                             _authState.value = AuthState.Error(task.exception?.message ?: "Erro no cadastro")

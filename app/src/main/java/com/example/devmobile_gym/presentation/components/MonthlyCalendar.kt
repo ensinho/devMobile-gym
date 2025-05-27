@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,7 +35,7 @@ import java.util.Locale
 
 private val BackgroundColor = Color(0xFF3B3B3B)
 private val WorkoutDayColor = Color(0xFF267FE7)
-private val RestDayColor = Color(0xFFEDEFF1)
+private val RestDayColor = Color(0xFFf9f9ff)
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -59,7 +60,10 @@ fun MonthlyCalendar(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(BackgroundColor)
+            .background(
+                color = BackgroundColor,
+                shape = RoundedCornerShape(45.dp) // Borda arredondada aqui
+            )
             .padding(8.dp)
     ) {
         // Título do mês centralizado
@@ -112,7 +116,11 @@ fun MonthlyCalendar(
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(7),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+                .padding(8.dp) // Adicione padding interno se necessário
+                .clip(RoundedCornerShape(8.dp)), // Arredondamento adicional para a grade,
             userScrollEnabled = false // Desabilita o scroll para evitar problemas de aninhamento
         ) {
             items(totalCells) { index ->

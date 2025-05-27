@@ -1,5 +1,7 @@
 package com.example.devmobile_gym.presentation.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,9 +31,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.LocalDate
+import java.util.Calendar
+
+private fun calculaAnoAtual(userId: String) : String{
+    val calendario = Calendar.getInstance() // Obtém uma instância do calendário com a data e hora atuais
+    val anoAtual = (calendario.get(Calendar.YEAR).toInt() - 2000).toString()
+    return anoAtual + (userId.substring(0, 8)).uppercase()
+}
 
 @Composable
 fun ProfileCard(
@@ -40,11 +51,13 @@ fun ProfileCard(
     weight: String,
     height: String
 ) {
+    val id = calculaAnoAtual(userId)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        shape = RoundedCornerShape(55.dp),
+            .padding(vertical = 2.dp, horizontal = 5.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF267FE7)),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
@@ -59,17 +72,18 @@ fun ProfileCard(
                 imageVector = Icons.Default.AccountCircle,
                 contentDescription = "Avatar",
                 tint = Color.White,
-                modifier = Modifier.size(109.dp)
+                modifier = Modifier.size(112.dp)
             )
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            Column {
+            Column (){
                 Text(
                     text = name,
-                    fontSize = 27.sp,
+                    fontSize = 30.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(top = 12.dp),
                     style = TextStyle(
                         shadow = Shadow(
                             color = Color.DarkGray, // Cor da sombra
@@ -84,12 +98,12 @@ fun ProfileCard(
                         imageVector = Icons.Sharp.Info,
                         contentDescription = "Matrícula",
                         tint = Color.White,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = userId,
-                        fontSize = 14.sp,
+                        text = id,
+                        fontSize = 15.sp,
                         color = Color.White,
                         style = TextStyle(
                             shadow = Shadow(
@@ -101,12 +115,12 @@ fun ProfileCard(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 Row {
-                    weightBox("70Kg")
-                    Spacer(Modifier.padding(end = 80.dp))
-                    heightBox("170cm")
+                    weightBox(weight)
+                    Spacer(Modifier.padding(end = 70.dp))
+                    heightBox(height)
 
                 }
             }
@@ -121,7 +135,7 @@ fun weightBox(value: String) {
         horizontalArrangement = Arrangement.Center
     ){
         Card(
-            modifier = Modifier.height(28.dp).width(7.dp),
+            modifier = Modifier.height(40.dp).width(10.dp),
             shape = RoundedCornerShape(55.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xFFF0F4FF)),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
@@ -129,18 +143,21 @@ fun weightBox(value: String) {
         ) {
             Text(".", color = Color(0xFFF0F4FF))
         }
-        Spacer(modifier = Modifier.width(3.dp))
-        Column (){
+        Spacer(modifier = Modifier.width(6.dp))
+        Column (
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start
+        ){
             Text(
                 text = value,
-                fontSize = 12.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
                 modifier = Modifier.padding(top = 5.dp)
             )
             Text(
                 text = "Peso",
-                fontSize = 9.sp,
+                fontSize = 14.sp,
                 color = Color.White
             )
         }
@@ -153,7 +170,7 @@ fun heightBox(value: String) {
         horizontalArrangement = Arrangement.Center
     ){
         Card(
-            modifier = Modifier.height(28.dp).width(7.dp),
+            modifier = Modifier.height(40.dp).width(10.dp),
             shape = RoundedCornerShape(55.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xFFF0F4FF)),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
@@ -161,18 +178,21 @@ fun heightBox(value: String) {
             ) {
             Text(".", color = Color(0xFFF0F4FF))
         }
-        Spacer(modifier = Modifier.width(3.dp))
-        Column (){
+        Spacer(modifier = Modifier.width(6.dp))
+        Column (
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start
+        ){
             Text(
                 text = value,
-                fontSize = 12.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
                 modifier = Modifier.padding(top = 5.dp)
             )
             Text(
                 text = "Altura",
-                fontSize = 9.sp,
+                fontSize = 14.sp,
                 color = Color.White
             )
         }

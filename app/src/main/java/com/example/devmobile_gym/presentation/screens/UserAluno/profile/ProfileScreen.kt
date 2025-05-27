@@ -1,5 +1,9 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.profile
 
+import android.R.attr.background
+import android.R.id.background
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,6 +20,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,13 +35,16 @@ import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.BoxDayStreak
 import com.example.devmobile_gym.presentation.components.CardCalendario
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
+import com.example.devmobile_gym.presentation.components.MonthlyCalendar
 import com.example.devmobile_gym.presentation.components.ProfileCard
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel = viewModel(), onNavigateToHistorico: () -> Unit) {
-    val aluno by viewModel.aluno
+    val aluno by viewModel.aluno.collectAsState()
+    val userWorkouts by viewModel.currentUserWorkouts.collectAsState()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -49,16 +58,21 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
         else -> 0 // default
     }
 
+    LaunchedEffect(aluno) { // Agora reage a qualquer mudança no objeto 'aluno'
+        aluno?.uid?.let { userId ->
+            viewModel.loadCurrentUserWorkouts(userId)
+        }
+    }
+
     CustomScreenScaffold(
         navController = navController,
         onBackClick = {},
         selectedItemIndex = selectedItemIndex,
         content = { innerModifier ->
-            val combinedModifier = innerModifier.padding(0.dp)
+            val combinedModifier = innerModifier.padding(1.dp)
                 .background(Color(0xFF1E1E1E))
             LazyColumn (
-                modifier = combinedModifier
-                    .fillMaxSize()
+                modifier = innerModifier.background(Color(0xFF1E1E1E))
 
 
             ){
@@ -104,14 +118,24 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
                 item{
                     Spacer(modifier = Modifier.height(16.dp))
                 }
-                item {Box(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                )
-                {
-                    CardCalendario()
-                }}
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        userWorkouts?.let {
+                            // Se userWorkouts não é null, exibe o calendário
+                            MonthlyCalendar(it.workoutDates)
+                        } ?: run {
+                            // Se userWorkouts é null, exibe um indicador de carregamento ou mensagem
+                            // Você pode adicionar um StateFlow booleano no ViewModel para 'isLoadingUserWorkouts'
+                            // para exibir um indicador mais inteligente.
+                            Text("Carregando calendário...", color = Color.Gray)
+                            // Ou CircularProgressIndicator() se preferir
+                        }
+                    }
+                }
                 item {  Spacer(modifier = Modifier.height(40.dp))
                 }
                 item {Row(

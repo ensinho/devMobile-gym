@@ -63,33 +63,38 @@ class GerenciaAlunoViewModel(
 
     suspend fun loadData() {
         try {
+            // Carrega os nomes dos exercícios
             val todos = exerciciosRepository.getAllExercicios()
             _nomesExercicios.value = todos.associateBy({ it.id.toString() }, { it.nome.toString() })
 
             _isLoading.value = true
+
+            // Busca o aluno
             val aluno = getAlunoById(alunoId)
             _alunoSelecionado.value = aluno
 
-            aluno?.rotina?.let {
+            // Se rotina for não nula e não vazia, escuta os treinos e carrega os dados
+            val rotina = aluno?.rotina
+
+            if (!rotina.isNullOrEmpty()) {
+                // Escuta atualizações em tempo real
                 db.collection("treinos")
-                    .whereIn(FieldPath.documentId(), it)
-            }
-                ?.addSnapshotListener { snapshot, e ->
-                    if (e != null) {
-                        _error.value = "Erro ao escutar treinos: ${e.message}"
-                        return@addSnapshotListener
+                    .whereIn(FieldPath.documentId(), rotina)
+                    .addSnapshotListener { snapshot, e ->
+                        if (e != null) {
+                            _error.value = "Erro ao escutar treinos: ${e.message}"
+                            return@addSnapshotListener
+                        }
+
+                        val novosTreinos = snapshot?.toObjects(Treino::class.java) ?: emptyList()
+                        _treinos.value = novosTreinos
                     }
 
-                    val novosTreinos = snapshot?.toObjects(Treino::class.java) ?: emptyList()
-                    _treinos.value = novosTreinos
-                }
-
-
-            if (!aluno?.rotina.isNullOrEmpty()) {
-                val treinosCarregados = treinoRepository.getTreinosByIds(aluno.rotina)
+                // Carrega os treinos inicialmente
+                val treinosCarregados = treinoRepository.getTreinosByIds(rotina)
                 _treinos.value = treinosCarregados
             } else {
-                _treinos.value = emptyList()
+                _treinos.value = emptyList() // Garante que a UI saiba que não há treinos
             }
 
         } catch (e: Exception) {
@@ -98,6 +103,7 @@ class GerenciaAlunoViewModel(
             _isLoading.value = false
         }
     }
+
 
 
     private suspend fun getAlunoById(uid: String): Usuario.Aluno? {

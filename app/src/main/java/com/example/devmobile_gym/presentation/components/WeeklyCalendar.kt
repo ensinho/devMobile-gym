@@ -26,7 +26,7 @@ import java.time.LocalDate
 // Define as cores fora da função Composable para evitar recriação desnecessária
 private val BackgroundColor = Color(0xFF3B3B3B)
 private val WorkoutDayColor = Color(0xFF267FE7)
-private val RestDayColor = Color(0xFFEDEFF1)
+private val RestDayColor = Color(0xFFf9f9ff)
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

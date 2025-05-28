@@ -13,7 +13,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.devmobile_gym.data.repository.ExercicioRepository
 import com.example.devmobile_gym.data.repository.TreinoRepository
-import com.example.devmobile_gym.domain.model.Aluno
+import com.example.devmobile_gym.domain.model.Usuario.Aluno
 import com.example.devmobile_gym.domain.model.Treino
 import com.example.devmobile_gym.domain.model.Usuario
 import com.example.devmobile_gym.domain.repository.ExercicioRepositoryModel

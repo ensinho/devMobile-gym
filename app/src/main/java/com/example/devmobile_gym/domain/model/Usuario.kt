@@ -13,7 +13,16 @@ sealed class Usuario(
         override val uid: String? = "",
         override val nome: String = "",
         override val email: String? = "",
-        val rotina: List<String>? = emptyList()
+        val rotina: List<String>? = emptyList(),
+        // geradas ao treinar
+        val diasTreinados: List<String> = emptyList(),
+        val historico: List<TreinoComData> = emptyList(), // armazena os ids dos treinos
+        val ultimoDiaTreinado: String = "",
+        val exercicioFavorito: String = "",
+        // informações do usuário
+        val altura: Double = 0.0,
+        val peso: Double = 0.0,
+        val imc: Double = (peso / (altura * altura))
     ) : Usuario(uid, nome, email)
 
     data class Professor(

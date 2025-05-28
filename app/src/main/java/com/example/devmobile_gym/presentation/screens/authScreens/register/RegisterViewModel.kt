@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.devmobile_gym.domain.model.Aluno
+import com.example.devmobile_gym.domain.model.Usuario.Aluno
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +20,12 @@ class RegisterViewModel() : ViewModel() {
     private val _senha = MutableStateFlow("")
     val senha: StateFlow<String> = _senha.asStateFlow()
 
+    private val _peso = MutableStateFlow("")
+    val peso: StateFlow<String> = _peso.asStateFlow()
+
+    private val _altura = MutableStateFlow("")
+    val altura: StateFlow<String> = _altura.asStateFlow()
+
     private val _confirmSenha = MutableStateFlow("")
     val confirmSenha: StateFlow<String> = _confirmSenha.asStateFlow()
 
@@ -32,6 +38,16 @@ class RegisterViewModel() : ViewModel() {
     fun onEmailChange(newEmail: String) {
         _email.value = newEmail
     }
+
+    fun onPesoChange(newPeso: String) {
+        _peso.value = newPeso
+
+    }
+
+    fun onAlturaChange(newAltura: String) {
+        _altura.value = newAltura
+    }
+
 
     fun onNomeChange(newNome: String) {
         _nome.value = newNome

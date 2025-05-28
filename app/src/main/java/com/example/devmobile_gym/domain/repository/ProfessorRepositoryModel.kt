@@ -1,6 +1,6 @@
 package com.example.devmobile_gym.domain.repository
 
-import com.example.devmobile_gym.domain.model.Aluno
+import com.example.devmobile_gym.domain.model.Usuario.Aluno
 import com.example.devmobile_gym.domain.model.Professor
 
 interface ProfessorRepositoryModel {

@@ -87,7 +87,11 @@ fun ProfessorHomeScreen(
                             CardHomeProfessor(
                                 texto = it,
                                 icone = R.drawable.ic_caneta,
-                                onClick = { aluno.uid.let { it1 -> onNavigateToAluno(it1) } }
+                                onClick = { aluno.uid.let { it1 ->
+                                    if (it1 != null) {
+                                        onNavigateToAluno(it1)
+                                    }
+                                } }
                             )
                         }
 

@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,6 +26,9 @@ import com.example.devmobile_gym.presentation.components.CustomExerciseSearchCar
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
@@ -33,6 +38,19 @@ fun SearchScreen(navController: NavHostController, viewModel: SearchScreenViewMo
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    val authViewModel: AuthViewModel = viewModel()
+
+    val authState by authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState) {
+        if (authState == AuthState.Unauthenticated) {
+            navController.navigate(AuthRoutes.Login) {
+                popUpTo(0)
+                launchSingleTop = true
+            }
+        }
+    }
 
     val selectedItemIndex = when (currentRoute) {
         AlunoRoutes.Home -> 0

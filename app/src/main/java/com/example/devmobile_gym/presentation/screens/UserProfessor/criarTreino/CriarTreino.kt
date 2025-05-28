@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -27,7 +28,10 @@ import com.example.devmobile_gym.presentation.components.CustomExerciseItem
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldProfessor
 import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.components.BoxSeta
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
@@ -46,6 +50,19 @@ fun CriarTreinoScreen(navController: NavHostController, backStackEntry: NavBackS
         ProfessorRoutes.Chatbot -> 3
         ProfessorRoutes.Gerenciar -> 4
         else -> 0
+    }
+
+    val authViewModel: AuthViewModel = viewModel()
+
+    val authState by authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState) {
+        if (authState == AuthState.Unauthenticated) {
+            navController.navigate(AuthRoutes.Login) {
+                popUpTo(0)
+                launchSingleTop = true
+            }
+        }
     }
 
     val context = LocalContext.current

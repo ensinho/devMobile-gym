@@ -15,6 +15,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -26,7 +28,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.CardHomeProfessor
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldProfessor
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 
 @Composable
 fun ProfessorHomeScreen(
@@ -41,6 +46,19 @@ fun ProfessorHomeScreen(
         isLoading = true
         viewModel.fetchAlunos()
         isLoading = false
+    }
+
+    val authViewModel: AuthViewModel = viewModel()
+
+    val authState by authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState) {
+        if (authState == AuthState.Unauthenticated) {
+            navController.navigate(AuthRoutes.Login) {
+                popUpTo(0)
+                launchSingleTop = true
+            }
+        }
     }
 
 

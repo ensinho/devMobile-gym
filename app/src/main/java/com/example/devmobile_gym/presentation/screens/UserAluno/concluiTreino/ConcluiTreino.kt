@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +31,9 @@ import com.example.devmobile_gym.presentation.screens.UserAluno.StreakViewModel
 import com.example.devmobile_gym.presentation.screens.detalhesTreino.ConcluiTreinoViewModel
 import com.example.devmobile_gym.ui.theme.White
 import androidx.compose.runtime.rememberCoroutineScope // Importe isso
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 import kotlinx.coroutines.launch // Importe isso
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -51,6 +56,19 @@ fun ConcluiTreino(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    val authViewModel: AuthViewModel = viewModel()
+
+    val authState by authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState) {
+        if (authState == AuthState.Unauthenticated) {
+            navController.navigate(AuthRoutes.Login) {
+                popUpTo(0)
+                launchSingleTop = true
+            }
+        }
+    }
 
     val selectedItemIndex = when (currentRoute) {
         AlunoRoutes.Home -> 0

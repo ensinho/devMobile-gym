@@ -15,8 +15,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +35,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 
 
 @SuppressLint("DefaultLocale")
@@ -53,6 +58,19 @@ fun DetalhesTreinoScreen(
 
     val horas by viewModel.tempoEmHoras.collectAsState()
     val minutos by viewModel.tempoEmMinutos.collectAsState()
+
+    val authViewModel: AuthViewModel = viewModel()
+
+    val authState by authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState) {
+        if (authState == AuthState.Unauthenticated) {
+            navController.navigate(AuthRoutes.Login) {
+                popUpTo(0)
+                launchSingleTop = true
+            }
+        }
+    }
 
     val selectedItemIndex = when (currentRoute) {
         AlunoRoutes.Home -> 0

@@ -9,8 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -22,6 +24,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.devmobile_gym.presentation.components.CustomCard
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -31,6 +36,19 @@ fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewMo
     val treinosComData by viewModel.treinos.collectAsState()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    val authViewModel: AuthViewModel = viewModel()
+
+    val authState by authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState) {
+        if (authState == AuthState.Unauthenticated) {
+            navController.navigate(AuthRoutes.Login) {
+                popUpTo(0)
+                launchSingleTop = true
+            }
+        }
+    }
 
     val selectedItemIndex = when {
         currentRoute?.startsWith(AlunoRoutes.Home) == true -> 0

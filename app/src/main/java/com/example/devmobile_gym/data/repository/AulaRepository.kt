@@ -14,6 +14,7 @@ class AulaRepository : AulaRepositoryModel {
     private val auth = FirebaseAuth.getInstance()
     private val aulasCollection = db.collection("aulas")
 
+
     override suspend fun getAulas(): List<Aula> {
         return try {
             val snapshot = aulasCollection.get().await()

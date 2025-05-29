@@ -1,6 +1,7 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.AulasFucionais
 
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -15,12 +16,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 class AulasViewModel(
     private val repository: AulaRepositoryModel = AulaRepository(),
     private val alunoRepository: AlunoRepositoryModel = AlunoRepository(),
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ): ViewModel() {
+
+    fun getUserId() : String {
+        val userId = auth.currentUser?.uid
+        Log.d("getUserId", "User ID: $userId")
+        return userId ?: throw IllegalStateException("User ID is null. User might not be authenticated.")
+    }
 
     private val _aulas = MutableStateFlow<List<Aula?>>(emptyList())
     val aulas : StateFlow<List<Aula?>> = _aulas.asStateFlow()
@@ -31,8 +39,8 @@ class AulasViewModel(
     private val _quantidadeMax = MutableStateFlow<Int>(0)
     val quantidadeMax : StateFlow<Int> = _quantidadeMax.asStateFlow()
 
-    private val _novaQuantidade = MutableStateFlow<String>("")
-    val novaQuantidade: StateFlow<String> = _novaQuantidade
+    private val _novaQuantidade = MutableStateFlow<Int>(0)
+    val novaQuantidade: StateFlow<Int> = _novaQuantidade
 
     init{
         viewModelScope.launch {
@@ -40,7 +48,7 @@ class AulasViewModel(
         }
     }
 
-    fun onNovaQuantidadeChange(novaQuantidade: String) {
+    fun onNovaQuantidadeChange(novaQuantidade: Int) {
         _novaQuantidade.value = novaQuantidade
     }
 
@@ -63,14 +71,19 @@ class AulasViewModel(
 //        }
         viewModelScope.launch {
             try {
+
                 val aula = repository.getAula(idAula)
                 if (aula != null) {
                     if (!aula.inscritos.contains(idAluno)){
                         repository.inserirAluno(idAula, idAluno)
+                        carregaAulas()
                     }
+                    else{
 
+                    }
                 }
                 }catch (e: Exception) {
+                    Log.e("AulaViewModel", "erro ao inscreverAluno")
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.example.devmobile_gym.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.devmobile_gym.presentation.screens.authScreens.register.RegisterScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +42,7 @@ import com.example.devmobile_gym.presentation.screens.chatbotScreens.AlunoChatbo
 import com.example.devmobile_gym.presentation.screens.chatbotScreens.ProfessorChatbotScreen
 import java.net.URLDecoder
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost(
             navController: NavHostController,
@@ -333,6 +336,19 @@ fun AppNavHost(
                 },
                 navController = navController,
                 onConclude = { navController.navigate(ProfessorRoutes.Gerenciar) }
+            )
+        }
+
+        //PROFESSOR USA QR CODE
+        composable(ProfessorRoutes.QrCode) {
+            QRCodeScreen(
+                navController = navController,
+                onQRCodeScanned = { result ->
+                    // Aqui você processa o resultado do QR code e navega
+                    // para a tela apropriada com o resultado
+                    onQRCodeScanned(result) // Passa o resultado para a MainActivity
+                    navController.popBackStack() // Volta para a tela anterior após a leitura
+                }
             )
         }
 

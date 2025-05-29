@@ -24,6 +24,7 @@ object ProfessorRoutes {
     const val EditarTreino = "professor/editarTreino"
     const val EditarExercicio = "professor/EditarExercicio"
     const val AdicionarExercicio = "professor/adicionarExercicio"
+    const val QrCode = "professor/qrcode"
 }
 
 object AuthRoutes {

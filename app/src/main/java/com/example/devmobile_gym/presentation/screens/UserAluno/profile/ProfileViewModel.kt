@@ -1,6 +1,9 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.profile
 
+import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.devmobile_gym.data.repository.AlunoRepository
@@ -12,10 +15,13 @@ import com.example.devmobile_gym.domain.model.TreinoComData // Importe TreinoCom
 import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
 import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
 import com.example.devmobile_gym.domain.repository.UserWorkoutsRepositoryModel
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class ProfileViewModel : ViewModel() {
 
@@ -32,14 +38,54 @@ class ProfileViewModel : ViewModel() {
     private val _lastTreinoName: MutableStateFlow<String> = MutableStateFlow("")
     val lastTreinoName: StateFlow<String> = _lastTreinoName.asStateFlow()
 
+    private val _imagemGaleria = MutableStateFlow<Uri?>(Uri.EMPTY)
+    val imagemGaleria: StateFlow<Uri?> = _imagemGaleria.asStateFlow()
+
+    // NOVA FUNÇÃO: Recebe o Uri selecionado da UI e atualiza o StateFlow
+    fun onImageSelected(uri: Uri?) {
+        _imagemGaleria.value = uri
+        // Opcional: Você pode adicionar lógica para salvar a imagem no Firebase Storage aqui
+        // ou chamar outro repository para isso.
+        Log.d("ProfileViewModel", "Imagem selecionada: $uri")
+    }
+
+    private val storage = FirebaseStorage.getInstance()
+    private val firestore = FirebaseFirestore.getInstance()
+
+    // Função para fazer upload da imagem e atualizar o Firestore
+    fun uploadImageAndUpdateProfile(uri: Uri) {
+        viewModelScope.launch {
+            try {
+                val userId = aluno.value?.uid ?: return@launch
+                val storageRef = storage.reference.child("profile_images/$userId.jpg")
+
+                storageRef.putFile(uri).await() // Usando corrotinas
+                val downloadUri = storageRef.downloadUrl.await()
+
+                // Atualiza o Firestore com a nova URL
+                firestore.collection("alunos").document(userId)
+                    .update("fotoUrl", downloadUri.toString())
+                    .await()
+
+                // Atualiza o estado local
+                _aluno.value = aluno.value?.copy(fotoUrl = downloadUri.toString())
+                _imagemGaleria.value = downloadUri
+            } catch (e: Exception) {
+                Log.e("ProfileViewModel", "Erro ao atualizar imagem", e)
+            }
+        }
+    }
+
     init {
         carregarAluno()
     }
 
     private fun carregarAluno() {
         viewModelScope.launch {
-            val aluno = alunoRepositoryModel.getAlunoLogado()
-            println("🔥 Aluno carregado: $aluno")
+            val aluno = alunoRepositoryModel.getAlunoLogado().apply {
+                // Carrega a URL da imagem se existir
+                _imagemGaleria.value = this?.fotoUrl?.let { Uri.parse(it) }
+            }
             _aluno.value = aluno
         }
     }

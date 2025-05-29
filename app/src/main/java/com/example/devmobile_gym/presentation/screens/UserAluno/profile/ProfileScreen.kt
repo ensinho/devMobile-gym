@@ -3,7 +3,10 @@ package com.example.devmobile_gym.presentation.screens.UserAluno.profile
 import StreakBox
 import android.R.attr.background
 import android.R.id.background
+import android.net.Uri
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -44,6 +47,7 @@ import com.example.devmobile_gym.presentation.components.CardCalendario
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.MonthlyCalendar
 import com.example.devmobile_gym.presentation.components.ProfileCard
+import com.example.devmobile_gym.presentation.components.ProfileEditButton
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.presentation.navigation.AuthRoutes
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
@@ -57,6 +61,14 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
     val userWorkouts by viewModel.currentUserWorkouts.collectAsState()
     val nomeUltimoTreino by viewModel.lastTreinoName.collectAsState()
     val imcNum = aluno?.imc
+    // NOVO: Coleta o Uri da imagem da galeria do ViewModel
+    val imagemSelecionadaUri by viewModel.imagemGaleria.collectAsState()
+
+    val pickImageLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        viewModel.onImageSelected(uri) // Chama a função do ViewModel para atualizar o Uri
+    }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -114,7 +126,12 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
                         name = aluno?.nome ?: "Carregando...",
                         userId = (aluno?.uid?: "Carregando").toString(),
                         weight = aluno?.peso.toString() + " Kg",
-                        height = aluno?.altura.toString() + " m"
+                        height = aluno?.altura.toString() + " m",
+                        onEditProfileClick = {
+                            // Esta é a ação do botão de lápis
+                            pickImageLauncher.launch("image/*") // <-- AQUI VOCÊ CHAMA O LAUNCHER
+                        },
+                        profileImageUri = imagemSelecionadaUri // Passe o Uri para o ProfileCard exibir
                     )
                 }
                 item{

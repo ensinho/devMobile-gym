@@ -57,6 +57,8 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-compose:3.2.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.2.0")
     implementation("com.google.guava:guava:31.0.1-android")
+    // Firebase Storage
+    implementation("com.google.firebase:firebase-storage-ktx")
 
 
     // Gemini

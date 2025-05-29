@@ -1,8 +1,10 @@
 package com.example.devmobile_gym.presentation.components
 
 import AcessibilidadeIconButton
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,12 +18,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.sharp.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +43,7 @@ import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import java.nio.file.WatchEvent
 import java.time.LocalDate
 import java.util.Calendar
@@ -54,7 +60,9 @@ fun ProfileCard(
     name: String,
     userId: String,
     weight: String,
-    height: String
+    height: String,
+    onEditProfileClick: () -> Unit, // <--- Adicione um callback para o clique de edição
+    profileImageUri: Uri?, // Continua recebendo o Uri para exibir
 ) {
     val id = calculaAnoAtual(userId)
 
@@ -67,21 +75,33 @@ fun ProfileCard(
     ) {
         Row (
             modifier = Modifier.padding(horizontal = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ){
-            Text(
-                text = "Perfil",
-                fontSize = 32.sp,
-                color = Color.White,
-                style = TextStyle(
-                    shadow = Shadow(
-                        color = Color.DarkGray, // Cor da sombra
-                        offset = Offset(1f, 3f), // Posição da sombra (X, Y)
-                        blurRadius = 8f // Intensidade do desfoque
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
+            ){
+                Text(
+                    text = "Perfil",
+                    fontSize = 32.sp,
+                    color = Color.White,
+                    style = TextStyle(
+                        shadow = Shadow(
+                            color = Color.DarkGray, // Cor da sombra
+                            offset = Offset(1f, 3f), // Posição da sombra (X, Y)
+                            blurRadius = 8f // Intensidade do desfoque
+                        )
                     )
                 )
-            )
+                // Botão de edição ao lado do ícone do perfil
+                ProfileEditButton(
+                    onClick = onEditProfileClick, // Usa o callback passado para o ProfileCard
+                    modifier = Modifier.padding(start = 1.dp), // Adiciona um espaçamento à esquerda
+                    tint = Color.White
+                )
+            }
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -97,15 +117,30 @@ fun ProfileCard(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Ícone de perfil substituindo o avatar
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                contentDescription = "Avatar",
-                tint = Color.White,
-                modifier = Modifier.size(180.dp)
-            )
+            if (profileImageUri != null && profileImageUri != Uri.EMPTY) {
+                AsyncImage(
+                    model = profileImageUri, // O Uri é diretamente o modelo
+                    contentDescription = "Imagem de Perfil",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(180.dp)
+                        .clip(CircleShape)
+                    // Removida a clicabilidade direta na imagem aqui (se você não quiser que ela faça nada)
+                )
+            } else {
+                // Ícone de perfil padrão se não houver imagem
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
+                    contentDescription = "Avatar",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(180.dp)
+                    // Removida a clicabilidade direta no ícone aqui
+                )
+            }
 
-            Spacer(modifier = Modifier.width(16.dp))
+
+            Spacer(modifier = Modifier.width(16.dp)) // Este Spacer era para a Row anterior, pode ser ajustado
             Text(
                 text = name,
                 fontSize = 32.sp,
@@ -147,31 +182,11 @@ fun ProfileCard(
                 heightBox(height)
 
             }
-
-
-//            Column (){
-//                Text(
-//                    text = name,
-//                    fontSize = 30.sp,
-//                    color = Color.White,
-//                    fontWeight = FontWeight.Bold,
-//                    modifier = Modifier.padding(top = 12.dp),
-//                    style = TextStyle(
-//                        shadow = Shadow(
-//                            color = Color.DarkGray, // Cor da sombra
-//                            offset = Offset(1f, 3f), // Posição da sombra (X, Y)
-//                            blurRadius = 8f // Intensidade do desfoque
-//                        )
-//                    )
-//                )
-//
-//
-//                Spacer(modifier = Modifier.height(12.dp))
-//
-//            }
         }
     }
 }
+
+// ... (weightBox e heightBox permanecem inalterados)
 
 @Composable
 fun weightBox(value: String) {
@@ -185,7 +200,7 @@ fun weightBox(value: String) {
             colors = CardDefaults.cardColors(containerColor = Color(0xFFF0F4FF)),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
 
-        ) {
+            ) {
             Text(".", color = Color(0xFFF0F4FF))
         }
         Spacer(modifier = Modifier.width(6.dp))

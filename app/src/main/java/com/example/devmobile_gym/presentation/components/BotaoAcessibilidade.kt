@@ -2,6 +2,7 @@ import android.content.Intent
 import android.provider.Settings
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -22,7 +23,7 @@ fun AcessibilidadeIconButton(modifier: Modifier = Modifier) {
             val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
             context.startActivity(intent)
         },
-        modifier = modifier
+        modifier = modifier.padding(bottom = 13.dp)
     ) {
         Icon(
             imageVector = Icons.Default.Settings,

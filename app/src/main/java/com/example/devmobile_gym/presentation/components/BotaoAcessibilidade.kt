@@ -1,35 +1,35 @@
-package com.example.devmobile_gym.presentation.components
-
 import android.content.Intent
 import android.provider.Settings
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.Color
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.font.FontWeight
 
 @Composable
-fun BotaoAbrirAcessibilidade() {
+fun AcessibilidadeIconButton(modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
-    Button(
+    IconButton(
         onClick = {
             val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
             context.startActivity(intent)
         },
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF5D98DD),
-            disabledContainerColor = Color.Gray // cor quando desabilitado
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        modifier = modifier
     ) {
-        Text("Abrir Acessibilidade", fontWeight = FontWeight.Bold)
+        Icon(
+            imageVector = Icons.Default.Settings,
+            contentDescription = "Abrir configurações de acessibilidade",
+            tint = Color.White,
+            modifier = Modifier.size(32.dp) // Aumenta o tamanho do ícone
+        )
     }
+
 }

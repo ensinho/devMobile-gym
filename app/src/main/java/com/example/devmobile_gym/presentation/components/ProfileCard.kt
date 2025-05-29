@@ -1,8 +1,10 @@
 package com.example.devmobile_gym.presentation.components
 
+import AcessibilidadeIconButton
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,14 +31,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.nio.file.WatchEvent
 import java.time.LocalDate
 import java.util.Calendar
+import com.example.devmobile_gym.R
 
 private fun calculaAnoAtual(userId: String) : String{
     val calendario = Calendar.getInstance() // Obtém uma instância do calendário com a data e hora atuais
@@ -55,35 +60,76 @@ fun ProfileCard(
 
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 2.dp, horizontal = 5.dp),
-        shape = RoundedCornerShape(20.dp),
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(0.dp, 0.dp, 20.dp, 20.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF267FE7)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
     ) {
-        Row(
+        Row (
+            modifier = Modifier.padding(horizontal = 20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "Perfil",
+                fontSize = 32.sp,
+                color = Color.White,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = Color.DarkGray, // Cor da sombra
+                        offset = Offset(1f, 3f), // Posição da sombra (X, Y)
+                        blurRadius = 8f // Intensidade do desfoque
+                    )
+                )
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 16.dp, top = 16.dp),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                AcessibilidadeIconButton()
+            }
+        }
+        Column (
             modifier = Modifier
                 .padding(8.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Ícone de perfil substituindo o avatar
             Icon(
                 imageVector = Icons.Default.AccountCircle,
                 contentDescription = "Avatar",
                 tint = Color.White,
-                modifier = Modifier.size(112.dp)
+                modifier = Modifier.size(180.dp)
             )
 
             Spacer(modifier = Modifier.width(16.dp))
-
-            Column (){
+            Text(
+                text = name,
+                fontSize = 32.sp,
+                color = Color.White,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = Color.DarkGray, // Cor da sombra
+                        offset = Offset(1f, 3f), // Posição da sombra (X, Y)
+                        blurRadius = 8f // Intensidade do desfoque
+                    )
+                )
+            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Sharp.Info,
+                    contentDescription = "Matrícula",
+                    tint = Color.White,
+                    modifier = Modifier.size(22.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = name,
-                    fontSize = 30.sp,
+                    text = id,
+                    fontSize = 15.sp,
                     color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 12.dp),
                     style = TextStyle(
                         shadow = Shadow(
                             color = Color.DarkGray, // Cor da sombra
@@ -92,38 +138,37 @@ fun ProfileCard(
                         )
                     )
                 )
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Sharp.Info,
-                        contentDescription = "Matrícula",
-                        tint = Color.White,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = id,
-                        fontSize = 15.sp,
-                        color = Color.White,
-                        style = TextStyle(
-                            shadow = Shadow(
-                                color = Color.DarkGray, // Cor da sombra
-                                offset = Offset(1f, 3f), // Posição da sombra (X, Y)
-                                blurRadius = 8f // Intensidade do desfoque
-                            )
-                        )
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Row {
-                    weightBox(weight)
-                    Spacer(Modifier.padding(end = 70.dp))
-                    heightBox(height)
-
-                }
             }
+            Row (
+                modifier = Modifier.padding(20.dp)
+            ){
+                weightBox(weight)
+                Spacer(Modifier.padding(end = 70.dp))
+                heightBox(height)
+
+            }
+
+
+//            Column (){
+//                Text(
+//                    text = name,
+//                    fontSize = 30.sp,
+//                    color = Color.White,
+//                    fontWeight = FontWeight.Bold,
+//                    modifier = Modifier.padding(top = 12.dp),
+//                    style = TextStyle(
+//                        shadow = Shadow(
+//                            color = Color.DarkGray, // Cor da sombra
+//                            offset = Offset(1f, 3f), // Posição da sombra (X, Y)
+//                            blurRadius = 8f // Intensidade do desfoque
+//                        )
+//                    )
+//                )
+//
+//
+//                Spacer(modifier = Modifier.height(12.dp))
+//
+//            }
         }
     }
 }
@@ -135,7 +180,7 @@ fun weightBox(value: String) {
         horizontalArrangement = Arrangement.Center
     ){
         Card(
-            modifier = Modifier.height(40.dp).width(10.dp),
+            modifier = Modifier.height(60.dp).width(10.dp),
             shape = RoundedCornerShape(55.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xFFF0F4FF)),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
@@ -170,7 +215,7 @@ fun heightBox(value: String) {
         horizontalArrangement = Arrangement.Center
     ){
         Card(
-            modifier = Modifier.height(40.dp).width(10.dp),
+            modifier = Modifier.height(60.dp).width(10.dp),
             shape = RoundedCornerShape(55.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xFFF0F4FF)),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
@@ -197,11 +242,4 @@ fun heightBox(value: String) {
             )
         }
     }
-}
-
-@Preview (showBackground = true)
-@Composable
-private fun PreviewProfileCard() {
-    ProfileCard("Nome do Fulano", "12345", "69", "1,70")
-//    weightOrHeightBox("70Kg")
 }

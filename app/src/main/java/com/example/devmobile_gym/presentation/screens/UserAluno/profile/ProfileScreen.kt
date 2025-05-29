@@ -1,11 +1,13 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.profile
 
+import StreakBox
 import android.R.attr.background
 import android.R.id.background
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,15 +28,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.devmobile_gym.R
-import com.example.devmobile_gym.presentation.components.BotaoAbrirAcessibilidade
-import com.example.devmobile_gym.presentation.components.BoxDayStreak
 import com.example.devmobile_gym.presentation.components.CardCalendario
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.MonthlyCalendar
@@ -50,22 +55,10 @@ import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel = viewModel(), onNavigateToHistorico: () -> Unit) {
     val aluno by viewModel.aluno.collectAsState()
     val userWorkouts by viewModel.currentUserWorkouts.collectAsState()
+    val imcNum = aluno?.imc
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-
-    val authViewModel: AuthViewModel = viewModel()
-
-    val authState by authViewModel.authState.observeAsState()
-
-    LaunchedEffect(authState) {
-        if (authState == AuthState.Unauthenticated) {
-            navController.navigate(AuthRoutes.Login) {
-                popUpTo(0)
-                launchSingleTop = true
-            }
-        }
-    }
 
     val selectedItemIndex = when (currentRoute) {
         AlunoRoutes.Home -> 0
@@ -82,10 +75,24 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
         }
     }
 
+    val authViewModel: AuthViewModel = viewModel()
+
+    val authState by authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState) {
+        if (authState == AuthState.Unauthenticated) {
+            navController.navigate(AuthRoutes.Login) {
+                popUpTo(0)
+                launchSingleTop = true
+            }
+        }
+    }
+
     CustomScreenScaffold(
         navController = navController,
         onBackClick = {},
         selectedItemIndex = selectedItemIndex,
+        color = Color(0xFF267FE7),
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(1.dp)
                 .background(Color(0xFF1E1E1E))
@@ -94,51 +101,33 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
 
 
             ){
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 16.dp, top = 16.dp),
-                        contentAlignment = Alignment.CenterEnd
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.clickable {
-                                onNavigateToHistorico()
-                            }
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.relogio_ic),
-                                contentDescription = "Ícone exemplo",
-                                modifier = Modifier
-                                    .height(40.dp)
-                                    .size(27.dp),
-                                tint = Color.Unspecified
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = "Historico",
-                                color = Color.White
-                            )
-
-                            BotaoAbrirAcessibilidade()
-                        }
-                    }
-
-                }
 
                 item{
                     ProfileCard(
                         name = aluno?.nome ?: "Carregando...",
                         userId = (aluno?.uid?: "Carregando").toString(),
-                        weight = " 64 kg",
-                        height = " 1,70 m "
+                        weight = aluno?.peso.toString() + " Kg",
+                        height = aluno?.altura.toString() + " m"
                     )
                 }
                 item{
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
                 item {
+                    Text(
+                        text = "Calendário de treinos",
+                        color = Color.White,
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold,
+                        style = TextStyle(
+                            shadow = Shadow(
+                                color = Color.DarkGray, // Cor da sombra
+                                offset = Offset(1f, 3f), // Posição da sombra (X, Y)
+                                blurRadius = 8f // Intensidade do desfoque
+                            )
+                        ),
+                        modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
+                    )
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -156,38 +145,78 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
                         }
                     }
                 }
-                item {  Spacer(modifier = Modifier.height(40.dp))
+                item {
+                    Spacer(modifier = Modifier.height(40.dp))
                 }
-                item {Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                ) {
-                    Spacer(modifier = Modifier.width(16.dp))
 
-                    BoxDayStreak("Day Streak", icone = R.drawable.fire_svgrepo_com)
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    BoxDayStreak("Texto exemplo", icone = R.drawable.home_icon)
+                item {
+                    Text(
+                        text = "Informações",
+                        color = Color.White,
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold,
+                        style = TextStyle(
+                            shadow = Shadow(
+                                color = Color.DarkGray, // Cor da sombra
+                                offset = Offset(1f, 3f), // Posição da sombra (X, Y)
+                                blurRadius = 8f // Intensidade do desfoque
+                            )
+                        ),
+                        modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
+                    )
                 }
+                item {
+                    userWorkouts?.currentStreak?.let {
+                        StreakBox(
+                            text = if (it > 1 || it == 0) "$it Dias seguidos" else "$it Dia seguido",
+                            onClick = {},
+                            color = if (it >= 1 && it < 30) Color(0xFF267FE7) else if (it >= 30 && it < 50) Color(0xFFFF4500) else if (it >= 50) Color(0xFFAD03DE) else Color.LightGray,
+                            iconResId = R.drawable.baseline_local_fire_department_24
+                        )
+                    }
                 }
-                item {Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                ) {
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    BoxDayStreak("Day Streak", icone = R.drawable.medal_icon)
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    BoxDayStreak("Texto exemplo", icone = R.drawable.relogio_ic)
+                item {
+                    StreakBox(
+                        text = "Ver histórico",
+                        onClick = onNavigateToHistorico,
+                        iconResId = R.drawable.relogio_ic,
+                        color = Color.LightGray
+                    )
                 }
+                item {
+                    aluno?.historico?.let {
+                        StreakBox(
+                            text = if (it.isEmpty()) "Nenhum treino realizado" else "Último treino: ${it.last()}",
+                            onClick = {},
+                            iconResId = R.drawable.home_icon,
+                            color = Color.LightGray
+                        )
+                    }
                 }
+
+                item {
+                    imcNum?.let {
+                        StreakBox(
+                            text = "IMC: " + if (it < 18.5) {
+                                "Abaixo do peso"
+                            } else if (imcNum >= 18.5 && imcNum < 24.9) {
+                                "Peso normal"
+                            } else if (imcNum >= 24.9 && imcNum < 29.9) {
+                                "Sobrepeso"
+                            } else if (imcNum >= 29.9 && imcNum < 34.9) {
+                                "Obesidade Grau I"
+                            } else if (imcNum > 34.99 && imcNum < 39.9) {
+                                "Obesidade Grau II"
+                            } else {
+                                "Obesidade Grau III (Mórbida)"
+                            },
+                            onClick = {},
+                            iconResId = R.drawable.home_icon,
+                            color = Color.LightGray
+                        )
+                    }
+                }
+
             }
 
         }

@@ -4,17 +4,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.devmobile_gym.data.repository.AlunoRepository
 import com.example.devmobile_gym.domain.repository.AlunoRepositoryModel
 import com.example.devmobile_gym.domain.repository.ProfessorRepositoryModel
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class LoginViewModel(
-) : ViewModel() {
+class LoginViewModel() : ViewModel() {
 
     private val _email = MutableStateFlow("")
     val email: StateFlow<String> = _email.asStateFlow()

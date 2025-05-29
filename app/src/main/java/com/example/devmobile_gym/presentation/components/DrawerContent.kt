@@ -88,11 +88,18 @@ fun DrawerContent(
                 AlunoRoutes.Chatbot
             )
         })
-        DrawerItem(title = "Sair", iconResId = R.drawable.baseline_logout_24, onClick = {
-
-            authViewModel.signout()
-
-        })
+        DrawerItem(
+            title = "Sair",
+            iconResId = R.drawable.baseline_logout_24,
+            onClick = {
+//                authViewModel.signout()
+                navController.navigate(AuthRoutes.Login) {
+                    popUpTo(0) // Limpa toda a pilha de navegação
+                    launchSingleTop = true
+                }
+                closeMenu()
+            }
+        )
     }
 }
 

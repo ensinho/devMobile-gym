@@ -55,14 +55,14 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = view
 
     val authState by authViewModel.authState.observeAsState()
 
-    LaunchedEffect(authState) {
-        if (authState == AuthState.Unauthenticated) {
-            navController.navigate(AuthRoutes.Login) {
-                popUpTo(0)
-                launchSingleTop = true
-            }
-        }
-    }
+//    LaunchedEffect(authState) {
+//        if (authState == AuthState.Unauthenticated) {
+//            navController.navigate(AuthRoutes.Login) {
+//                popUpTo(0)
+//                launchSingleTop = true
+//            }
+//        }
+//    }
 
     val selectedItemIndex = when (currentRoute) {
         AlunoRoutes.Home -> 0

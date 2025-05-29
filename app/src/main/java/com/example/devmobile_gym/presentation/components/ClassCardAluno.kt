@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 
 @Composable
 fun ClassCardAluno(
+//    onQuantidadeChange: (Int) -> Unit,
     idAula: String,
     data: String,
     aula: String,

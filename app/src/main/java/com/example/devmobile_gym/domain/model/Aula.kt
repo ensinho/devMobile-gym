@@ -11,7 +11,7 @@ data class Aula(
     val dataHora: Date = Date(),
     val quantidade_alunos: Int = 0,
     val quantidade_maxima_alunos: Int = 0,
-    val inscritos: List<String> = emptyList() // Lista de IDs de alunos
+    val inscritos: MutableList<String> = mutableListOf()
 
 )
 

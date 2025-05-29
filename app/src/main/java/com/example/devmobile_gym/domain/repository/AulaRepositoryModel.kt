@@ -7,4 +7,6 @@ interface AulaRepositoryModel {
     suspend fun createAula(aula: Aula) : Boolean
     suspend fun deleteAula(aulaId: String) : Boolean
     suspend fun incrementQuantAlunos(aulaId: String)
+    suspend fun getAula(aulaId: String): Aula?
+    suspend fun inserirAluno(aulaID : String, alunoID : String)
 }

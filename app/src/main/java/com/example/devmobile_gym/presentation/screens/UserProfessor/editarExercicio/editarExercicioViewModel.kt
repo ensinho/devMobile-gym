@@ -6,11 +6,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.devmobile_gym.data.repository.ExercicioRepository
 import com.example.devmobile_gym.domain.model.Exercicio
 import com.example.devmobile_gym.domain.repository.ExercicioRepositoryModel
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class editarExercicioViewModel(

@@ -92,10 +92,14 @@ fun ShowAulas(onBack: () -> Unit, navController: NavHostController) {
                             aula = it.aula,
                             professor = it.professor,
                             hora = it.getHoraFormatada(),
-                            quantAtual = it.quantidade_alunos,
+//                            onQuantidadeChange = viewmodel::onNovaQuantidadeChange,
+                            quantAtual =  it.inscritos.size,
                             quantMaxima = it.quantidade_maxima_alunos,
                             onInscricaoClick = { aulaId ->
-                                viewmodel.inscreverAluno(aulaId)
+                                viewmodel.inscreverAluno(
+                                    idAula = aula.id,
+                                    idAluno = viewmodel.getUserId()
+                                )
                             }
                         )
                     }

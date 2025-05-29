@@ -16,9 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
@@ -26,6 +29,7 @@ fun DrawerContent(
     navController: NavHostController,
     closeMenu: () -> Unit // Adicionando a função de fechar o menu
 ) {
+    val authViewModel: AuthViewModel = viewModel()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -83,6 +87,11 @@ fun DrawerContent(
             navController.navigate(
                 AlunoRoutes.Chatbot
             )
+        })
+        DrawerItem(title = "Sair", iconResId = R.drawable.baseline_logout_24, onClick = {
+
+            authViewModel.signout()
+
         })
     }
 }

@@ -14,8 +14,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,8 +37,11 @@ import com.example.devmobile_gym.presentation.components.CustomExerciseItem
 import com.example.devmobile_gym.presentation.components.CustomExerciseItemAlreadyAdd
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldProfessor
 import com.example.devmobile_gym.presentation.components.CustomTextField
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
 import com.example.devmobile_gym.presentation.screens.UserProfessor.criarTreino.CriarTreinoViewModel
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 import com.example.devmobile_gym.ui.theme.White
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.logging.Log
 import kotlinx.coroutines.delay
@@ -71,6 +76,19 @@ fun EditarTreinoScreen(
     val exerciciosAdicionados by viewModel.exerciciosAdicionados.collectAsState()
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+
+    val authViewModel: AuthViewModel = viewModel()
+
+    val authState by authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState) {
+        if (authState == AuthState.Unauthenticated) {
+            navController.navigate(AuthRoutes.Login) {
+                popUpTo(0)
+                launchSingleTop = true
+            }
+        }
+    }
 
 
     CustomScreenScaffoldProfessor(

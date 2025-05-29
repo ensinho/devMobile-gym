@@ -55,6 +55,7 @@ import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel = viewModel(), onNavigateToHistorico: () -> Unit) {
     val aluno by viewModel.aluno.collectAsState()
     val userWorkouts by viewModel.currentUserWorkouts.collectAsState()
+    val nomeUltimoTreino by viewModel.lastTreinoName.collectAsState()
     val imcNum = aluno?.imc
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -73,6 +74,12 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
         aluno?.uid?.let { userId ->
             viewModel.loadCurrentUserWorkouts(userId)
         }
+    }
+
+    // Este LaunchedEffect agora chama a função atualizada, passando o histórico
+    LaunchedEffect(aluno?.historico) {
+        viewModel.loadLastTreinoNameFromHistory(aluno?.historico)
+        println("Nome do ultimo treino: $nomeUltimoTreino")
     }
 
     val authViewModel: AuthViewModel = viewModel()
@@ -184,14 +191,13 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
                     )
                 }
                 item {
-                    aluno?.historico?.let {
-                        StreakBox(
-                            text = if (it.isEmpty()) "Nenhum treino realizado" else "Último treino: ${it.last()}",
-                            onClick = {},
-                            iconResId = R.drawable.home_icon,
-                            color = Color.LightGray
-                        )
-                    }
+                    // Usa o nome do último treino que vem do ViewModel
+                    StreakBox(
+                        text = "Último treino: $nomeUltimoTreino",
+                        onClick = {},
+                        iconResId = R.drawable.home_icon,
+                        color = Color.LightGray
+                    )
                 }
 
                 item {

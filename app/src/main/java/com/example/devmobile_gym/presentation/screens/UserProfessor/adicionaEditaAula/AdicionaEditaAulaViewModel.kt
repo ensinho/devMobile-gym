@@ -1,7 +1,5 @@
 package com.example.devmobile_gym.presentation.screens.UserProfessor.adicionaEditaAula
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.devmobile_gym.data.repository.AulaRepository
@@ -11,12 +9,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.Date
+import java.util.Date // Importa java.util.Date
 
 class AdicionaEditaAulaViewModel() : ViewModel() {
 
-
     private val aulasRepository : AulaRepositoryModel = AulaRepository()
+
+    // Estados para os campos do formulário
     private val _tipoAula = MutableStateFlow("")
     val tipoAula: StateFlow<String> = _tipoAula.asStateFlow()
 
@@ -26,18 +25,20 @@ class AdicionaEditaAulaViewModel() : ViewModel() {
     private val _status = MutableStateFlow("")
     val status: StateFlow<String> = _status.asStateFlow()
 
-    // KAIO LEMBRAR DE TRANSFORMAR ISSO AQUI PARA INT QUANDO FOR POR NO BANCO DE DADOS PELO AMOR DE DEUS
+    // Estado para a alocação máxima (ainda como String para validação de entrada)
     private val _alocacaoMax = MutableStateFlow("")
     val alocacaoMax: StateFlow<String> = _alocacaoMax.asStateFlow()
 
-    // Novo estado: data e hora da aula
+    // Estado para a data e hora da aula (usando java.util.Date)
     private val _dataHoraSelecionada = MutableStateFlow<Date?>(null)
     val dataHoraSelecionada: StateFlow<Date?> = _dataHoraSelecionada.asStateFlow()
 
-    fun atualizarDataHora(data: Date) {
+    // Função para atualizar a data e hora selecionada
+    fun atualizarDataHora(data: Date) { // Recebe um Date não nulo do DateTimePickerInput
         _dataHoraSelecionada.value = data
     }
 
+    // Funções para atualizar os outros campos
     fun onProfessorChange(newText: String) {
         _professor.value = newText
     }
@@ -50,25 +51,25 @@ class AdicionaEditaAulaViewModel() : ViewModel() {
         _tipoAula.value = newSearch
     }
 
+    // Função de validação para número inteiro
     fun isNumeroInteiro(valor: String): Boolean {
         val regex = Regex("^\\d+$") // aceita apenas dígitos (0-9)
         return regex.matches(valor)
     }
 
-
+    // Função para criar uma nova aula
     fun criarAula(aula: Aula?, onSuccess: () -> Unit, onError: () -> Unit) {
         viewModelScope.launch {
+            // Tenta criar a aula usando o repositório
             val aulaCriada = aula?.let { aulasRepository.createAula(it) }
 
             if (aulaCriada == true) {
                 _status.value = "Aula criada com sucesso."
-                onSuccess()
+                onSuccess() // Chama o callback de sucesso
             } else {
                 _status.value = "Erro ao criar a aula."
-                onError()
+                onError() // Chama o callback de erro
             }
         }
-
     }
-
 }

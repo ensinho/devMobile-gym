@@ -27,17 +27,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
-import com.example.devmobile_gym.presentation.components.ExerciseCard
-import com.example.devmobile_gym.ui.theme.LightGray
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.components.ui.theme.components.CustomButton
+import com.example.components.ui.theme.components.CustomButton // Verifique o import correto para CustomButton
+import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
+import com.example.devmobile_gym.presentation.components.ExerciseCard
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.presentation.navigation.AuthRoutes
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
+import com.example.devmobile_gym.ui.theme.LightGray
 
 
 @SuppressLint("DefaultLocale")
@@ -51,8 +51,8 @@ fun DetalhesTreinoScreen(
         viewModelStoreOwner = backStackEntry,
         factory = DetalhesTreinoViewModel.Factory
     )
-    val treino = viewModel.treinoSelecionado.collectAsState()
-    val quantidadeExercicios = treino.value?.exercicios?.size ?: 0
+    val treino by viewModel.treinoSelecionado.collectAsState() // Use 'by' para desempacotar
+    val quantidadeExercicios = treino?.exercicios?.size ?: 0 // Use '?' para acesso seguro
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -60,8 +60,11 @@ fun DetalhesTreinoScreen(
     val minutos by viewModel.tempoEmMinutos.collectAsState()
 
     val authViewModel: AuthViewModel = viewModel()
-
     val authState by authViewModel.authState.observeAsState()
+
+    // Observe o estado das séries concluídas
+    val seriesConcluidas by viewModel.seriesConcluidas.collectAsState()
+
 
     LaunchedEffect(authState) {
         if (authState == AuthState.Unauthenticated) {
@@ -81,7 +84,7 @@ fun DetalhesTreinoScreen(
         else -> 0 // default
     }
 
-    if (treino.value == null) {
+    if (treino == null) { // Verifique se treino é nulo aqui
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -154,7 +157,7 @@ fun DetalhesTreinoScreen(
                         text = "Concluir",
                         onClick = {
                             val tempo = viewModel.finalizarTreino()
-                            treino.value?.let {
+                            treino?.let { // Use '?' para acesso seguro
                                 navController.navigate("aluno/concluirTreino/${viewModel.getTreinoId()}/${tempo}")
                             }
                         }
@@ -167,26 +170,36 @@ fun DetalhesTreinoScreen(
                     modifier = Modifier
                         .weight(1f)
                 ) {
-                    treino.value?.let {
-                        items(it.exercicios) { exercicio ->
-                            val imagemUrl by produceState<String?>(initialValue = null, key1 = exercicio) {
-                                value = viewModel.getImagemExercicio(exercicio)
+                    treino?.let { currentTreino -> // Use '?' para acesso seguro
+                        items(currentTreino.exercicios, key = { it }) { exercicioId -> // Adicione 'key' para otimização do LazyColumn
+                            val imagemUrl by produceState<String?>(initialValue = null, key1 = exercicioId) {
+                                value = viewModel.getImagemExercicio(exercicioId)
                             }
 
                             if (!imagemUrl.isNullOrBlank()) {
                                 ExerciseCard(
-                                    title = viewModel.getNomeExercicio(exercicio),
-                                    url = imagemUrl!!
+                                    exercicioId = exercicioId, // Passe o ID do exercício
+                                    title = viewModel.getNomeExercicio(exercicioId),
+                                    url = imagemUrl!!,
+                                    // Passe o estado e o callback do ViewModel
+                                    seriesConcluidasState = seriesConcluidas,
+                                    onSerieCheckedChange = { id, index, checked ->
+                                        viewModel.onSerieCheckedChange(id, index, checked)
+                                    }
                                 )
                             } else {
-                                // imagem inválida ou ausente
                                 ExerciseCard(
-                                    title = viewModel.getNomeExercicio(exercicio),
-                                    url = ""
+                                    exercicioId = exercicioId, // Passe o ID do exercício
+                                    title = viewModel.getNomeExercicio(exercicioId),
+                                    url = "",
+                                    // Passe o estado e o callback do ViewModel
+                                    seriesConcluidasState = seriesConcluidas,
+                                    onSerieCheckedChange = { id, index, checked ->
+                                        viewModel.onSerieCheckedChange(id, index, checked)
+                                    }
                                 )
                             }
                         }
-
                     }
                 }
             }

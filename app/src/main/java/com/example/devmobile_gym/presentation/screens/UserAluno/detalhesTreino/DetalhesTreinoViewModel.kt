@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.update // Adicione esta linha
 
 class DetalhesTreinoViewModel(
     savedStateHandle: SavedStateHandle
@@ -37,6 +38,9 @@ class DetalhesTreinoViewModel(
     val tempoEmHoras: StateFlow<Int> = _tempoEmHoras
     private val _tempoEmMinutos = MutableStateFlow(0)
     val tempoEmMinutos: StateFlow<Int> = _tempoEmMinutos
+
+    private val _seriesConcluidas = MutableStateFlow<MutableMap<String, Boolean>>(mutableMapOf())
+    val seriesConcluidas: StateFlow<Map<String, Boolean>> = _seriesConcluidas.asStateFlow()
 
 
     private var cronometroJob: Job? = null
@@ -58,6 +62,19 @@ class DetalhesTreinoViewModel(
 
             }
         }
+    }
+
+    fun onSerieCheckedChange(exercicioId: String, serieIndex: Int, isChecked: Boolean) {
+        val key = "$exercicioId-$serieIndex"
+        _seriesConcluidas.update { currentMap ->
+            val newMap = currentMap.toMutableMap() // Cria uma cópia mutável
+            newMap[key] = isChecked
+            newMap
+        }
+    }
+    fun isSerieChecked(exercicioId: String, serieIndex: Int): Boolean {
+        val key = "$exercicioId-$serieIndex"
+        return _seriesConcluidas.value[key] ?: false // Retorna false se não houver estado
     }
 
     private fun pausarCronometro() {

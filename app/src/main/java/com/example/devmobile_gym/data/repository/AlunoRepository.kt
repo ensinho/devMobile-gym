@@ -21,7 +21,8 @@ class AlunoRepository(
 
         if (!documentSnapshot.exists()) return null
         val aluno = documentSnapshot.toObject(Aluno::class.java)
-
+        Log.d("AlunoRepository", "Aluno carregado: $aluno")
+        Log.d("AlunoRepository", "Foto URL: ${aluno?.fotoUrl}")
         return aluno
     }
 
@@ -74,7 +75,7 @@ class AlunoRepository(
                 val treino = treinoSnapshot.toObject(Treino::class.java)
 
                 if (treino != null) {
-                    historicoTreinos.add(TreinoComData(treino, dataTimestamp.toDate()))
+                    historicoTreinos.add(TreinoComData(dataTimestamp.toDate(), treino.id))
                 }
             }
 

@@ -58,7 +58,8 @@ fun RegisterScreen2(
     val authState = authViewModel.authState.observeAsState()
     val context = LocalContext.current
 
-
+    val peso by registerViewModel.peso.collectAsState()
+    val altura by registerViewModel.altura.collectAsState()
     val senha by registerViewModel.senha.collectAsState()
     val confirmarSenha by registerViewModel.confirmSenha.collectAsState()
     val errorMessage = registerViewModel.errorMessage
@@ -105,6 +106,22 @@ fun RegisterScreen2(
             modifier = Modifier
         )
 
+        CustomTextField(
+            label = "Peso",
+            value = peso, // Segurança adicional,
+            onValueChange = registerViewModel::onPesoChange,
+            padding = 10,
+            modifier = Modifier
+        )
+
+        CustomTextField(
+            label = "Altura",
+            value = altura, // Segurança adicional,
+            onValueChange = registerViewModel::onAlturaChange,
+            padding = 10,
+            modifier = Modifier
+        )
+
         if (authState.value is AuthState.Error) {
             val errorMessage = (authState.value as AuthState.Error).message
             Text(
@@ -128,7 +145,7 @@ fun RegisterScreen2(
         Spacer(modifier = Modifier.height(5.dp))
 
         CustomButton("Acessar", onClick = {
-            authViewModel.signup(email = email, nome = nome, senha = registerViewModel.senha.value, confirmarSenha = registerViewModel.confirmSenha.value)
+            authViewModel.signup(email = email, nome = nome, senha = registerViewModel.senha.value, confirmarSenha = registerViewModel.confirmSenha.value, peso = peso, altura = altura)
 
         })
 

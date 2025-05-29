@@ -50,6 +50,7 @@ fun CustomScreenScaffold(
     onBackClick: () -> Unit,
     selectedItemIndex: Int,
     content: @Composable (Modifier) -> Unit,
+    color: Color = Color(0xFF1E1E1E),
     onMenuClick: () -> Unit
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -107,7 +108,12 @@ fun CustomScreenScaffold(
                                 Icon(Icons.Default.Menu, contentDescription = "Menu")
                             }
                         },
-                        scrollBehavior = scrollBehavior
+                        scrollBehavior = scrollBehavior,
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = color, // azul escuro
+                            titleContentColor = Color.White,
+                            actionIconContentColor = Color.White
+                        )
                     )
                 }
             },

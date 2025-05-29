@@ -18,8 +18,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,7 +39,10 @@ import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldProfessor
 import com.example.devmobile_gym.presentation.components.CustomTextField
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 import com.example.devmobile_gym.ui.theme.White
 
 @Composable
@@ -52,6 +57,19 @@ fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewMode
         ProfessorRoutes.Chatbot -> 3
         ProfessorRoutes.Gerenciar -> 4
         else -> 0
+    }
+
+    val authViewModel: AuthViewModel = viewModel()
+
+    val authState by authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState) {
+        if (authState == AuthState.Unauthenticated) {
+            navController.navigate(AuthRoutes.Login) {
+                popUpTo(0)
+                launchSingleTop = true
+            }
+        }
     }
 
     val search by viewModel.search.collectAsState() // busca por exercicio

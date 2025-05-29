@@ -1,8 +1,9 @@
 package com.example.devmobile_gym.data.repository
 
 import android.util.Log
-import com.example.devmobile_gym.domain.model.Aluno
+import com.example.devmobile_gym.domain.model.Usuario.Aluno
 import com.example.devmobile_gym.domain.model.Treino
+import com.example.devmobile_gym.domain.model.Usuario
 import com.example.devmobile_gym.domain.repository.TreinoRepositoryModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue

@@ -15,7 +15,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +31,10 @@ import com.example.devmobile_gym.R
 import com.example.devmobile_gym.presentation.components.BoxSeta
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffoldProfessor
 import com.example.devmobile_gym.presentation.components.CustomTextField
+import com.example.devmobile_gym.presentation.navigation.AuthRoutes
 import com.example.devmobile_gym.presentation.navigation.ProfessorRoutes
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
+import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
 
 // ao concluir o treino, não leva info de uma tela pra outra
 // futuramente, o view model desse componente vai chamar uma função que adiciona o treino finalizado
@@ -51,6 +56,19 @@ fun AdicionaMaquinaScreen(navController: NavHostController, onBack: () -> Unit, 
     val numMaquina by viewmodel.numMaquina
     val exerciciosPossiveis by viewmodel.ExerciciosPossiveis
     val isIncluded by viewmodel.isIncluded
+
+    val authViewModel: AuthViewModel = viewModel()
+
+    val authState by authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState) {
+        if (authState == AuthState.Unauthenticated) {
+            navController.navigate(AuthRoutes.Login) {
+                popUpTo(0)
+                launchSingleTop = true
+            }
+        }
+    }
 
     CustomScreenScaffoldProfessor (
         needToGoBack = true,

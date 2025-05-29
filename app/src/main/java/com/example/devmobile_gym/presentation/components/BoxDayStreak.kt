@@ -1,14 +1,6 @@
-package com.example.devmobile_gym.presentation.components
-
-import android.media.Image
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -17,57 +9,50 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.devmobile_gym.R
-
-
 
 @Composable
-fun BoxDayStreak(texto: String, icone: Int) {
+fun StreakBox(
+    text: String,
+    iconResId: Int,
+    onClick: () -> Unit,
+    color: Color = Color.White,
+    modifier: Modifier = Modifier
+) {
     Card(
-        modifier = Modifier
-            .padding(9.dp)
-            .border(
-                width =0.5.dp,
-                color = Color(0xFF000000),
-                shape = RoundedCornerShape(7.dp)
-            ),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF8F9092)),
-        shape = RoundedCornerShape(7.dp),
-
-
+        modifier = modifier
+            .padding(8.dp) // Slightly increased padding for a cleaner look
+            .fillMaxWidth() // Make it fill the width for better responsiveness
+            .clickable(onClick = onClick), // Make the entire card clickable
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF3B3B3B)), // Dark background
+        shape = RoundedCornerShape(12.dp), // More rounded corners for a modern feel
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp) // Subtle elevation for depth
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(15.dp)
-
+            horizontalArrangement = Arrangement.Start, // Align content to the start
+            modifier = Modifier.padding(16.dp) // Generous padding inside the card
         ) {
-
             Image(
-                painter = painterResource(id = icone),
-                contentDescription = "Fogo",
-                modifier = Modifier.size(27.dp),
-                contentScale = ContentScale.Fit
+                painter = painterResource(id = iconResId),
+                contentDescription = null, // Content description can be null if it's purely decorative
+                modifier = Modifier.size(32.dp), // Slightly larger icon
+                colorFilter = ColorFilter.tint(color) // Icon colored with accent
             )
 
+            Spacer(modifier = Modifier.width(12.dp)) // More space between icon and text
 
-            Spacer(modifier = Modifier.width(2.dp))
-
-
-            Column {
-                Text(text = texto)
-            }
+            Text(
+                text = text,
+                color = Color.White, // White text for contrast on dark background
+                fontSize = 18.sp, // Slightly larger text for readability
+                fontWeight = FontWeight.Medium // Medium font weight for a balanced look
+            )
         }
     }
 }
-
-@Preview
-@Composable
-fun PreviewBoxDayStreak() {
-    BoxDayStreak("Day Streak", R.drawable.fire_svgrepo_com)
-}
-

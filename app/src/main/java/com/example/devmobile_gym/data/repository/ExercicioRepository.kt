@@ -70,7 +70,8 @@ class ExercicioRepository : ExercicioRepositoryModel {
                     id = document.id,
                     nome = document.getString("nome") ?: "",
                     grupoMuscular = document.getString("grupoMuscular") ?: "",
-                    imagem = document.getString("imagem") ?: ""
+                    imagem = document.getString("imagem") ?: "",
+                    descricao = document.getString("descricao") ?: ""
                 )
             }
         } catch (e: Exception) {

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,16 +32,19 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
+import androidx.compose.material3.Surface
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 private val BackgroundColor = Color(0xFF3B3B3B)
 private val WorkoutDayColor = Color(0xFF267FE7)
-private val RestDayColor = Color(0xFFEDEFF1)
-
+private val RestDayColor = Color(0xFFf9f9ff)
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MonthlyCalendar(
-    workoutDates: List<String>
+    workoutDates: List<String>,
+    elevation: Dp = 8.dp // você pode ajustar a altura da sombra aqui
 ) {
     val today = LocalDate.now()
     val currentMonth = YearMonth.from(today)
@@ -48,7 +52,6 @@ fun MonthlyCalendar(
     val lastDayOfMonth = currentMonth.atEndOfMonth()
     val workoutDateSet = workoutDates.toSet()
 
-    // Gera todos os dias do mês
     val daysInMonth = (1..lastDayOfMonth.dayOfMonth).map { currentMonth.atDay(it) }
 
     val ptBr = Locale("pt", "BR")
@@ -56,103 +59,118 @@ fun MonthlyCalendar(
         .getDisplayName(TextStyle.FULL, ptBr)
         .replaceFirstChar { it.uppercase() }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(BackgroundColor)
-            .padding(8.dp)
+    Surface(
+        color = BackgroundColor,
+        shape = RoundedCornerShape(20.dp),
+        tonalElevation = elevation,
+        shadowElevation = elevation,
+        modifier = Modifier.padding(8.dp)
     ) {
-        // Título do mês centralizado
-        Text(
-            text = monthTitle,
-            color = Color.White,
-            style = MaterialTheme.typography.titleLarge,
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            textAlign = TextAlign.Center
-        )
-
-        // Dias da semana (em português)
-        val diasSemana = listOf("SEG", "TER", "QUA", "QUI", "SEX", "SAB", "DOM")
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(8.dp)
         ) {
-            diasSemana.forEach {
-                Text(
-                    text = it,
-                    color = Color.White,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
-                )
+            // Título do mês
+            Text(
+                text = monthTitle,
+                color = Color.White,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                textAlign = TextAlign.Center
+            )
+
+            // Dias da semana
+            val diasSemana = listOf("SEG", "TER", "QUA", "QUI", "SEX", "SAB", "DOM")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                diasSemana.forEach {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
-        }
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        // Preenche dias
-        // O `ordinal` de DayOfWeek é 0 para MONDAY, 1 para TUESDAY, etc.
-        // Para que o calendário comece na segunda-feira, ajustamos o offset.
-        // Se o primeiro dia do mês for terça (ordinal 1), precisamos de 1 espaço vazio antes.
-        // Se for segunda (ordinal 0), 0 espaços vazios.
-        // Se for domingo (ordinal 6), 6 espaços vazios.
-        val dayOffset = if (firstDayOfMonth.dayOfWeek == DayOfWeek.SUNDAY) 6 else firstDayOfMonth.dayOfWeek.ordinal - DayOfWeek.MONDAY.ordinal
+            val dayOffset = if (firstDayOfMonth.dayOfWeek == DayOfWeek.SUNDAY) 6
+            else firstDayOfMonth.dayOfWeek.ordinal - DayOfWeek.MONDAY.ordinal
 
-        // Cria uma lista com os dias do mês e espaços vazios
-        val calendarDays = mutableListOf<LocalDate?>()
-        repeat(dayOffset) {
-            calendarDays.add(null) // Adiciona espaços vazios antes do primeiro dia do mês
-        }
-        calendarDays.addAll(daysInMonth)
+            val calendarDays = mutableListOf<LocalDate?>()
+            repeat(dayOffset) { calendarDays.add(null) }
+            calendarDays.addAll(daysInMonth)
+            val totalCells = (calendarDays.size + 6) / 7 * 7
 
-        // Calcula o número total de células para preencher as linhas completas da grade
-        val totalCells = (calendarDays.size + 6) / 7 * 7 // Garante que a última linha seja completa ou preenchida
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(7),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                userScrollEnabled = false
+            ) {
+                items(totalCells) { index ->
+                    if (index < calendarDays.size) {
+                        val date = calendarDays[index]
+                        if (date == null) {
+                            Box(
+                                modifier = Modifier
+                                    .aspectRatio(1f)
+                                    .padding(4.dp)
+                            )
+                        } else {
+                            val isWorkoutDay = workoutDateSet.contains(date.toString())
+                            if (isWorkoutDay) {
+                                Box(
+                                    modifier = Modifier
+                                        .aspectRatio(1f)
+                                        .padding(4.dp)
+                                        .clip(CircleShape)
+                                        .background(WorkoutDayColor),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = date.dayOfMonth.toString(),
+                                        color = Color.White
+                                    )
+                                }
+                            } else {
+                                Box(
+                                    modifier = Modifier
+                                        .aspectRatio(1f)
+                                        .padding(4.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = date.dayOfMonth.toString(),
+                                        color = Color.White
+                                    )
+                                }
+                            }
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(7),
-            modifier = Modifier.fillMaxWidth(),
-            userScrollEnabled = false // Desabilita o scroll para evitar problemas de aninhamento
-        ) {
-            items(totalCells) { index ->
-                if (index < calendarDays.size) {
-                    val date = calendarDays[index]
-                    if (date == null) {
-                        // Espaço vazio para os dias antes do primeiro do mês
+                        }
+                    } else {
                         Box(
                             modifier = Modifier
                                 .aspectRatio(1f)
                                 .padding(4.dp)
                         )
-                    } else {
-                        val isWorkoutDay = workoutDateSet.contains(date.toString())
-                        Box(
-                            modifier = Modifier
-                                .aspectRatio(1f) // Garante que as células sejam quadradas
-                                .padding(4.dp)
-                                .clip(CircleShape)
-                                .background(if (isWorkoutDay) WorkoutDayColor else RestDayColor),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = date.dayOfMonth.toString(),
-                                color = if (isWorkoutDay) Color.White else Color.Black
-                            )
-                        }
                     }
-                } else {
-                    // Espaços vazios para preencher a última linha
-                    Box(
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .padding(4.dp)
-                    )
                 }
             }
         }
     }
 }
+
 
 
 

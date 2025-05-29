@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.devmobile_gym.data.repository.UserWorkoutsRepository
-import com.example.devmobile_gym.domain.model.Aluno
+import com.example.devmobile_gym.domain.model.Usuario.Aluno
 import com.example.devmobile_gym.domain.model.Professor
 import com.example.devmobile_gym.domain.model.UserWorkouts
 import com.example.devmobile_gym.domain.model.Usuario
@@ -47,7 +47,7 @@ class AuthViewModel : ViewModel() {
     }
 
     // retorna o usuario instanciado no tipo correto baseado no email
-    private fun createUserInstance(user: FirebaseUser, nome: String): Usuario {
+    private fun createUserInstance(user: FirebaseUser, nome: String, peso: Double = 0.0, altura: Double = 0.0): Usuario {
 
         // metodo para separar os usuários em suas respectivas tabelas.
         return if (isCurrentUserProfessor()) {
@@ -61,12 +61,19 @@ class AuthViewModel : ViewModel() {
             Usuario.Aluno(
                 uid = user.uid,
                 nome = nome,
+                peso = peso,
+                altura = altura,
                 email = user.email
             )
         }
 
 
     }
+
+    fun isOnlyNumbers(input: String): Boolean {
+        return input.matches(Regex("^\\d+(\\.\\d+)?$"))
+    }
+
 
     private fun saveToFirestore(usuario: Usuario, colecao: String) {
         usuario.uid?.let { uid ->
@@ -103,14 +110,14 @@ class AuthViewModel : ViewModel() {
                 _authState.value = AuthState.Authenticated
                 isLoginComplete = true
             } else {
-                _authState.value = AuthState.Error(task.exception?.message ?: "Erro desconhecido")
+                _authState.value = AuthState.Error("Email ou senha incorretos")
             }
         }
     }
 
     var isRegistrationComplete by mutableStateOf(false)
 
-    fun signup(email: String, nome: String, senha: String, confirmarSenha: String) {
+    fun signup(email: String, nome: String, senha: String, confirmarSenha: String, peso: String, altura: String) {
         isRegistrationComplete = false // ← Resetar estado
 
         when {
@@ -124,6 +131,10 @@ class AuthViewModel : ViewModel() {
             }
             senha.length < 6 -> {
                 _authState.value = AuthState.Error("Senha deve ter pelo menos 6 caracteres.")
+                return
+            }
+            !isOnlyNumbers(peso) || !isOnlyNumbers(altura) -> {
+                _authState.value = AuthState.Error("Peso e altura deve conter apenas números.")
                 return
             }
             else -> {
@@ -142,7 +153,9 @@ class AuthViewModel : ViewModel() {
                                     streakRepository.criarStreak(userId = user.uid)
                                     Log.d("SignupViewModel", "Streak inicializado com sucesso ")
 
-                                    val usuario = createUserInstance(user, nome)
+                                    val pesoDouble = peso.toDouble()
+                                    val alturaDouble = altura.toDouble()
+                                    val usuario = createUserInstance(user, nome, pesoDouble, alturaDouble)
                                     when (usuario){
                                         is Usuario.Aluno -> saveToFirestore(usuario, "alunos")
                                         is Usuario.Professor -> saveToFirestore(usuario, "professores")

@@ -21,8 +21,8 @@ class SearchScreenViewModel (
     private val _search = MutableStateFlow("")
     val search: StateFlow<String> = _search.asStateFlow()
 
-    private val _exerciciosFiltrados = mutableStateOf<List<Exercicio>>(emptyList())
-    val exerciciosFiltrados: State<List<Exercicio>> = _exerciciosFiltrados
+    private val _exerciciosFiltrados = MutableStateFlow<List<Exercicio>>(emptyList())
+    val exerciciosFiltrados: StateFlow<List<Exercicio>> = _exerciciosFiltrados.asStateFlow()
 
     private val _todosExercicios = MutableStateFlow<List<Exercicio>>(emptyList())
 

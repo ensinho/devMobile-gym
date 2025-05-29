@@ -27,18 +27,18 @@ import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.presentation.navigation.AuthRoutes
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
-import java.text.SimpleDateFormat
-import java.util.Locale
+// Remova SimpleDateFormat e Locale daqui, pois a data já será formatada no ViewModel
 
 @Composable
 fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewModel: HistoricoScreenViewModel = viewModel()) {
 
-    val treinosComData by viewModel.treinos.collectAsState()
+    // Coleta a nova lista de treinos com detalhes prontos para a UI
+    val treinosHistoricoUi by viewModel.treinosHistoricoUi.collectAsState()
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
     val authViewModel: AuthViewModel = viewModel()
-
     val authState by authViewModel.authState.observeAsState()
 
     LaunchedEffect(authState) {
@@ -85,20 +85,17 @@ fun HistoricoScreen(navController: NavHostController, onBack: () -> Unit, viewMo
                     }
                 }
 
-                items(treinosComData) { treinoComData ->
-                    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    val dataFormatada = formatter.format(treinoComData.dataRealizacao)
+                // Agora, iteramos sobre a lista de objetos TreinoHistoricoUi que já contêm tudo pronto
+                items(treinosHistoricoUi) { treinoHistoricoUi ->
                     CustomCard(
-                        treino = treinoComData.treino.nome,
-                        description = treinoComData.treino.exercicios.map { exercicio ->
-                            viewModel.getNomeExercicio(exercicio)
-                        },
+                        treino = treinoHistoricoUi.nomeTreino, // Nome do treino já carregado
+                        description = treinoHistoricoUi.nomesExercicios, // Nomes dos exercícios já carregados
                         buttonText = "Iniciar Treino",
                         needButton = false,
                         onButtonClick = { /* nao precisa de botao */ },
                         editButton = {},
                         deleteButton = {},
-                        data = dataFormatada
+                        data = treinoHistoricoUi.dataRealizacao // Data já formatada
                     )
                     Spacer(Modifier.height(8.dp))
                 }

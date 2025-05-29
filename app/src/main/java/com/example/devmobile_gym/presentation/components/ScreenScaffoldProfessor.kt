@@ -79,7 +79,7 @@ fun CustomScreenScaffoldProfessor(
     val itemsUser = listOf(
         BottomNavigationItemProfessor("Home", NavIconProfessor.DrawableIcon(R.drawable.home_icon), NavIconProfessor.DrawableIcon(R.drawable.home_icon), false),
         BottomNavigationItemProfessor("Aulas", NavIconProfessor.DrawableIcon(R.drawable.ic_treinos), NavIconProfessor.DrawableIcon(R.drawable.ic_treinos), false),
-        BottomNavigationItemProfessor("Adicionar Rotina", NavIconProfessor.DrawableIcon(R.drawable.ic_centroprofessor), NavIconProfessor.DrawableIcon(R.drawable.ic_centroprofessor), false),
+        BottomNavigationItemProfessor("Acessar Qr Code", NavIconProfessor.DrawableIcon(R.drawable.qr_code_icon), NavIconProfessor.DrawableIcon(R.drawable.qr_code_icon), false),
         BottomNavigationItemProfessor("ChatBot", NavIconProfessor.DrawableIcon(R.drawable.chat_icon_filled), NavIconProfessor.DrawableIcon(R.drawable.chat_icon_outlined), false),
         BottomNavigationItemProfessor("Gerenciar", NavIconProfessor.DrawableIcon(R.drawable.ic_chave_fenda), NavIconProfessor.DrawableIcon(R.drawable.ic_chave_fenda), false)
     )
@@ -138,7 +138,7 @@ fun CustomScreenScaffoldProfessor(
                     itemsUser.forEachIndexed { index, item ->
                         if (index == 2) {
                             IconButton(
-                                onClick = { navController.navigate(ProfessorRoutes.AdicionarRotina) },
+                                onClick = { navController.navigate(ProfessorRoutes.QrCode) },
                                 modifier = Modifier
                                     .padding(top = 0.dp)
                                     .background(Color.White, shape = CircleShape)
@@ -147,7 +147,7 @@ fun CustomScreenScaffoldProfessor(
                                     .padding(6.dp)
                             ) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.ic_centroprofessor),
+                                    painter = painterResource(id = R.drawable.qr_code_icon),
                                     contentDescription = item.title,
                                     tint = Color.White,
                                     modifier = Modifier.height(24.dp)

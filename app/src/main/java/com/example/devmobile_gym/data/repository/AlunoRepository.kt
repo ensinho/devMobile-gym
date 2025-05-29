@@ -74,7 +74,7 @@ class AlunoRepository(
                 val treino = treinoSnapshot.toObject(Treino::class.java)
 
                 if (treino != null) {
-                    historicoTreinos.add(TreinoComData(treino, dataTimestamp.toDate()))
+                    historicoTreinos.add(TreinoComData(dataTimestamp.toDate(), treino.id))
                 }
             }
 

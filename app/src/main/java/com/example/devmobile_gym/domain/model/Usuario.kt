@@ -1,8 +1,9 @@
+// com.example.devmobile_gym.domain.model.Usuario.kt
 package com.example.devmobile_gym.domain.model
 
 import com.google.firebase.firestore.IgnoreExtraProperties
+import com.example.devmobile_gym.domain.model.TreinoComData // Importe TreinoComData (que agora está adaptado)
 
-// Arquivo: domain/model/User.kt
 sealed class Usuario(
     open val uid: String?,
     open val nome: String,
@@ -16,7 +17,7 @@ sealed class Usuario(
         val rotina: List<String>? = emptyList(),
         // geradas ao treinar
         val diasTreinados: List<String> = emptyList(),
-        val historico: List<TreinoComData> = emptyList(), // armazena os ids dos treinos
+        val historico: List<TreinoComData> = emptyList(), // <-- Permanecem TreinoComData, mas agora com nova estrutura
         val ultimoDiaTreinado: String = "",
         val exercicioFavorito: String = "",
         // informações do usuário

@@ -117,30 +117,6 @@ fun EditarExercicioScreen(
                 modifier = Modifier
             )
 
-            BoxSeta()
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            ) {
-
-
-                IconButton(
-                    onClick = viewModel::onIsIncludedChange,
-                    modifier = Modifier.size(40.dp)
-                ) {
-                    Icon(
-                        painter = if (isIncluded) painterResource(id = R.drawable.add_circle_item) else painterResource(id = R.drawable.remove_item),
-                        contentDescription = if (isIncluded) "Adicionar" else "Remover",
-                        tint = Color.White,
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-            }
-
             Spacer(modifier = Modifier.height(32.dp))
 
             Row(

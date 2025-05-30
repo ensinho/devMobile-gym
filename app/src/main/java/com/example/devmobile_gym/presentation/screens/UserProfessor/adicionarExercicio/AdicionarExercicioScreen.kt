@@ -111,7 +111,6 @@ fun adicionarExercicioScreen(
                 modifier = Modifier
             )
 
-            BoxSeta()
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,

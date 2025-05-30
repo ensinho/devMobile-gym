@@ -120,13 +120,12 @@ fun GerenciarMaquinasExerciciosScreen(navController: NavHostController, viewMode
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     CustomTextField(
-                        label = "Busque máquinas ou exercícios",
+                        label = "Busque exercícios" ,
                         value = search,
                         onValueChange = viewModel::onSearchChange,
                         padding = 10,
                         modifier = Modifier.weight(1f)
                     )
-                    BoxSeta()
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))

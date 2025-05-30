@@ -96,7 +96,6 @@ fun AdicionaMaquinaScreen(navController: NavHostController, onBack: () -> Unit, 
                 padding = 10,
                 modifier = Modifier
             )
-            BoxSeta()
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,

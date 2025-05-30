@@ -81,7 +81,7 @@ fun ProfessorDrawerContent(
                 ProfessorRoutes.Chatbot
             )
         })
-        DrawerItem(title = "Gerenciar", iconResId = R.drawable.class_icon, onClick = {
+        DrawerItem(title = "Gerenciar", iconResId = R.drawable.ic_chave_fenda, onClick = {
             navController.navigate(
                 ProfessorRoutes.Gerenciar
             )

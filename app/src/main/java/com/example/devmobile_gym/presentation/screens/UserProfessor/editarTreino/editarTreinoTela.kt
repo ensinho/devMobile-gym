@@ -120,20 +120,6 @@ fun EditarTreinoScreen(
 
                 Spacer(Modifier.height(1.dp))
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    CustomTextField(
-                        label = "Busque máquinas ou exercícios",
-                        value = search,
-                        onValueChange = viewModel::onSearchChange,
-                        padding = 10,
-                        modifier = Modifier.weight(1f)
-                    )
-                    BoxSeta()
-                }
-
                 Spacer(modifier = Modifier.height(16.dp))
 
                 LazyColumn(

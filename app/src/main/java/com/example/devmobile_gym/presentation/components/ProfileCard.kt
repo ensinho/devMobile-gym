@@ -95,11 +95,11 @@ fun ProfileCard(
                     )
                 )
                 // Botão de edição ao lado do ícone do perfil
-                ProfileEditButton(
-                    onClick = onEditProfileClick, // Usa o callback passado para o ProfileCard
-                    modifier = Modifier.padding(start = 1.dp), // Adiciona um espaçamento à esquerda
-                    tint = Color.White
-                )
+//                ProfileEditButton(
+//                    onClick = onEditProfileClick, // Usa o callback passado para o ProfileCard
+//                    modifier = Modifier.padding(start = 1.dp), // Adiciona um espaçamento à esquerda
+//                    tint = Color.White
+//                )
             }
 
             Box(

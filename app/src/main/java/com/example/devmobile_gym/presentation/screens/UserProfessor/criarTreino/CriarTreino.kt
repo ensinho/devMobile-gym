@@ -111,13 +111,12 @@ fun CriarTreinoScreen(navController: NavHostController, backStackEntry: NavBackS
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         CustomTextField(
-                            label = "Busque máquinas ou exercícios",
+                            label = "Busque exercícios",
                             value = search,
                             onValueChange = viewModel::onSearchChange,
                             padding = 8,
                             modifier = Modifier.weight(1f)
                         )
-                        BoxSeta()
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))

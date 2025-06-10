@@ -80,6 +80,11 @@ class RegisterViewModel() : ViewModel() {
         } else if (nome.length < 3) { // ← validação
             errorMessage = "Nome deve ter pelo menos 3 caracteres"
         } else {
+            val regex = Regex("[0-9\\W]+")
+            if (nome.contains(regex)) {
+                errorMessage = "Nome contem números ou caracteres especiais"
+                return
+            }
             validaEmail(email, onSuccess)
         }
     }

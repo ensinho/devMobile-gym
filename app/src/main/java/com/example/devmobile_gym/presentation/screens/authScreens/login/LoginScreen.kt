@@ -101,7 +101,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), authViewModel: AuthView
         })
         Text(
             text = "Registrar-se na plataforma",
-            color = Color.Blue,
+            color = Color(0xFF519bed),
             modifier = Modifier
                 .padding(top = 16.dp)
                 .clickable(onClick = { navController.navigate(AuthRoutes.Register) }),
@@ -110,7 +110,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), authViewModel: AuthView
 
         Text(
             textAlign = TextAlign.Center,
-            text = "By clicking continue, you agree to our Terms of Service and Privacy Policy",
+            text = "Ao clicar em continuar, você concorda com nossos Termos de Serviço e Política de Privacidade.",
             color = Color.White
         )
     }

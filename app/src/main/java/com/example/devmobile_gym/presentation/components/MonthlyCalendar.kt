@@ -64,7 +64,7 @@ fun MonthlyCalendar(
         shape = RoundedCornerShape(20.dp),
         tonalElevation = elevation,
         shadowElevation = elevation,
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(10.dp)
     ) {
         Column(
             modifier = Modifier
@@ -113,7 +113,7 @@ fun MonthlyCalendar(
                 columns = GridCells.Fixed(7),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp)
+                    .height(315.dp)
                     .padding(8.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 userScrollEnabled = false

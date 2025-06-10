@@ -16,6 +16,7 @@ import com.example.devmobile_gym.domain.repository.UserWorkoutsRepositoryModel
 import com.example.devmobile_gym.presentation.screens.authScreens.register.RegisterViewModel
 import com.example.devmobile_gym.utils.isProfessorEmail
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
@@ -133,8 +134,16 @@ class AuthViewModel : ViewModel() {
                 _authState.value = AuthState.Error("Senha deve ter pelo menos 6 caracteres.")
                 return
             }
-            !isOnlyNumbers(peso) || !isOnlyNumbers(altura) -> {
-                _authState.value = AuthState.Error("Peso e altura deve conter apenas números.")
+            !isOnlyNumbers(peso) && !isOnlyNumbers(altura) -> {
+                _authState.value = AuthState.Error("Peso e altura inválidos.")
+                return
+            }
+            !isOnlyNumbers(peso) -> {
+                _authState.value = AuthState.Error("Peso inválido.")
+                return
+            }
+            !isOnlyNumbers(altura) -> {
+                _authState.value = AuthState.Error("Altura inválida.")
                 return
             }
             else -> {
@@ -170,7 +179,14 @@ class AuthViewModel : ViewModel() {
                                 }
                             }
                         } else {
-                            _authState.value = AuthState.Error(task.exception?.message ?: "Erro no cadastro")
+                            val exception = task.exception
+                            if (exception is FirebaseAuthUserCollisionException) {
+                                // Se a exceção for do tipo FirebaseAuthUserCollisionException,
+                                // significa que o e-mail já está em uso.
+                                _authState.value = AuthState.Error("Este e-mail já está cadastrado. Por favor, use outro.")
+                            } else {
+                                _authState.value = AuthState.Error(task.exception?.message ?: "Erro no cadastro")
+                            }
                         }
                     }
             }

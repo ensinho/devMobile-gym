@@ -65,7 +65,7 @@ class ChatbotViewModel : ViewModel() {
             - Utilize Emojis quando for possível
             - Sempre responda em português
             - Não faça textos muito grandes. O usuário quer apenas tirar dúvidas, então seja objetivo e claro
-            - Tire as dúvidas dos alunos, mas sempre indique que o aluno procure um instrutor da Academia Unifor para ajuda-lo melhor
+            - Tire as dúvidas dos alunos, mas sempre indique que o aluno procure um instrutor e/ou nutricionista da Academia Unifor para ajuda-lo melhor
         """.trimIndent())
         }
     )

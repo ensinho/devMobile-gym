@@ -1,8 +1,8 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.profile
 
 import StreakBox
-import android.R.attr.background
-import android.R.id.background
+import android.content.Context // Importe Context
+import android.graphics.Bitmap // Importe Bitmap
 import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -13,16 +13,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Icon
+import androidx.compose.material3.CircularProgressIndicator // Importe CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme // Importe MaterialTheme para cores de erro
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,7 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext // Importe LocalContext para obter o Context
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -43,16 +42,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.devmobile_gym.R
-import com.example.devmobile_gym.presentation.components.CardCalendario
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.MonthlyCalendar
-import com.example.devmobile_gym.presentation.components.ProfileCard
-import com.example.devmobile_gym.presentation.components.ProfileEditButton
+import com.example.devmobile_gym.presentation.components.ProfileCard // Ajuste ProfileCard para Bitmap
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
 import com.example.devmobile_gym.presentation.navigation.AuthRoutes
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthState
 import com.example.devmobile_gym.presentation.screens.authScreens.AuthViewModel
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -61,13 +57,22 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
     val userWorkouts by viewModel.currentUserWorkouts.collectAsState()
     val nomeUltimoTreino by viewModel.lastTreinoName.collectAsState()
     val imcNum = aluno?.imc
-    // NOVO: Coleta o Uri da imagem da galeria do ViewModel
-    val imagemSelecionadaUri by viewModel.imagemGaleria.collectAsState()
 
+    // NOVO: Coleta o Bitmap da foto de perfil do ViewModel
+    val profilePictureBitmap by viewModel.profilePictureBitmap.collectAsState()
+    // NOVO: Coleta o estado da operação da foto de perfil (loading, success, error)
+    val profilePictureState by viewModel.profilePictureState.collectAsState()
+
+    val context = LocalContext.current // Obtenha o Context aqui para passar para o ViewModel
+
+    // Launcher para selecionar a imagem da galeria
     val pickImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        viewModel.onImageSelected(uri) // Chama a função do ViewModel para atualizar o Uri
+        if (uri != null) {
+            // Se uma URI foi selecionada, inicie o upload da imagem para o Firestore via Base64
+            viewModel.uploadProfilePicture(context, uri)
+        }
     }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -82,20 +87,15 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
         else -> 0 // default
     }
 
-    LaunchedEffect(aluno) { // Agora reage a qualquer mudança no objeto 'aluno'
+    // Carregar userWorkouts e último nome do treino ao iniciar ou quando aluno mudar
+    LaunchedEffect(aluno) {
         aluno?.uid?.let { userId ->
             viewModel.loadCurrentUserWorkouts(userId)
         }
-    }
-
-    // Este LaunchedEffect agora chama a função atualizada, passando o histórico
-    LaunchedEffect(aluno?.historico) {
-        viewModel.loadLastTreinoNameFromHistory(aluno?.historico)
-        println("Nome do ultimo treino: $nomeUltimoTreino")
+        viewModel.loadLastTreinoNameFromHistory(aluno?.historico) // Chama com o histórico do aluno
     }
 
     val authViewModel: AuthViewModel = viewModel()
-
     val authState by authViewModel.authState.observeAsState()
 
     LaunchedEffect(authState) {
@@ -109,19 +109,17 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
 
     CustomScreenScaffold(
         navController = navController,
-        onBackClick = {},
+        onBackClick = { /* Implementar lógica de volta se necessário */ },
         selectedItemIndex = selectedItemIndex,
         color = Color(0xFF267FE7),
         content = { innerModifier ->
-            val combinedModifier = innerModifier.padding(1.dp)
-                .background(Color(0xFF1E1E1E))
-            LazyColumn (
-                modifier = innerModifier.background(Color(0xFF1E1E1E))
-
-
-            ){
-
-                item{
+            LazyColumn(
+                modifier = innerModifier
+                    .fillMaxSize()
+                    .background(Color(0xFF1E1E1E)) // Cor de fundo para toda a LazyColumn
+            ) {
+                item {
+                    // Passar o Bitmap da foto de perfil para o ProfileCard
                     ProfileCard(
                         name = aluno?.nome ?: "Carregando...",
                         userId = (aluno?.uid?: "Carregando").toString(),
@@ -129,12 +127,30 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
                         height = aluno?.altura.toString() + " m",
                         onEditProfileClick = {
                             // Esta é a ação do botão de lápis
-                            pickImageLauncher.launch("image/*") // <-- AQUI VOCÊ CHAMA O LAUNCHER
+                            pickImageLauncher.launch("image/*") // Inicia o seletor de imagens
                         },
-                        profileImageUri = imagemSelecionadaUri // Passe o Uri para o ProfileCard exibir
+                        profileImageBitmap = profilePictureBitmap, // PASSA O BITMAP AQUI
+                        isLoading = profilePictureState is ProfilePictureState.Loading // Indica estado de carregamento
                     )
                 }
-                item{
+                // Exibe mensagens de erro ou sucesso do upload/carregamento da foto de perfil
+                item {
+                    when (profilePictureState) {
+                        is ProfilePictureState.Error -> {
+                            Text(
+                                text = (profilePictureState as ProfilePictureState.Error).message,
+                                color = MaterialTheme.colorScheme.error,
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                            )
+                        }
+                        is ProfilePictureState.Success -> {
+                            // Opcional: Mostrar uma mensagem de sucesso temporária
+                            // Text(text = "Foto atualizada com sucesso!", color = Color.Green)
+                        }
+                        else -> { /* Não faz nada para Idle ou Loading */ }
+                    }
+                }
+                item {
                     Spacer(modifier = Modifier.height(20.dp))
                 }
                 item {
@@ -145,27 +161,26 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
                         fontWeight = FontWeight.Bold,
                         style = TextStyle(
                             shadow = Shadow(
-                                color = Color.DarkGray, // Cor da sombra
-                                offset = Offset(1f, 3f), // Posição da sombra (X, Y)
-                                blurRadius = 8f // Intensidade do desfoque
+                                color = Color.DarkGray,
+                                offset = Offset(1f, 3f),
+                                blurRadius = 8f
                             )
                         ),
                         modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
                     )
                     Box(
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.Center
                     ) {
                         userWorkouts?.let {
-                            // Se userWorkouts não é null, exibe o calendário
                             MonthlyCalendar(it.workoutDates)
                         } ?: run {
-                            // Se userWorkouts é null, exibe um indicador de carregamento ou mensagem
-                            // Você pode adicionar um StateFlow booleano no ViewModel para 'isLoadingUserWorkouts'
-                            // para exibir um indicador mais inteligente.
-                            Text("Carregando calendário...", color = Color.Gray)
-                            // Ou CircularProgressIndicator() se preferir
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(vertical = 16.dp)
+                            )
+                            // Ou Text("Carregando calendário...", color = Color.Gray)
                         }
                     }
                 }
@@ -181,9 +196,9 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
                         fontWeight = FontWeight.Bold,
                         style = TextStyle(
                             shadow = Shadow(
-                                color = Color.DarkGray, // Cor da sombra
-                                offset = Offset(1f, 3f), // Posição da sombra (X, Y)
-                                blurRadius = 8f // Intensidade do desfoque
+                                color = Color.DarkGray,
+                                offset = Offset(1f, 3f),
+                                blurRadius = 8f
                             )
                         ),
                         modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
@@ -208,7 +223,6 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
                     )
                 }
                 item {
-                    // Usa o nome do último treino que vem do ViewModel
                     StreakBox(
                         text = "Último treino: $nomeUltimoTreino",
                         onClick = {},
@@ -219,30 +233,23 @@ fun profileScrenn(navController: NavHostController, viewModel: ProfileViewModel 
 
                 item {
                     imcNum?.let {
+                        val imcCategory = when {
+                            it < 18.5 -> "Abaixo do peso"
+                            it < 24.9 -> "Peso normal"
+                            it < 29.9 -> "Sobrepeso"
+                            it < 34.9 -> "Obesidade Grau I"
+                            it < 39.9 -> "Obesidade Grau II"
+                            else -> "Obesidade Grau III (Mórbida)"
+                        }
                         StreakBox(
-                            text = "IMC: " + if (it < 18.5) {
-                                "Abaixo do peso"
-                            } else if (imcNum >= 18.5 && imcNum < 24.9) {
-                                "Peso normal"
-                            } else if (imcNum >= 24.9 && imcNum < 29.9) {
-                                "Sobrepeso"
-                            } else if (imcNum >= 29.9 && imcNum < 34.9) {
-                                "Obesidade Grau I"
-                            } else if (imcNum > 34.99 && imcNum < 39.9) {
-                                "Obesidade Grau II"
-                            } else {
-                                "Obesidade Grau III (Mórbida)"
-                            },
+                            text = "IMC: $imcCategory",
                             onClick = {},
-                            iconResId = R.drawable.home_icon,
+                            iconResId = R.drawable.home_icon, // Altere para um ícone mais relevante para IMC
                             color = Color.LightGray
                         )
                     }
                 }
-
             }
-
         }
-    ) { /* Handle menu click */ }
-
+    ) { /* Conteúdo da BottomNavigation, se houver */ }
 }

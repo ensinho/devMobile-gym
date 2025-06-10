@@ -24,7 +24,7 @@ sealed class Usuario(
         val altura: Double = 0.0,
         val peso: Double = 0.0,
         val imc: Double = (peso / (altura * altura)),
-        val fotoUrl: String? = null, // NOVO CAMPO ADICIONADO
+        val profilePictureBase64Compressed: String? = null, // NOVO CAMPO ADICIONADO
     ) : Usuario(uid, nome, email)
 
     data class Professor(

@@ -22,7 +22,7 @@ class AlunoRepository(
         if (!documentSnapshot.exists()) return null
         val aluno = documentSnapshot.toObject(Aluno::class.java)
         Log.d("AlunoRepository", "Aluno carregado: $aluno")
-        Log.d("AlunoRepository", "Foto URL: ${aluno?.fotoUrl}")
+        Log.d("AlunoRepository", "Foto URL: ${aluno?.profilePictureBase64Compressed}")
         return aluno
     }
 

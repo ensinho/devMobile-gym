@@ -5,7 +5,7 @@ data class Exercicio(
     val nome: String? = "",
     val grupoMuscular: String = "",
     val imagem: String? = "",
-    val linkVideo: String? = "",
+    val linkVideo: String? = "", // nao esta sendo usado, desconsiderar
     val descricao: String = ""
 ) {
     override fun equals(other: Any?): Boolean {

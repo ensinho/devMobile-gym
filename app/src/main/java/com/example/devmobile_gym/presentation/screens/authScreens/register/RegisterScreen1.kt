@@ -104,7 +104,7 @@ fun RegisterScreen(
         )
         Text(
             textAlign = TextAlign.Center,
-            text = " By clicking continue, you agree to our Terms of service and Privacy Policy" ,
+            text = "Ao clicar em continuar, você concorda com nossos Termos de Serviço e Política de Privacidade." ,
             color = Color.White
         )
     }

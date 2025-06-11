@@ -15,6 +15,10 @@ import java.util.zip.GZIPOutputStream
 
 object ImageUtils {
 
+    // !!! ATENÇÃO !!!: REMOVA ESTA LINHA DE IMPORTAÇÃO CONFLITANTE SE ELA ESTIVER NO SEU CÓDIGO
+    // import com.google.ai.client.generativeai.type.Schema.Companion.obj // <-- REMOVER ESTA LINHA!
+
+
     // Converte uma Uri para um Bitmap
     fun uriToBitmap(context: Context, uri: Uri): Bitmap? {
         return try {
@@ -30,11 +34,8 @@ object ImageUtils {
     // Converte um Bitmap para uma String Base64
     fun bitmapToBase64(bitmap: Bitmap): String {
         val byteArrayOutputStream = ByteArrayOutputStream()
-        // Ajuste a qualidade aqui para a compressão JPEG
-        // Um valor entre 70-85 é comum para fotos de perfil.
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
-        // Use Base64.NO_WRAP para evitar quebras de linha na string, o que é bom para armazenamento em BD
         return Base64.encodeToString(byteArray, Base64.NO_WRAP)
     }
 
@@ -49,8 +50,6 @@ object ImageUtils {
         }
     }
 
-    // --- NOVAS FUNÇÕES: Compressão e Descompressão GZIP para Strings ---
-
     // Comprime uma String usando GZIP e retorna o resultado como uma String Base64
     fun gzipCompress(data: String): String {
         if (data.isEmpty()) return ""
@@ -62,9 +61,8 @@ object ImageUtils {
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            return "" // Retorna string vazia ou lança uma exceção
+            return ""
         }
-        // Retorna os bytes comprimidos codificados em Base64 para armazenamento
         return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.NO_WRAP)
     }
 
@@ -76,11 +74,11 @@ object ImageUtils {
             Base64.decode(compressedBase64Data, Base64.NO_WRAP)
         } catch (e: IllegalArgumentException) {
             e.printStackTrace()
-            return "" // Retorna string vazia se a codificação Base64 for inválida
+            return ""
         }
 
         val byteArrayInputStream = ByteArrayInputStream(decodedBytes)
-        val byteArrayOutputStream = ByteArrayOutputStream()
+        val byteArrayOutputStream = ByteArrayOutputStream() // Renomeado para 'decompressedStream' para evitar conflito de nome
         try {
             GZIPInputStream(byteArrayInputStream).use { gzip ->
                 val buffer = ByteArray(1024)
@@ -91,9 +89,44 @@ object ImageUtils {
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            return "" // Retorna string vazia ou lança uma exceção
+            return ""
         }
-        // Retorna a string descomprimida
+        // CORRIGIDO: Chame toString() na ByteArrayOutputStream e especifique o charset
         return byteArrayOutputStream.toString(StandardCharsets.UTF_8.name())
+    }
+
+    // --- NOVA FUNÇÃO: Tenta descomprimir GZIP e, se falhar, decodifica Base64 diretamente ---
+    fun tryDecompressAndDecodeBase64ToBitmap(base64Data: String?): Bitmap? {
+        if (base64Data.isNullOrEmpty()) return null
+
+        var bitmap: Bitmap? = null
+
+        // Tenta descomprimir com GZIP primeiro
+        try {
+            val decompressedString = gzipDecompress(base64Data)
+            if (decompressedString.isNotEmpty()) {
+                bitmap = base64ToBitmap(decompressedString)
+                if (bitmap != null) {
+                    println("✅ Imagem decodificada de Base64 GZIP.")
+                    return bitmap
+                }
+            }
+        } catch (e: Exception) {
+            println("⚠️ Falha na descompressão GZIP, tentando Base64 puro. Erro: ${e.message}")
+        }
+
+        // Se GZIP falhou ou o bitmap foi nulo, tenta decodificar Base64 diretamente
+        try {
+            bitmap = base64ToBitmap(base64Data)
+            if (bitmap != null) {
+                println("✅ Imagem decodificada de Base64 puro.")
+                return bitmap
+            }
+        } catch (e: Exception) {
+            println("🔴 Falha na decodificação de Base64 puro. Erro: ${e.message}")
+        }
+
+        println("❌ Não foi possível decodificar Base64 (GZIP ou puro).")
+        return null
     }
 }

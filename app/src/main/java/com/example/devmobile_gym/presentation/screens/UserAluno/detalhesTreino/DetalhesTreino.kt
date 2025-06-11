@@ -1,6 +1,7 @@
 package com.example.devmobile_gym.presentation.screens.UserAluno.detalhesTreino
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap // Import Bitmap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,7 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.produceState // Importar produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,7 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.components.ui.theme.components.CustomButton // Verifique o import correto para CustomButton
+import com.example.components.ui.theme.components.CustomButton
 import com.example.devmobile_gym.presentation.components.CustomScreenScaffold
 import com.example.devmobile_gym.presentation.components.ExerciseCard
 import com.example.devmobile_gym.presentation.navigation.AlunoRoutes
@@ -51,8 +52,8 @@ fun DetalhesTreinoScreen(
         viewModelStoreOwner = backStackEntry,
         factory = DetalhesTreinoViewModel.Factory
     )
-    val treino by viewModel.treinoSelecionado.collectAsState() // Use 'by' para desempacotar
-    val quantidadeExercicios = treino?.exercicios?.size ?: 0 // Use '?' para acesso seguro
+    val treino by viewModel.treinoSelecionado.collectAsState()
+    val quantidadeExercicios = treino?.exercicios?.size ?: 0
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -62,7 +63,6 @@ fun DetalhesTreinoScreen(
     val authViewModel: AuthViewModel = viewModel()
     val authState by authViewModel.authState.observeAsState()
 
-    // Observe o estado das séries concluídas
     val seriesConcluidas by viewModel.seriesConcluidas.collectAsState()
 
 
@@ -81,10 +81,10 @@ fun DetalhesTreinoScreen(
         AlunoRoutes.QrCode -> 2
         AlunoRoutes.Chatbot -> 3
         AlunoRoutes.Profile -> 4
-        else -> 0 // default
+        else -> 0
     }
 
-    if (treino == null) { // Verifique se treino é nulo aqui
+    if (treino == null) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -157,7 +157,7 @@ fun DetalhesTreinoScreen(
                         text = "Concluir",
                         onClick = {
                             val tempo = viewModel.finalizarTreino()
-                            treino?.let { // Use '?' para acesso seguro
+                            treino?.let {
                                 navController.navigate("aluno/concluirTreino/${viewModel.getTreinoId()}/${tempo}")
                             }
                         }
@@ -167,43 +167,29 @@ fun DetalhesTreinoScreen(
                 Spacer(modifier = Modifier.height(5.dp))
 
                 LazyColumn(
-                    modifier = Modifier
-                        .weight(1f)
+                    modifier = Modifier.weight(1f)
                 ) {
-                    treino?.let { currentTreino -> // Use '?' para acesso seguro
-                        items(currentTreino.exercicios, key = { it }) { exercicioId -> // Adicione 'key' para otimização do LazyColumn
-                            val imagemUrl by produceState<String?>(initialValue = null, key1 = exercicioId) {
-                                value = viewModel.getImagemExercicio(exercicioId)
+                    treino?.let { currentTreino ->
+                        items(currentTreino.exercicios, key = { it }) { exercicioId ->
+                            // !!! AGORA PRODUZ UM BITMAP? CHAMANDO A FUNÇÃO OTIMIZADA DO VIEWMODEL !!!
+                            val exercicioBitmap by produceState<Bitmap?>(initialValue = null, key1 = exercicioId) {
+                                value = viewModel.getImagemExercicio(exercicioId) // Retorna Bitmap?
                             }
 
-                            if (!imagemUrl.isNullOrBlank()) {
-                                ExerciseCard(
-                                    exercicioId = exercicioId, // Passe o ID do exercício
-                                    title = viewModel.getNomeExercicio(exercicioId),
-                                    url = imagemUrl!!,
-                                    // Passe o estado e o callback do ViewModel
-                                    seriesConcluidasState = seriesConcluidas,
-                                    onSerieCheckedChange = { id, index, checked ->
-                                        viewModel.onSerieCheckedChange(id, index, checked)
-                                    }
-                                )
-                            } else {
-                                ExerciseCard(
-                                    exercicioId = exercicioId, // Passe o ID do exercício
-                                    title = viewModel.getNomeExercicio(exercicioId),
-                                    url = "",
-                                    // Passe o estado e o callback do ViewModel
-                                    seriesConcluidasState = seriesConcluidas,
-                                    onSerieCheckedChange = { id, index, checked ->
-                                        viewModel.onSerieCheckedChange(id, index, checked)
-                                    }
-                                )
-                            }
+                            // ExerciseCard agora recebe o Bitmap
+                            ExerciseCard(
+                                exercicioId = exercicioId,
+                                title = viewModel.getNomeExercicio(exercicioId),
+                                photoBitmap = exercicioBitmap, // PASSA O BITMAP AQUI!
+                                seriesConcluidasState = seriesConcluidas,
+                                onSerieCheckedChange = { id, index, checked ->
+                                    viewModel.onSerieCheckedChange(id, index, checked)
+                                }
+                            )
                         }
                     }
                 }
             }
-
         }
     ) { /* Handle menu click */ }
 }

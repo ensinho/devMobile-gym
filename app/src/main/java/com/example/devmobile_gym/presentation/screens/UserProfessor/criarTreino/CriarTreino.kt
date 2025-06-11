@@ -72,7 +72,6 @@ fun CriarTreinoScreen(navController: NavHostController, backStackEntry: NavBackS
     val titulo by viewModel.titulo.collectAsState() // Nome do novo treino
     val exerciciosAdicionados by viewModel.exerciciosAdicionados.collectAsState() // lista de exercicios adicionados no treino
     val exerciciosFiltrados by viewModel.exerciciosFiltrados // exercicios filtrados de acordo com a busca
-    // TODO("Armazenar todos os exercicios no banco")
 
     CustomScreenScaffoldProfessor(
         navController = navController,

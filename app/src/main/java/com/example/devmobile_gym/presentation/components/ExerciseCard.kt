@@ -1,5 +1,7 @@
 package com.example.devmobile_gym.presentation.components
 
+import android.graphics.Bitmap // Importar Bitmap
+import androidx.compose.foundation.Image // Importar Image para exibir Bitmap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -13,11 +15,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Info // Ícone de fallback (ou AddAPhoto)
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,13 +30,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap // Importar asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
-import coil3.compose.AsyncImagePainter
+// coil3.compose.AsyncImage // REMOVIDO: Não mais necessário
+// coil3.compose.AsyncImagePainter // REMOVIDO: Não mais necessário
 
 // thead da tabela - Removido "ANTERIOR"
 private val thead: MutableList<String> = mutableListOf("SÉRIE", "KG", "REPS")
@@ -41,7 +47,7 @@ private val thead: MutableList<String> = mutableListOf("SÉRIE", "KG", "REPS")
 fun ExerciseCard(
     exercicioId: String,
     title: String,
-    url: String,
+    photoBitmap: Bitmap?, // NOVO PARÂMETRO: Recebe o Bitmap da foto
     quantSeries: Int = 3,
     quantReps: Int = 12,
     peso: Int = 20,
@@ -58,14 +64,13 @@ fun ExerciseCard(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ){
-            ExerciseTitle(title, url)
+            ExerciseTitle(title, photoBitmap) // PASSA O BITMAP AQUI
             ExerciseTHead()
             for (i in 0..<quantSeries) {
                 TRowCell(
                     exercicioId = exercicioId,
                     serieIndex = i,
-                    // Ajuste aqui: removido o valor "ANTERIOR"
-                    trowInfo = mutableListOf((i + 1), peso, quantReps), // A ordem agora é Série, KG, Reps
+                    trowInfo = mutableListOf((i + 1), peso, quantReps),
                     isChecked = seriesConcluidasState["$exercicioId-$i"] ?: false,
                     onCheckedChange = { checked ->
                         onSerieCheckedChange(exercicioId, i, checked)
@@ -92,11 +97,10 @@ private fun TRowCell(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ){
-        // O loop agora itera sobre os itens em trowInfo que correspondem a thead
-        for (i in 0 until thead.size) { // Mudança aqui: de '0..thead.size' para '0 until thead.size'
+        for (i in 0 until thead.size) {
             Box(
                 modifier = Modifier
-                    .weight(if (thead[i] == "KG") 0.8f else if (thead[i] == "REPS") 1f else 1f), // Ajuste os pesos conforme necessário
+                    .weight(if (thead[i] == "KG") 0.8f else if (thead[i] == "REPS") 1f else 1f),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -109,19 +113,19 @@ private fun TRowCell(
                 )
             }
         }
-        // Coluna do checkbox (última coluna)
         Box(
             modifier = Modifier
-                .weight(0.7f), // Peso para o checkbox
+                .weight(0.7f),
             contentAlignment = Alignment.Center
         ) {
+            // Supondo que CustomCheckbox é um composable que você tem
             CustomCheckbox(checked = isChecked, onCheckedChange = onCheckedChange)
         }
     }
 }
 
 @Composable
-private fun ExerciseTitle(title: String, url: String) {
+private fun ExerciseTitle(title: String, photoBitmap: Bitmap?) { // NOVO PARÂMETRO: Bitmap?
     Row(
         modifier = Modifier
             .padding(8.dp),
@@ -136,32 +140,16 @@ private fun ExerciseTitle(title: String, url: String) {
                 .border(1.dp, Color.White, CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            if (url.isNotBlank()) {
-                println("🔵 Tentando carregar imagem: $url")
-                AsyncImage(
-                    model = url,
+            if (photoBitmap != null) { // LÓGICA PARA EXIBIR O BITMAP
+                Image(
+                    bitmap = photoBitmap.asImageBitmap(), // Converte Bitmap para ImageBitmap
                     contentDescription = "Ícone do exercício",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clip(CircleShape)
-                        .background(Color.Gray.copy(alpha = 0.2f))
-                        .border(1.dp, Color.White, CircleShape),
-
-                    onState = { state ->
-                        when (state) {
-                            is AsyncImagePainter.State.Loading -> println("🟡 Carregando imagem...")
-                            is AsyncImagePainter.State.Success -> println("✅ Imagem carregada com sucesso.")
-                            is AsyncImagePainter.State.Error -> println("🔴 Erro ao carregar imagem.")
-                            is AsyncImagePainter.State.Empty -> println("⚪ URL da imagem vazia.")
-                        }
-                    }
-
+                    modifier = Modifier.fillMaxSize()
                 )
-            } else {
-                println("⚠️ URL da imagem está vazia. Exibindo fallback.")
+            } else { // Fallback se o Bitmap for nulo
                 Icon(
-                    imageVector = Icons.Default.Info,
+                    imageVector = Icons.Default.Info, // Ícone de fallback (ou outro como AddAPhoto)
                     contentDescription = "Fallback",
                     tint = Color.Gray,
                     modifier = Modifier.fillMaxSize()
@@ -181,7 +169,6 @@ private fun ExerciseTitle(title: String, url: String) {
 }
 
 
-
 @Composable
 private fun ExerciseTHead() {
     Row (
@@ -198,7 +185,7 @@ private fun ExerciseTHead() {
                 fontSize = 18.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .weight(if (item == "KG") 0.8f else if (item == "REPS") 1f else 1f) // Ajuste os pesos
+                    .weight(if (item == "KG") 0.8f else if (item == "REPS") 1f else 1f)
                     .fillMaxWidth()
             )
         }
@@ -215,5 +202,5 @@ private fun ExerciseTHead() {
     }
 }
 
-// Estrutura de dados para cada linha da tabela
+// Estrutura de dados para cada linha da tabela (provavelmente não usada diretamente no composable)
 private data class EditableRow(val serie: String, val kg: String, val reps: String)

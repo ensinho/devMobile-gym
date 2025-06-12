@@ -92,7 +92,7 @@ fun AulasProfessorScreen(navController: NavHostController){
         navController = navController,
         onBackClick = {  },
         selectedItemIndex = selectedItemIndex,
-        needToGoBack = true,
+        needToGoBack = false,
         content = { innerModifier ->
             val combinedModifier = innerModifier.padding(1.dp)
 
